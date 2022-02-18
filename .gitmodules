@@ -1,0 +1,3 @@
+[submodule "dregx/extern/googletest"]
+	path = dregx/extern/googletest
+	url = https://github.com/google/googletest
