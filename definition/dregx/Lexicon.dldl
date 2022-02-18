@@ -1,0 +1,33 @@
+/ Lexicon of DREGX
+/ Made by Thimo Böhmer
+
+Terminal: LEFT_CURLY_BRACKET      [(]
+Terminal: RIGHT_CURLY_BRACKET     [)]
+Terminal: LEFT_SQUARE_BRACKET_NOT [\[][\^]
+Terminal: LEFT_SQUARE_BRACKET     [\[]
+Terminal: RIGHT_SQUARE_BRACKET    [\]]
+Terminal: LEFT_BRACKET            [\{]
+Terminal: RIGHT_BRACKET           [\}]
+Terminal: COMMA                   [,]
+Terminal: SLASH                   [\\]
+Terminal: OR                      [|]
+Terminal: MIN                     [\-]
+Terminal: UNDERSCORE              [_]
+Terminal: NOT                     [\^]
+Terminal: PLUS                    [+]
+Terminal: STAR                    [*]
+
+Terminal: NUMBER    [0-9]
+Terminal: T_        [t]
+Terminal: N_        [n]
+Terminal: R_        [r]
+Terminal: B_        [b]
+Terminal: V_        [v]
+Terminal: A_        [a]
+Terminal: LETTER    [a-zA-Z]
+Terminal: SPACE     [ ]
+Terminal: TAB       [\t]
+
+Terminal: OTHER     [^0-9a-zA-Z+*,\n\r\t\b\v\a_ ]
+
+Delete: DELETE_ESCAPE_CHARS [\n\r\b\v\a]

@@ -1,0 +1,137 @@
+/ Grammar of DREGX
+/ Made by Thimo Böhmer
+
+/ Grammar notes:
+/ In front of some Terminal optional_padding is inserted.
+/ Padding exists of spaces and or tabs.
+
+program
+	stmt*
+
+stmt
+	word
+
+word
+	group
+	square
+	standalone
+
+group
+	opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
+	opt_pad LEFT_CURLY_BRACKET square opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
+	opt_pad LEFT_CURLY_BRACKET word+ opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
+
+or_concat
+	(group|square) opt_pad OR (group|square)
+
+square
+	capture extension_modifier
+	capture PLUS
+	capture STAR
+	capture
+
+capture
+	opt_pad LEFT_SQUARE_BRACKET_NOT capture_logic+ RIGHT_SQUARE_BRACKET
+	opt_pad LEFT_SQUARE_BRACKET capture_logic+ RIGHT_SQUARE_BRACKET
+
+capture_logic
+	capture_range
+	capture_special_character
+	capture_letter
+	capture_whitespace
+	capture_symbols
+
+capture_symbols
+	OTHER
+	PLUS
+	STAR
+	COMMA
+	OR
+	
+
+capture_whitespace
+	SPACE
+	TAB
+
+capture_range
+	capture_letter_range
+	capture_number_range
+
+capture_letter_range
+	any_letter_exclude_underscore MIN any_letter_exclude_underscore
+
+capture_number_range
+	NUMBER MIN NUMBER
+
+capture_letter
+	any_letter
+
+capture_special_character
+	special_char_any
+
+extension_modifier
+	opt_pad LEFT_BRACKET min_repition opt_pad COMMA max_repition opt_pad RIGHT_BRACKET
+
+min_repition
+	opt_pad NUMBER+
+	
+max_repition
+	opt_pad NUMBER+
+
+standalone
+	opt_pad any_letter+
+
+opt_pad
+	optional_padding
+
+optional_padding
+	padding*
+
+padding
+	SPACE
+	TAB
+
+special_char_any
+	SLASH any
+
+any_letter
+	any_letter_exclude_underscore
+	UNDERSCORE
+	
+any_letter_exclude_underscore
+	T_
+	R_
+	N_
+	B_
+	V_
+	A_
+	LETTER
+	
+any
+	LEFT_CURLY_BRACKET
+	RIGHT_CURLY_BRACKET
+	LEFT_SQUARE_BRACKET
+	RIGHT_SQUARE_BRACKET
+	LEFT_BRACKET
+	RIGHT_BRACKET
+	COMMA
+	OR
+	MIN
+	UNDERSCORE
+	NOT
+	NUMBER
+	T_
+	N_
+	R_
+	B_
+	V_
+	A_
+	LETTER
+	SPACE
+	TAB
+	PLUS
+	STAR
+	OTHER
+	SLASH
+
+/
