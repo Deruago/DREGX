@@ -40,6 +40,8 @@
 #include "dregx/Ast/Node/group.h"
 #include "dregx/Ast/Node/deamerreserved_plus__word__.h"
 #include "dregx/Ast/Node/or_concat.h"
+#include "dregx/Ast/Node/deamerreserved_arrow__word__.h"
+#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
 #include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
@@ -402,6 +404,24 @@ namespace dregx { namespace ast { namespace listener {
 				EnterAnything(node);
 				EnterNonTerminal(node);
 				ListenEntry(static_cast<const dregx::ast::node::or_concat*>(node));
+				break;
+			}
+
+			case dregx::ast::Type::deamerreserved_arrow__word__:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const dregx::ast::node::deamerreserved_arrow__word__*>(node));
+				break;
+			}
+
+			case dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*>(node));
 				break;
 			}
 
@@ -949,6 +969,24 @@ namespace dregx { namespace ast { namespace listener {
 				break;
 			}
 
+			case dregx::ast::Type::deamerreserved_arrow__word__:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const dregx::ast::node::deamerreserved_arrow__word__*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
+			case dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
 			case dregx::ast::Type::square:
 			{
 				// Exit nonterminal
@@ -1425,6 +1463,14 @@ namespace dregx { namespace ast { namespace listener {
 		{
 		}
 
+		virtual void ListenEntry(const dregx::ast::node::deamerreserved_arrow__word__* node) 
+		{
+		}
+
+		virtual void ListenEntry(const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* node) 
+		{
+		}
+
 		virtual void ListenEntry(const dregx::ast::node::square* node) 
 		{
 		}
@@ -1551,6 +1597,14 @@ namespace dregx { namespace ast { namespace listener {
 		}
 
 		virtual void ListenExit(const dregx::ast::node::or_concat* node) 
+		{
+		}
+
+		virtual void ListenExit(const dregx::ast::node::deamerreserved_arrow__word__* node) 
+		{
+		}
+
+		virtual void ListenExit(const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* node) 
 		{
 		}
 

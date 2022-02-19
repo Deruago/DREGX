@@ -43,6 +43,16 @@ namespace dregx { namespace ast { namespace relation {
 			return false;
 		}
 
+		if (t == ::dregx::ast::Type::deamerreserved_arrow__word__)
+		{
+			return true;
+		}
+
+		if (t == ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__)
+		{
+			return true;
+		}
+
 		if (t == ::dregx::ast::Type::square)
 		{
 			return false;

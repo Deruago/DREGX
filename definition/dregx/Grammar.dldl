@@ -18,11 +18,10 @@ word
 
 group
 	opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
-	opt_pad LEFT_CURLY_BRACKET square opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
 	opt_pad LEFT_CURLY_BRACKET word+ opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
 
 or_concat
-	(group|square) opt_pad OR (group|square)
+	word opt_pad OR word -> (opt_pad OR word)
 
 square
 	capture extension_modifier

@@ -45,6 +45,16 @@ namespace dregx { namespace ast { namespace relation {
 	}
 	
 
+	case ::dregx::ast::Type::deamerreserved_arrow__word__: {
+		return "deamerreserved_arrow__word__";
+	}
+	
+
+	case ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__: {
+		return "deamerreserved_star__opt_pad__OR__word__";
+	}
+	
+
 	case ::dregx::ast::Type::square: {
 		return "square";
 	}

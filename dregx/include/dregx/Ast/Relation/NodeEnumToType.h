@@ -10,6 +10,8 @@
 #include "dregx/Ast/Node/group.h"
 #include "dregx/Ast/Node/deamerreserved_plus__word__.h"
 #include "dregx/Ast/Node/or_concat.h"
+#include "dregx/Ast/Node/deamerreserved_arrow__word__.h"
+#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
 #include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
@@ -121,6 +123,20 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::or_concat;
 		using type = ::dregx::ast::node::or_concat;
+	};
+
+	template<>
+	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_arrow__word__>
+	{
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_arrow__word__;
+		using type = ::dregx::ast::node::deamerreserved_arrow__word__;
+	};
+
+	template<>
+	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__>
+	{
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__;
+		using type = ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__;
 	};
 
 	template<>

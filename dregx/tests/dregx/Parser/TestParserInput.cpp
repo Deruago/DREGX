@@ -150,6 +150,7 @@ TEST_F(TestParserInput, Regex_not_space_ShouldCorrectlyParse)
 
 TEST_F(TestParserInput, Regex_DLDLv1_RegexMatcher_ShouldCorrectlyParse)
 {
+	// This is a complex but valid regex
 	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse(
 		"(([\\[][^\\]]+[\\]\\s\\\\a-zA-Z_0-9\\}\\{\\&\\#\\@\\%\\$]*[\\]](([\\{][\\s]*[0-9]+[\\s]*[,"
 		"]["
@@ -201,9 +202,14 @@ TEST_F(TestParserInput, Regex_WithSlashSlash_ShouldCorrectlyParse)
 	ASSERT_NE(nullptr, tree);
 }
 
-TEST_F(TestParserInput, Regex_UnknownIssue_ShouldCorrectlyParse)
+TEST_F(TestParserInput, Regex_OrSequence2Elements_ShouldCorrectlyParse)
 {
-	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(
-		parser.Parse("(([\\[][^\\]]+[\\]\\s\\\\]*)+)"));
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("(A|B|C|D|E)"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_OrSequence5Elements_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("(A|B|C|D|E)"));
 	ASSERT_NE(nullptr, tree);
 }

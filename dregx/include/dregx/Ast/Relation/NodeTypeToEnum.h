@@ -12,6 +12,8 @@ class word;
 class group;
 class deamerreserved_plus__word__;
 class or_concat;
+class deamerreserved_arrow__word__;
+class deamerreserved_star__opt_pad__OR__word__;
 class square;
 class capture;
 class deamerreserved_plus__capture_logic__;
@@ -124,6 +126,20 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::or_concat;
 		using type = ::dregx::ast::node::or_concat;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_arrow__word__>
+	{
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_arrow__word__;
+		using type = ::dregx::ast::node::deamerreserved_arrow__word__;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>
+	{
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__;
+		using type = ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__;
 	};
 
 	template<>

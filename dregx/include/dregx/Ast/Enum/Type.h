@@ -48,6 +48,8 @@ namespace dregx { namespace ast {
 		group,
 		deamerreserved_plus__word__,
 		or_concat,
+		deamerreserved_arrow__word__,
+		deamerreserved_star__opt_pad__OR__word__,
 		square,
 		capture,
 		deamerreserved_plus__capture_logic__,

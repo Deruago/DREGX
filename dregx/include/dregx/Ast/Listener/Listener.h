@@ -39,6 +39,8 @@
 #include "dregx/Ast/Node/group.h"
 #include "dregx/Ast/Node/deamerreserved_plus__word__.h"
 #include "dregx/Ast/Node/or_concat.h"
+#include "dregx/Ast/Node/deamerreserved_arrow__word__.h"
+#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
 #include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
@@ -254,6 +256,18 @@ namespace dregx { namespace ast { namespace listener {
 			case dregx::ast::Type::or_concat:
 			{
 				Listen(static_cast<const dregx::ast::node::or_concat*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case dregx::ast::Type::deamerreserved_arrow__word__:
+			{
+				Listen(static_cast<const dregx::ast::node::deamerreserved_arrow__word__*>(node));
+				DefaultAction(node);
+				break;
+			}
+			case dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__:
+			{
+				Listen(static_cast<const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*>(node));
 				DefaultAction(node);
 				break;
 			}
@@ -510,6 +524,12 @@ namespace dregx { namespace ast { namespace listener {
 		{
 		}
 		virtual void Listen(const dregx::ast::node::or_concat* node)
+		{
+		}
+		virtual void Listen(const dregx::ast::node::deamerreserved_arrow__word__* node)
+		{
+		}
+		virtual void Listen(const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* node)
 		{
 		}
 		virtual void Listen(const dregx::ast::node::square* node)
