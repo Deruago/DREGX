@@ -276,16 +276,6 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"standalone\"];\n";
 		}
 
-		void ListenEntry(const ::dregx::ast::node::deamerreserved_plus__any_letter__* node) override
-		{
-			for (const auto* child : node->GetNodes())
-			{
-				AddConnection(node, child);
-			}
-
-			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_plus__any_letter__\"];\n";
-		}
-
 		void ListenEntry(const ::dregx::ast::node::opt_pad* node) override
 		{
 			for (const auto* child : node->GetNodes())
@@ -734,10 +724,6 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 		}
 
 		void ListenExit(const ::dregx::ast::node::standalone* node) override
-		{
-		}
-
-		void ListenExit(const ::dregx::ast::node::deamerreserved_plus__any_letter__* node) override
 		{
 		}
 

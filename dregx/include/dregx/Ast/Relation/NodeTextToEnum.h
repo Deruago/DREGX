@@ -87,9 +87,6 @@ namespace dregx { namespace ast { namespace relation {
 		{ "standalone", ::dregx::ast::Type::standalone },
 	
 
-		{ "deamerreserved_plus__any_letter__", ::dregx::ast::Type::deamerreserved_plus__any_letter__ },
-	
-
 		{ "opt_pad", ::dregx::ast::Type::opt_pad },
 	
 

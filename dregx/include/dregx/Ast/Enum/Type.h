@@ -66,7 +66,6 @@ namespace dregx { namespace ast {
 		deamerreserved_plus__NUMBER__,
 		max_repition,
 		standalone,
-		deamerreserved_plus__any_letter__,
 		opt_pad,
 		optional_padding,
 		deamerreserved_star__padding__,

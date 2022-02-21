@@ -52,7 +52,6 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_plus__NUMBER__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> max_repition;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> standalone;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_plus__any_letter__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> opt_pad;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> optional_padding;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__padding__;
@@ -66,7 +65,7 @@ namespace dregx
 		// Production-Rule declarations
 		::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__stmt___stmt_deamerreserved_star__stmt__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__stmt___EMPTY;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> program_deamerreserved_star__stmt__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> program_deamerreserved_star__stmt___opt_pad;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> stmt_word;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> word_group;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> word_square;
@@ -116,9 +115,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_plus__NUMBER___NUMBER_deamerreserved_plus__NUMBER__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> min_repition_opt_pad_deamerreserved_plus__NUMBER__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> max_repition_opt_pad_deamerreserved_plus__NUMBER__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_plus__any_letter___any_letter;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_plus__any_letter___any_letter_deamerreserved_plus__any_letter__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> standalone_opt_pad_deamerreserved_plus__any_letter__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> standalone_opt_pad_any_letter;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> opt_pad_optional_padding;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__padding___padding_deamerreserved_star__padding__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__padding___EMPTY;

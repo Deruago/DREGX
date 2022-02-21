@@ -135,11 +135,6 @@ namespace dregx { namespace ast { namespace relation {
 	}
 	
 
-	case ::dregx::ast::Type::deamerreserved_plus__any_letter__: {
-		return "deamerreserved_plus__any_letter__";
-	}
-	
-
 	case ::dregx::ast::Type::opt_pad: {
 		return "opt_pad";
 	}

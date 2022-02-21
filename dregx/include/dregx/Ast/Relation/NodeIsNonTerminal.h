@@ -133,11 +133,6 @@ namespace dregx { namespace ast { namespace relation {
 			return true;
 		}
 
-		if (t == ::dregx::ast::Type::deamerreserved_plus__any_letter__)
-		{
-			return true;
-		}
-
 		if (t == ::dregx::ast::Type::opt_pad)
 		{
 			return true;

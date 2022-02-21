@@ -29,3 +29,7 @@ if(APPLICATIONS)
 	message(STATUS "Applications are now available.")
 	add_subdirectory(sources)
 endif()
+
+
+add_executable(dregx_console main.cpp)
+target_link_libraries(dregx_console dregx_static_library)

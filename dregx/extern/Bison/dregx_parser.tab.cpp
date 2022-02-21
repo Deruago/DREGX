@@ -1,9 +1,8 @@
 /* A Bison parser, made by GNU Bison 3.8.2.  */
 
-/* Bison implementation for Yacc-like parsers in C
+/* Skeleton implementation for Bison GLR parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
-   Inc.
+   Copyright (C) 2002-2015, 2018-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -31,19 +30,11 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* C LALR(1) parser skeleton written by Richard Stallman, by
-   simplifying the original so-called "semantic" parser.  */
+/* C GLR parser skeleton written by Paul Hilfinger.  */
 
 /* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
-
-/* All symbols defined below should begin with yy or YY, to avoid
-   infringing on user name space.  This should be done even for local
-   variables, as they might otherwise be expanded by user macros.
-   There are some unavoidable exceptions within include files to
-   define necessary library symbols; they are noted "INFRINGES ON
-   USER NAME SPACE" below.  */
 
 /* Identify Bison output, and Bison version.  */
 #define YYBISON 30802
@@ -52,26 +43,22 @@
 #define YYBISON_VERSION "3.8.2"
 
 /* Skeleton name.  */
-#define YYSKELETON_NAME "yacc.c"
+#define YYSKELETON_NAME "glr.c"
 
 /* Pure parsers.  */
 #define YYPURE 0
 
-/* Push parsers.  */
-#define YYPUSH 0
 
-/* Pull parsers.  */
-#define YYPULL 1
 
 
 /* Substitute the variable and function names.  */
-#define yyparse         dregxparse
-#define yylex           dregxlex
-#define yyerror         dregxerror
-#define yydebug         dregxdebug
-#define yynerrs         dregxnerrs
-#define yylval          dregxlval
-#define yychar          dregxchar
+#define yyparse dregxparse
+#define yylex   dregxlex
+#define yyerror dregxerror
+#define yydebug dregxdebug
+#define yylval  dregxlval
+#define yychar  dregxchar
+#define yynerrs dregxnerrs
 
 /* First part of user prologue.  */
 #line 4 "./dregx_parser.y"
@@ -141,7 +128,6 @@
 #include "dregx/Ast/Node/deamerreserved_plus__NUMBER__.h"
 #include "dregx/Ast/Node/max_repition.h"
 #include "dregx/Ast/Node/standalone.h"
-#include "dregx/Ast/Node/deamerreserved_plus__any_letter__.h"
 #include "dregx/Ast/Node/opt_pad.h"
 #include "dregx/Ast/Node/optional_padding.h"
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
@@ -164,7 +150,7 @@ void dregxerror(const char* s);
 int dregxlex();
 static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 
-#line 168 "dregx_parser.tab.c"
+#line 154 "dregx_parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -188,6 +174,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 # endif
 
 #include "dregx_parser.tab.h"
+
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -248,20 +235,31 @@ enum yysymbol_kind_t
   YYSYMBOL_deamerreserved_plus__NUMBER__ = 53, /* deamerreserved_plus__NUMBER__  */
   YYSYMBOL_max_repition = 54,              /* max_repition  */
   YYSYMBOL_standalone = 55,                /* standalone  */
-  YYSYMBOL_deamerreserved_plus__any_letter__ = 56, /* deamerreserved_plus__any_letter__  */
-  YYSYMBOL_opt_pad = 57,                   /* opt_pad  */
-  YYSYMBOL_optional_padding = 58,          /* optional_padding  */
-  YYSYMBOL_deamerreserved_star__padding__ = 59, /* deamerreserved_star__padding__  */
-  YYSYMBOL_padding = 60,                   /* padding  */
-  YYSYMBOL_special_char_any = 61,          /* special_char_any  */
-  YYSYMBOL_any_letter = 62,                /* any_letter  */
-  YYSYMBOL_any_letter_exclude_underscore = 63, /* any_letter_exclude_underscore  */
-  YYSYMBOL_any = 64                        /* any  */
+  YYSYMBOL_opt_pad = 56,                   /* opt_pad  */
+  YYSYMBOL_optional_padding = 57,          /* optional_padding  */
+  YYSYMBOL_deamerreserved_star__padding__ = 58, /* deamerreserved_star__padding__  */
+  YYSYMBOL_padding = 59,                   /* padding  */
+  YYSYMBOL_special_char_any = 60,          /* special_char_any  */
+  YYSYMBOL_any_letter = 61,                /* any_letter  */
+  YYSYMBOL_any_letter_exclude_underscore = 62, /* any_letter_exclude_underscore  */
+  YYSYMBOL_any = 63                        /* any  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
 
+/* Default (constant) value used for initialization for null
+   right-hand sides.  Unlike the standard yacc.c template, here we set
+   the default value of $$ to a zeroed-out value.  Since the default
+   value is undefined, this behavior is technically correct.  */
+static YYSTYPE yyval_default;
 
+
+
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef short
 # undef short
@@ -333,7 +331,6 @@ typedef unsigned short yytype_uint16;
 #else
 typedef int yytype_uint16;
 #endif
-
 #ifndef YYPTRDIFF_T
 # if defined __PTRDIFF_TYPE__ && defined __PTRDIFF_MAX__
 #  define YYPTRDIFF_T __PTRDIFF_TYPE__
@@ -372,12 +369,6 @@ typedef int yytype_uint16;
 #define YYSIZEOF(X) YY_CAST (YYPTRDIFF_T, sizeof (X))
 
 
-/* Stored state numbers (used for stacks). */
-typedef yytype_uint8 yy_state_t;
-
-/* State numbers in computations.  */
-typedef int yy_state_fast_t;
-
 #ifndef YY_
 # if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
@@ -390,6 +381,39 @@ typedef int yy_state_fast_t;
 # endif
 #endif
 
+
+#ifndef YYFREE
+# define YYFREE free
+#endif
+#ifndef YYMALLOC
+# define YYMALLOC malloc
+#endif
+#ifndef YYREALLOC
+# define YYREALLOC realloc
+#endif
+
+#ifdef __cplusplus
+  typedef bool yybool;
+# define yytrue true
+# define yyfalse false
+#else
+  /* When we move to stdbool, get rid of the various casts to yybool.  */
+  typedef signed char yybool;
+# define yytrue 1
+# define yyfalse 0
+#endif
+
+#ifndef YYSETJMP
+# include <setjmp.h>
+# define YYJMP_BUF jmp_buf
+# define YYSETJMP(Env) setjmp (Env)
+/* Pacify Clang and ICC.  */
+# define YYLONGJMP(Env, Val)                    \
+ do {                                           \
+   longjmp (Env, Val);                          \
+   YY_ASSERT (0);                               \
+ } while (yyfalse)
+#endif
 
 #ifndef YY_ATTRIBUTE_PURE
 # if defined __GNUC__ && 2 < __GNUC__ + (96 <= __GNUC_MINOR__)
@@ -404,6 +428,30 @@ typedef int yy_state_fast_t;
 #  define YY_ATTRIBUTE_UNUSED __attribute__ ((__unused__))
 # else
 #  define YY_ATTRIBUTE_UNUSED
+# endif
+#endif
+
+/* The _Noreturn keyword of C11.  */
+#ifndef _Noreturn
+# if (defined __cplusplus \
+      && ((201103 <= __cplusplus && !(__GNUC__ == 4 && __GNUC_MINOR__ == 7)) \
+          || (defined _MSC_VER && 1900 <= _MSC_VER)))
+#  define _Noreturn [[noreturn]]
+# elif ((!defined __cplusplus || defined __clang__) \
+        && (201112 <= (defined __STDC_VERSION__ ? __STDC_VERSION__ : 0) \
+            || (!defined __STRICT_ANSI__ \
+                && (4 < __GNUC__ + (7 <= __GNUC_MINOR__) \
+                    || (defined __apple_build_version__ \
+                        ? 6000000 <= __apple_build_version__ \
+                        : 3 < __clang_major__ + (5 <= __clang_minor__))))))
+   /* _Noreturn works as-is.  */
+# elif (2 < __GNUC__ + (8 <= __GNUC_MINOR__) || defined __clang__ \
+        || 0x5110 <= __SUNPRO_C)
+#  define _Noreturn __attribute__ ((__noreturn__))
+# elif 1200 <= (defined _MSC_VER ? _MSC_VER : 0)
+#  define _Noreturn __declspec (noreturn)
+# else
+#  define _Noreturn
 # endif
 #endif
 
@@ -454,127 +502,27 @@ typedef int yy_state_fast_t;
 
 #define YY_ASSERT(E) ((void) (0 && (E)))
 
-#if 1
-
-/* The parser invokes alloca or malloc; define the necessary symbols.  */
-
-# ifdef YYSTACK_ALLOC
-   /* Pacify GCC's 'empty if-body' warning.  */
-#  define YYSTACK_FREE(Ptr) do { /* empty */; } while (0)
-#  ifndef YYSTACK_ALLOC_MAXIMUM
-    /* The OS might guarantee only one guard page at the bottom of the stack,
-       and a page size can be as small as 4096 bytes.  So we cannot safely
-       invoke alloca (N) if N exceeds 4096.  Use a slightly smaller number
-       to allow for a few compiler-allocated temporary stack slots.  */
-#   define YYSTACK_ALLOC_MAXIMUM 4032 /* reasonable circa 2006 */
-#  endif
-# else
-#  define YYSTACK_ALLOC YYMALLOC
-#  define YYSTACK_FREE YYFREE
-#  ifndef YYSTACK_ALLOC_MAXIMUM
-#   define YYSTACK_ALLOC_MAXIMUM YYSIZE_MAXIMUM
-#  endif
-#  if (defined __cplusplus && ! defined EXIT_SUCCESS \
-       && ! ((defined YYMALLOC || defined malloc) \
-             && (defined YYFREE || defined free)))
-#   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
-#   ifndef EXIT_SUCCESS
-#    define EXIT_SUCCESS 0
-#   endif
-#  endif
-#  ifndef YYMALLOC
-#   define YYMALLOC malloc
-#   if ! defined malloc && ! defined EXIT_SUCCESS
-void *malloc (YYSIZE_T); /* INFRINGES ON USER NAME SPACE */
-#   endif
-#  endif
-#  ifndef YYFREE
-#   define YYFREE free
-#   if ! defined free && ! defined EXIT_SUCCESS
-void free (void *); /* INFRINGES ON USER NAME SPACE */
-#   endif
-#  endif
-# endif
-# define YYCOPY_NEEDED 1
-#endif /* 1 */
-
-#if (! defined yyoverflow \
-     && (! defined __cplusplus \
-         || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
-
-/* A type that is properly aligned for any stack member.  */
-union yyalloc
-{
-  yy_state_t yyss_alloc;
-  YYSTYPE yyvs_alloc;
-};
-
-/* The size of the maximum gap between one aligned stack and the next.  */
-# define YYSTACK_GAP_MAXIMUM (YYSIZEOF (union yyalloc) - 1)
-
-/* The size of an array large to enough to hold all stacks, each with
-   N elements.  */
-# define YYSTACK_BYTES(N) \
-     ((N) * (YYSIZEOF (yy_state_t) + YYSIZEOF (YYSTYPE)) \
-      + YYSTACK_GAP_MAXIMUM)
-
-# define YYCOPY_NEEDED 1
-
-/* Relocate STACK from its old location to the new one.  The
-   local variables YYSIZE and YYSTACKSIZE give the old and new number of
-   elements in the stack, and YYPTR gives the new location of the
-   stack.  Advance YYPTR to a properly aligned location for the next
-   stack.  */
-# define YYSTACK_RELOCATE(Stack_alloc, Stack)                           \
-    do                                                                  \
-      {                                                                 \
-        YYPTRDIFF_T yynewbytes;                                         \
-        YYCOPY (&yyptr->Stack_alloc, Stack, yysize);                    \
-        Stack = &yyptr->Stack_alloc;                                    \
-        yynewbytes = yystacksize * YYSIZEOF (*Stack) + YYSTACK_GAP_MAXIMUM; \
-        yyptr += yynewbytes / YYSIZEOF (*yyptr);                        \
-      }                                                                 \
-    while (0)
-
-#endif
-
-#if defined YYCOPY_NEEDED && YYCOPY_NEEDED
-/* Copy COUNT objects from SRC to DST.  The source and destination do
-   not overlap.  */
-# ifndef YYCOPY
-#  if defined __GNUC__ && 1 < __GNUC__
-#   define YYCOPY(Dst, Src, Count) \
-      __builtin_memcpy (Dst, Src, YY_CAST (YYSIZE_T, (Count)) * sizeof (*(Src)))
-#  else
-#   define YYCOPY(Dst, Src, Count)              \
-      do                                        \
-        {                                       \
-          YYPTRDIFF_T yyi;                      \
-          for (yyi = 0; yyi < (Count); yyi++)   \
-            (Dst)[yyi] = (Src)[yyi];            \
-        }                                       \
-      while (0)
-#  endif
-# endif
-#endif /* !YYCOPY_NEEDED */
-
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  15
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   190
+#define YYLAST   184
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  30
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  35
+#define YYNNTS  34
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  97
+#define YYNRULES  95
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  129
+#define YYNSTATES  128
+/* YYMAXRHS -- Maximum number of symbols on right-hand side of rule.  */
+#define YYMAXRHS 8
+/* YYMAXLEFT -- Maximum number of symbols to the left of a handle
+   accessed by $0, $-1, etc., in any rule.  */
+#define YYMAXLEFT 0
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   284
-
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
    as returned by yylex, with out-of-bounds checking.  */
@@ -619,24 +567,433 @@ static const yytype_int8 yytranslate[] =
 };
 
 #if YYDEBUG
-/* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
+/* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   229,   229,   240,   246,   256,   266,   272,   278,   288,
-     294,   300,   306,   312,   318,   324,   330,   340,   346,   356,
-     366,   376,   382,   392,   398,   404,   410,   420,   426,   436,
-     442,   452,   458,   464,   470,   476,   486,   492,   498,   504,
-     510,   520,   526,   536,   542,   552,   562,   572,   582,   592,
-     602,   612,   618,   628,   638,   648,   654,   664,   674,   684,
-     690,   700,   706,   716,   726,   732,   742,   748,   754,   760,
-     766,   772,   778,   788,   794,   800,   806,   812,   818,   824,
-     830,   836,   842,   848,   854,   860,   866,   872,   878,   884,
-     890,   896,   902,   908,   914,   920,   926,   932
+       0,   226,   226,   237,   243,   253,   263,   269,   275,   285,
+     291,   297,   303,   309,   315,   321,   327,   337,   343,   353,
+     363,   373,   379,   389,   395,   401,   407,   417,   423,   433,
+     439,   449,   455,   461,   467,   473,   483,   489,   495,   501,
+     507,   517,   523,   533,   539,   549,   559,   569,   579,   589,
+     599,   609,   615,   625,   635,   645,   655,   665,   671,   681,
+     687,   697,   707,   713,   723,   729,   735,   741,   747,   753,
+     759,   769,   775,   781,   787,   793,   799,   805,   811,   817,
+     823,   829,   835,   841,   847,   853,   859,   865,   871,   877,
+     883,   889,   895,   901,   907,   913
 };
 #endif
 
-/** Accessing symbol of state STATE.  */
-#define YY_ACCESSING_SYMBOL(State) YY_CAST (yysymbol_kind_t, yystos[State])
+#define YYPACT_NINF (-94)
+#define YYTABLE_NINF (-59)
+
+/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
+   STATE-NUM.  */
+static const yytype_int16 yypact[] =
+{
+       3,   -94,   -94,     9,    22,    10,   -94,   -94,   -94,    -2,
+     -94,    71,   -94,   -94,    22,   -94,   -94,   -94,   -94,   -94,
+     -94,    12,    22,   156,   156,   -94,   -94,   -94,   -94,   -94,
+     -94,   -94,   -94,   -94,   -94,   -94,    22,    13,    22,    22,
+     -94,   117,   -94,   -94,   -94,     5,   -94,   -94,   -94,     4,
+     156,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
+      18,    16,    22,    27,    15,   -94,    41,    50,    52,   -94,
+     -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
+     -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
+     -94,   -94,   -94,   -94,   -94,    34,   -94,   -94,    48,   -94,
+      65,    27,   -94,    22,    91,   138,   -94,   -94,    22,   -94,
+      -5,   -94,   -94,   -94,   -94,   -94,   -94,   -94,    22,    27,
+     -94,    66,    70,   -94,    22,   -94,     1,   -94
+};
+
+/* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
+   Performed when YYTABLE does not specify something else to do.  Zero
+   means the default is an error.  */
+static const yytype_int8 yydefact[] =
+{
+      58,    59,    60,     0,    58,    58,     5,     6,     7,    26,
+       8,     0,    55,    56,    58,     1,     2,     3,    24,    25,
+      23,     0,    58,     0,     0,    63,    64,    66,    65,    67,
+      68,    69,    70,    54,    62,    57,    58,    58,    58,    58,
+      39,     0,    40,    37,    38,     0,    41,    42,    36,     0,
+      29,    35,    34,    31,    43,    44,    33,    32,    48,    47,
+      62,     0,    58,     0,    58,    18,     0,     0,     0,    71,
+      72,    73,    74,    75,    76,    77,    95,    78,    79,    80,
+      81,    92,    93,    82,    83,    84,    85,    86,    87,    88,
+      89,    90,    91,    94,    61,     0,    27,    30,     0,    28,
+       0,    51,    50,    58,    16,    12,    46,    45,    58,    52,
+      22,    19,    14,    13,    15,    10,     9,    11,    58,     0,
+      20,     0,     0,    53,    58,    49,    22,    21
+};
+
+/* YYPGOTO[NTERM-NUM].  */
+static const yytype_int8 yypgoto[] =
+{
+     -94,   -94,    75,   -94,   -21,   -94,    59,   -94,   -94,   -43,
+     -94,   -94,   -12,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
+     -94,   -54,   -94,   -93,   -94,   -94,    -4,   -94,    72,   -94,
+     -94,    -7,    -9,   -94
+};
+
+/* YYDEFGOTO[NTERM-NUM].  */
+static const yytype_int8 yydefgoto[] =
+{
+       0,     3,     4,     5,     6,     7,    65,    39,   111,   120,
+       8,     9,    49,    50,    51,    52,    53,    54,    55,    56,
+      57,    20,    62,   102,   118,    10,    11,    12,    13,    14,
+      58,    59,    60,    94
+};
+
+/* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
+   positive, shift that token.  If negative, reduce the rule whose
+   number is the opposite.  If YYTABLE_NINF, syntax error.  */
+static const yytype_int8 yytable[] =
+{
+      16,    37,    34,    -4,    33,    21,   -58,   -58,   109,    15,
+      -4,    96,    61,   -58,    18,    19,    64,   -17,    95,   -17,
+      36,     1,     2,    99,     1,     2,   123,     1,     2,     1,
+       2,    98,    63,    66,    67,    68,     1,     2,    97,     1,
+       2,     1,     2,    64,    22,   101,    23,    24,     1,     2,
+     114,   117,   106,   103,   104,    25,   105,    34,   100,    33,
+      26,    27,    28,    29,    30,    31,    32,    26,    27,    28,
+      29,    30,    31,    32,    22,   108,    23,    24,   124,   125,
+      17,    38,   110,   127,     0,    25,    35,     0,     0,   107,
+      26,    27,    28,    29,    30,    31,    32,     0,     0,   -58,
+      21,    21,     0,   126,   119,     0,   121,   112,   113,     0,
+       0,     0,     0,     0,   122,     0,     0,     1,     2,     0,
+      69,    70,   121,    71,    72,    73,    74,    75,    76,    77,
+      78,    79,    80,    81,    82,    83,    84,    85,    86,    87,
+      88,    89,    90,    91,    92,    93,   -58,     0,     0,     0,
+       0,     0,     0,     0,   115,   116,     0,     0,     0,     0,
+       0,     0,     0,     0,     1,     2,    40,    41,    42,     0,
+      25,     0,    43,    44,    45,    26,    27,    28,    29,    30,
+      31,    32,    46,    47,    48
+};
+
+static const yytype_int8 yycheck[] =
+{
+       4,    22,    11,     0,    11,     9,     8,    12,   101,     0,
+       0,     7,    24,    12,    16,    17,    37,     4,    13,     4,
+       8,    26,    27,     7,    26,    27,   119,    26,    27,    26,
+      27,    13,    36,    37,    38,    39,    26,    27,    50,    26,
+      27,    26,    27,    64,     3,    18,     5,     6,    26,    27,
+     104,   105,    18,    12,     4,    14,     4,    66,    62,    66,
+      19,    20,    21,    22,    23,    24,    25,    19,    20,    21,
+      22,    23,    24,    25,     3,    10,     5,     6,    12,     9,
+       5,    22,   103,   126,    -1,    14,    14,    -1,    -1,    98,
+      19,    20,    21,    22,    23,    24,    25,    -1,    -1,     8,
+     104,   105,    -1,   124,   108,    -1,   110,    16,    17,    -1,
+      -1,    -1,    -1,    -1,   118,    -1,    -1,    26,    27,    -1,
+       3,     4,   126,     6,     7,     8,     9,    10,    11,    12,
+      13,    14,    15,    16,    17,    18,    19,    20,    21,    22,
+      23,    24,    25,    26,    27,    28,     8,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    16,    17,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    26,    27,    10,    11,    12,    -1,
+      14,    -1,    16,    17,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28
+};
+
+/* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
+   state STATE-NUM.  */
+static const yytype_int8 yystos[] =
+{
+       0,    26,    27,    31,    32,    33,    34,    35,    40,    41,
+      55,    56,    57,    58,    59,     0,    56,    32,    16,    17,
+      51,    56,     3,     5,     6,    14,    19,    20,    21,    22,
+      23,    24,    25,    61,    62,    58,     8,    34,    36,    37,
+      10,    11,    12,    16,    17,    18,    26,    27,    28,    42,
+      43,    44,    45,    46,    47,    48,    49,    50,    60,    61,
+      62,    42,    52,    56,    34,    36,    56,    56,    56,     3,
+       4,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    63,    13,     7,    42,    13,     7,
+      56,    18,    53,    12,     4,     4,    18,    62,    10,    53,
+      34,    38,    16,    17,    51,    16,    17,    51,    54,    56,
+      39,    56,    56,    53,    12,     9,    34,    39
+};
+
+/* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
+static const yytype_int8 yyr1[] =
+{
+       0,    30,    31,    32,    32,    33,    34,    34,    34,    35,
+      35,    35,    35,    35,    35,    35,    35,    36,    36,    37,
+      38,    39,    39,    40,    40,    40,    40,    41,    41,    42,
+      42,    43,    43,    43,    43,    43,    44,    44,    44,    44,
+      44,    45,    45,    46,    46,    47,    48,    49,    50,    51,
+      52,    53,    53,    54,    55,    56,    57,    58,    58,    59,
+      59,    60,    61,    61,    62,    62,    62,    62,    62,    62,
+      62,    63,    63,    63,    63,    63,    63,    63,    63,    63,
+      63,    63,    63,    63,    63,    63,    63,    63,    63,    63,
+      63,    63,    63,    63,    63,    63
+};
+
+/* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
+static const yytype_int8 yyr2[] =
+{
+       0,     2,     2,     2,     0,     1,     1,     1,     1,     6,
+       6,     6,     5,     6,     6,     6,     5,     1,     2,     4,
+       2,     4,     0,     2,     2,     2,     1,     4,     4,     1,
+       2,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     3,     3,     1,     1,     8,
+       2,     1,     2,     2,     2,     1,     1,     2,     0,     1,
+       1,     2,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1
+};
+
+
+/* YYDPREC[RULE-NUM] -- Dynamic precedence of rule #RULE-NUM (0 if none).  */
+static const yytype_int8 yydprec[] =
+{
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0
+};
+
+/* YYMERGER[RULE-NUM] -- Index of merging function for rule #RULE-NUM.  */
+static const yytype_int8 yymerger[] =
+{
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0
+};
+
+/* YYIMMEDIATE[RULE-NUM] -- True iff rule #RULE-NUM is not to be deferred, as
+   in the case of predicates.  */
+static const yybool yyimmediate[] =
+{
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0
+};
+
+/* YYCONFLP[YYPACT[STATE-NUM]] -- Pointer into YYCONFL of start of
+   list of conflicting reductions corresponding to action entry for
+   state STATE-NUM in yytable.  0 means no conflicts.  The list in
+   yyconfl is terminated by a rule number of 0.  */
+static const yytype_int8 yyconflp[] =
+{
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    29,    31,     0,     9,    11,     0,    33,    35,     1,
+       3,     0,     0,     0,     0,     0,     5,     7,     0,    13,
+      15,    17,    19,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,    21,    23,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    25,    27,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0
+};
+
+/* YYCONFL[I] -- lists of conflicting rule numbers, each terminated by
+   0, pointed into by YYCONFLP.  */
+static const short yyconfl[] =
+{
+       0,     4,     0,     4,     0,     4,     0,     4,     0,    26,
+       0,    26,     0,    17,     0,    17,     0,    17,     0,    17,
+       0,    16,     0,    16,     0,    12,     0,    12,     0,    22,
+       0,    22,     0,    22,     0,    22,     0
+};
+
+
+
+YYSTYPE yylval;
+
+int yynerrs;
+int yychar;
+
+enum { YYENOMEM = -2 };
+
+typedef enum { yyok, yyaccept, yyabort, yyerr, yynomem } YYRESULTTAG;
+
+#define YYCHK(YYE)                              \
+  do {                                          \
+    YYRESULTTAG yychk_flag = YYE;               \
+    if (yychk_flag != yyok)                     \
+      return yychk_flag;                        \
+  } while (0)
+
+/* YYINITDEPTH -- initial size of the parser's stacks.  */
+#ifndef YYINITDEPTH
+# define YYINITDEPTH 200
+#endif
+
+/* YYMAXDEPTH -- maximum size the stacks can grow to (effective only
+   if the built-in stack extension method is used).
+
+   Do not make this value too large; the results are undefined if
+   SIZE_MAX < YYMAXDEPTH * sizeof (GLRStackItem)
+   evaluated with infinite-precision integer arithmetic.  */
+
+#ifndef YYMAXDEPTH
+# define YYMAXDEPTH 10000
+#endif
+
+/* Minimum number of free items on the stack allowed after an
+   allocation.  This is to allow allocation and initialization
+   to be completed by functions that call yyexpandGLRStack before the
+   stack is expanded, thus insuring that all necessary pointers get
+   properly redirected to new data.  */
+#define YYHEADROOM 2
+
+#ifndef YYSTACKEXPANDABLE
+#  define YYSTACKEXPANDABLE 1
+#endif
+
+#if YYSTACKEXPANDABLE
+# define YY_RESERVE_GLRSTACK(Yystack)                   \
+  do {                                                  \
+    if (Yystack->yyspaceLeft < YYHEADROOM)              \
+      yyexpandGLRStack (Yystack);                       \
+  } while (0)
+#else
+# define YY_RESERVE_GLRSTACK(Yystack)                   \
+  do {                                                  \
+    if (Yystack->yyspaceLeft < YYHEADROOM)              \
+      yyMemoryExhausted (Yystack);                      \
+  } while (0)
+#endif
+
+/** State numbers. */
+typedef int yy_state_t;
+
+/** Rule numbers. */
+typedef int yyRuleNum;
+
+/** Item references. */
+typedef short yyItemNum;
+
+typedef struct yyGLRState yyGLRState;
+typedef struct yyGLRStateSet yyGLRStateSet;
+typedef struct yySemanticOption yySemanticOption;
+typedef union yyGLRStackItem yyGLRStackItem;
+typedef struct yyGLRStack yyGLRStack;
+
+struct yyGLRState
+{
+  /** Type tag: always true.  */
+  yybool yyisState;
+  /** Type tag for yysemantics.  If true, yyval applies, otherwise
+   *  yyfirstVal applies.  */
+  yybool yyresolved;
+  /** Number of corresponding LALR(1) machine state.  */
+  yy_state_t yylrState;
+  /** Preceding state in this stack */
+  yyGLRState* yypred;
+  /** Source position of the last token produced by my symbol */
+  YYPTRDIFF_T yyposn;
+  union {
+    /** First in a chain of alternative reductions producing the
+     *  nonterminal corresponding to this state, threaded through
+     *  yynext.  */
+    yySemanticOption* yyfirstVal;
+    /** Semantic value for this state.  */
+    YYSTYPE yyval;
+  } yysemantics;
+};
+
+struct yyGLRStateSet
+{
+  yyGLRState** yystates;
+  /** During nondeterministic operation, yylookaheadNeeds tracks which
+   *  stacks have actually needed the current lookahead.  During deterministic
+   *  operation, yylookaheadNeeds[0] is not maintained since it would merely
+   *  duplicate yychar != YYEMPTY.  */
+  yybool* yylookaheadNeeds;
+  YYPTRDIFF_T yysize;
+  YYPTRDIFF_T yycapacity;
+};
+
+struct yySemanticOption
+{
+  /** Type tag: always false.  */
+  yybool yyisState;
+  /** Rule number for this reduction */
+  yyRuleNum yyrule;
+  /** The last RHS state in the list of states to be reduced.  */
+  yyGLRState* yystate;
+  /** The lookahead for this reduction.  */
+  int yyrawchar;
+  YYSTYPE yyval;
+  /** Next sibling in chain of options.  To facilitate merging,
+   *  options are chained in decreasing order by address.  */
+  yySemanticOption* yynext;
+};
+
+/** Type of the items in the GLR stack.  The yyisState field
+ *  indicates which item of the union is valid.  */
+union yyGLRStackItem {
+  yyGLRState yystate;
+  yySemanticOption yyoption;
+};
+
+struct yyGLRStack {
+  int yyerrState;
+
+
+  YYJMP_BUF yyexception_buffer;
+  yyGLRStackItem* yyitems;
+  yyGLRStackItem* yynextFree;
+  YYPTRDIFF_T yyspaceLeft;
+  yyGLRState* yysplitPoint;
+  yyGLRState* yylastDeleted;
+  yyGLRStateSet yytops;
+};
+
+#if YYSTACKEXPANDABLE
+static void yyexpandGLRStack (yyGLRStack* yystackp);
+#endif
+
+_Noreturn static void
+yyFail (yyGLRStack* yystackp, const char* yymsg)
+{
+  if (yymsg != YY_NULLPTR)
+    yyerror (yymsg);
+  YYLONGJMP (yystackp->yyexception_buffer, 1);
+}
+
+_Noreturn static void
+yyMemoryExhausted (yyGLRStack* yystackp)
+{
+  YYLONGJMP (yystackp->yyexception_buffer, 2);
+}
+
+/** Accessing symbol of state YYSTATE.  */
+static inline yysymbol_kind_t
+yy_accessing_symbol (yy_state_t yystate)
+{
+  return YY_CAST (yysymbol_kind_t, yystos[yystate]);
+}
 
 #if 1
 /* The user-facing name of the symbol whose (internal) number is
@@ -661,10 +1018,9 @@ static const char *const yytname[] =
   "capture_symbols", "capture_whitespace", "capture_range",
   "capture_letter_range", "capture_number_range", "capture_letter",
   "capture_special_character", "extension_modifier", "min_repition",
-  "deamerreserved_plus__NUMBER__", "max_repition", "standalone",
-  "deamerreserved_plus__any_letter__", "opt_pad", "optional_padding",
-  "deamerreserved_star__padding__", "padding", "special_char_any",
-  "any_letter", "any_letter_exclude_underscore", "any", YY_NULLPTR
+  "deamerreserved_plus__NUMBER__", "max_repition", "standalone", "opt_pad",
+  "optional_padding", "deamerreserved_star__padding__", "padding",
+  "special_char_any", "any_letter", "any_letter_exclude_underscore", "any", YY_NULLPTR
 };
 
 static const char *
@@ -674,237 +1030,40 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-94)
-
-#define yypact_value_is_default(Yyn) \
-  ((Yyn) == YYPACT_NINF)
-
-#define YYTABLE_NINF (-61)
-
-#define yytable_value_is_error(Yyn) \
-  0
-
-/* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
-   STATE-NUM.  */
-static const yytype_int16 yypact[] =
+/** Left-hand-side symbol for rule #YYRULE.  */
+static inline yysymbol_kind_t
+yylhsNonterm (yyRuleNum yyrule)
 {
-       8,   -94,   -94,    14,   -94,     8,   -94,   -94,   -94,    24,
-     -94,   124,   -94,   -94,   -16,   -94,   -94,   -94,   -94,   -94,
-       7,   -16,   143,   143,   -94,   -94,   -94,   -94,   -94,   -94,
-     -94,   -94,   -94,   158,   -94,   -94,   -16,    -2,   -16,   -16,
-     -94,    49,   -94,   -94,   -94,     3,   -94,   -94,   -94,    11,
-     143,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-      10,    13,   -94,   -16,    20,    -2,   -94,   101,    22,    35,
-     -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-     -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-     -94,   -94,   -94,   -94,   -94,   -94,    25,   -94,   -94,   165,
-     -94,    32,    20,   -94,   -16,    82,   125,   -94,   -94,   -16,
-     -94,    -5,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -16,
-      20,   -94,    34,    38,   -94,   -16,   -94,    -5,   -94
-};
+  return YY_CAST (yysymbol_kind_t, yyr1[yyrule]);
+}
 
-/* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
-   Performed when YYTABLE does not specify something else to do.  Zero
-   means the default is an error.  */
-static const yytype_int8 yydefact[] =
-{
-      60,    61,    62,     0,     2,    60,     5,     6,     7,    26,
-       8,     0,    57,    58,    60,     1,     3,    24,    25,    23,
-       0,    60,     0,     0,    65,    66,    68,    67,    69,    70,
-      71,    72,    54,    55,    64,    59,    60,    60,    60,    60,
-      39,     0,    40,    37,    38,     0,    41,    42,    36,     0,
-      29,    35,    34,    31,    43,    44,    33,    32,    48,    47,
-      64,     0,    56,    60,     0,    60,    18,     0,     0,     0,
-      73,    74,    75,    76,    77,    78,    79,    97,    80,    81,
-      82,    83,    94,    95,    84,    85,    86,    87,    88,    89,
-      90,    91,    92,    93,    96,    63,     0,    27,    30,     0,
-      28,     0,    51,    50,    60,    16,    12,    46,    45,    60,
-      52,    22,    19,    14,    13,    15,    10,     9,    11,    60,
-       0,    20,     0,     0,    53,    60,    49,    22,    21
-};
-
-/* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
-{
-     -94,   -94,    39,   -94,   -20,   -94,    27,   -94,   -94,   -78,
-     -94,   -94,   -14,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-     -94,   -93,   -94,   -83,   -94,   -94,    45,    -9,   -94,    65,
-     -94,   -94,   -17,   -19,   -94
-};
-
-/* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int8 yydefgoto[] =
-{
-       0,     3,     4,     5,     6,     7,    66,    39,   112,   121,
-       8,     9,    49,    50,    51,    52,    53,    54,    55,    56,
-      57,    19,    63,   103,   119,    10,    32,    11,    12,    13,
-      14,    58,    33,    34,    95
-};
-
-/* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
-   positive, shift that token.  If negative, reduce the rule whose
-   number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int16 yytable[] =
-{
-      20,    37,   -17,    60,    60,    59,    59,   -60,    -4,    61,
-       1,     2,   115,   118,    15,    36,    96,    65,    97,   110,
-     100,     1,     2,    99,     1,     2,   105,    64,    67,    68,
-      69,    60,   -60,    59,     1,     2,    98,   124,   102,   106,
-      17,    18,   109,   107,    16,    65,   125,   126,    38,   128,
-       1,     2,    70,    71,   101,    72,    73,    74,    75,    76,
-      77,    78,    79,    80,    81,    82,    83,    84,    85,    86,
-      87,    88,    89,    90,    91,    92,    93,    94,    62,    35,
-     108,     0,     0,     0,   111,     0,     0,     0,     0,     0,
-     -60,     0,     0,     0,     0,     0,    20,    20,   113,   114,
-     120,     0,   122,     0,    21,   127,    22,    23,     1,     2,
-     123,     0,     0,   104,     0,    24,     0,     0,   122,     0,
-      25,    26,    27,    28,    29,    30,    31,    21,     0,    22,
-      23,     0,     0,   -60,     0,     0,     0,     0,    24,     0,
-       0,   116,   117,    25,    26,    27,    28,    29,    30,    31,
-       0,     1,     2,    40,    41,    42,     0,    24,     0,    43,
-      44,    45,    25,    26,    27,    28,    29,    30,    31,    46,
-      47,    48,    24,     0,     0,     0,     0,    25,    26,    27,
-      28,    29,    30,    31,    25,    26,    27,    28,    29,    30,
-      31
-};
-
-static const yytype_int8 yycheck[] =
-{
-       9,    21,     4,    22,    23,    22,    23,    12,     0,    23,
-      26,    27,   105,   106,     0,     8,    13,    37,     7,   102,
-       7,    26,    27,    13,    26,    27,     4,    36,    37,    38,
-      39,    50,     8,    50,    26,    27,    50,   120,    18,     4,
-      16,    17,    10,    18,     5,    65,    12,     9,    21,   127,
-      26,    27,     3,     4,    63,     6,     7,     8,     9,    10,
-      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
-      21,    22,    23,    24,    25,    26,    27,    28,    33,    14,
-      99,    -1,    -1,    -1,   104,    -1,    -1,    -1,    -1,    -1,
-       8,    -1,    -1,    -1,    -1,    -1,   105,   106,    16,    17,
-     109,    -1,   111,    -1,     3,   125,     5,     6,    26,    27,
-     119,    -1,    -1,    12,    -1,    14,    -1,    -1,   127,    -1,
-      19,    20,    21,    22,    23,    24,    25,     3,    -1,     5,
-       6,    -1,    -1,     8,    -1,    -1,    -1,    -1,    14,    -1,
-      -1,    16,    17,    19,    20,    21,    22,    23,    24,    25,
-      -1,    26,    27,    10,    11,    12,    -1,    14,    -1,    16,
-      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    28,    14,    -1,    -1,    -1,    -1,    19,    20,    21,
-      22,    23,    24,    25,    19,    20,    21,    22,    23,    24,
-      25
-};
-
-/* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
-   state STATE-NUM.  */
-static const yytype_int8 yystos[] =
-{
-       0,    26,    27,    31,    32,    33,    34,    35,    40,    41,
-      55,    57,    58,    59,    60,     0,    32,    16,    17,    51,
-      57,     3,     5,     6,    14,    19,    20,    21,    22,    23,
-      24,    25,    56,    62,    63,    59,     8,    34,    36,    37,
-      10,    11,    12,    16,    17,    18,    26,    27,    28,    42,
-      43,    44,    45,    46,    47,    48,    49,    50,    61,    62,
-      63,    42,    56,    52,    57,    34,    36,    57,    57,    57,
-       3,     4,     6,     7,     8,     9,    10,    11,    12,    13,
-      14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    64,    13,     7,    42,    13,
-       7,    57,    18,    53,    12,     4,     4,    18,    63,    10,
-      53,    34,    38,    16,    17,    51,    16,    17,    51,    54,
-      57,    39,    57,    57,    53,    12,     9,    34,    39
-};
-
-/* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
-static const yytype_int8 yyr1[] =
-{
-       0,    30,    31,    32,    32,    33,    34,    34,    34,    35,
-      35,    35,    35,    35,    35,    35,    35,    36,    36,    37,
-      38,    39,    39,    40,    40,    40,    40,    41,    41,    42,
-      42,    43,    43,    43,    43,    43,    44,    44,    44,    44,
-      44,    45,    45,    46,    46,    47,    48,    49,    50,    51,
-      52,    53,    53,    54,    55,    56,    56,    57,    58,    59,
-      59,    60,    60,    61,    62,    62,    63,    63,    63,    63,
-      63,    63,    63,    64,    64,    64,    64,    64,    64,    64,
-      64,    64,    64,    64,    64,    64,    64,    64,    64,    64,
-      64,    64,    64,    64,    64,    64,    64,    64
-};
-
-/* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
-static const yytype_int8 yyr2[] =
-{
-       0,     2,     1,     2,     0,     1,     1,     1,     1,     6,
-       6,     6,     5,     6,     6,     6,     5,     1,     2,     4,
-       2,     4,     0,     2,     2,     2,     1,     4,     4,     1,
-       2,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     3,     3,     1,     1,     8,
-       2,     1,     2,     2,     2,     1,     2,     1,     1,     2,
-       0,     1,     1,     2,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1
-};
-
-
-enum { YYENOMEM = -2 };
-
-#define yyerrok         (yyerrstatus = 0)
-#define yyclearin       (yychar = YYEMPTY)
-
-#define YYACCEPT        goto yyacceptlab
-#define YYABORT         goto yyabortlab
-#define YYERROR         goto yyerrorlab
-#define YYNOMEM         goto yyexhaustedlab
-
-
-#define YYRECOVERING()  (!!yyerrstatus)
-
-#define YYBACKUP(Token, Value)                                    \
-  do                                                              \
-    if (yychar == YYEMPTY)                                        \
-      {                                                           \
-        yychar = (Token);                                         \
-        yylval = (Value);                                         \
-        YYPOPSTACK (yylen);                                       \
-        yystate = *yyssp;                                         \
-        YY_LAC_DISCARD ("YYBACKUP");                              \
-        goto yybackup;                                            \
-      }                                                           \
-    else                                                          \
-      {                                                           \
-        yyerror (YY_("syntax error: cannot back up")); \
-        YYERROR;                                                  \
-      }                                                           \
-  while (0)
-
-/* Backward compatibility with an undocumented macro.
-   Use YYerror or YYUNDEF. */
-#define YYERRCODE YYUNDEF
-
-
-/* Enable debugging if requested.  */
 #if YYDEBUG
 
 # ifndef YYFPRINTF
-#  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYFPRINTF fprintf
 # endif
 
-# define YYDPRINTF(Args)                        \
-do {                                            \
-  if (yydebug)                                  \
+# define YY_FPRINTF                             \
+  YY_IGNORE_USELESS_CAST_BEGIN YY_FPRINTF_
+
+# define YY_FPRINTF_(Args)                      \
+  do {                                          \
     YYFPRINTF Args;                             \
-} while (0)
+    YY_IGNORE_USELESS_CAST_END                  \
+  } while (0)
+
+# define YY_DPRINTF                             \
+  YY_IGNORE_USELESS_CAST_BEGIN YY_DPRINTF_
+
+# define YY_DPRINTF_(Args)                      \
+  do {                                          \
+    if (yydebug)                                \
+      YYFPRINTF Args;                           \
+    YY_IGNORE_USELESS_CAST_END                  \
+  } while (0)
 
 
 
-
-# define YY_SYMBOL_PRINT(Title, Kind, Value, Location)                    \
-do {                                                                      \
-  if (yydebug)                                                            \
-    {                                                                     \
-      YYFPRINTF (stderr, "%s ", Title);                                   \
-      yy_symbol_print (stderr,                                            \
-                  Kind, Value); \
-      YYFPRINTF (stderr, "\n");                                           \
-    }                                                                     \
-} while (0)
 
 
 /*-----------------------------------.
@@ -940,396 +1099,45 @@ yy_symbol_print (FILE *yyo,
   YYFPRINTF (yyo, ")");
 }
 
-/*------------------------------------------------------------------.
-| yy_stack_print -- Print the state stack from its BOTTOM up to its |
-| TOP (included).                                                   |
-`------------------------------------------------------------------*/
+# define YY_SYMBOL_PRINT(Title, Kind, Value, Location)                  \
+  do {                                                                  \
+    if (yydebug)                                                        \
+      {                                                                 \
+        YY_FPRINTF ((stderr, "%s ", Title));                            \
+        yy_symbol_print (stderr, Kind, Value);        \
+        YY_FPRINTF ((stderr, "\n"));                                    \
+      }                                                                 \
+  } while (0)
 
-static void
-yy_stack_print (yy_state_t *yybottom, yy_state_t *yytop)
-{
-  YYFPRINTF (stderr, "Stack now");
-  for (; yybottom <= yytop; yybottom++)
-    {
-      int yybot = *yybottom;
-      YYFPRINTF (stderr, " %d", yybot);
-    }
-  YYFPRINTF (stderr, "\n");
-}
+static inline void
+yy_reduce_print (yybool yynormal, yyGLRStackItem* yyvsp, YYPTRDIFF_T yyk,
+                 yyRuleNum yyrule);
 
-# define YY_STACK_PRINT(Bottom, Top)                            \
-do {                                                            \
-  if (yydebug)                                                  \
-    yy_stack_print ((Bottom), (Top));                           \
-} while (0)
-
-
-/*------------------------------------------------.
-| Report that the YYRULE is going to be reduced.  |
-`------------------------------------------------*/
-
-static void
-yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp,
-                 int yyrule)
-{
-  int yylno = yyrline[yyrule];
-  int yynrhs = yyr2[yyrule];
-  int yyi;
-  YYFPRINTF (stderr, "Reducing stack by rule %d (line %d):\n",
-             yyrule - 1, yylno);
-  /* The symbols being reduced.  */
-  for (yyi = 0; yyi < yynrhs; yyi++)
-    {
-      YYFPRINTF (stderr, "   $%d = ", yyi + 1);
-      yy_symbol_print (stderr,
-                       YY_ACCESSING_SYMBOL (+yyssp[yyi + 1 - yynrhs]),
-                       &yyvsp[(yyi + 1) - (yynrhs)]);
-      YYFPRINTF (stderr, "\n");
-    }
-}
-
-# define YY_REDUCE_PRINT(Rule)          \
-do {                                    \
-  if (yydebug)                          \
-    yy_reduce_print (yyssp, yyvsp, Rule); \
-} while (0)
+# define YY_REDUCE_PRINT(Args)          \
+  do {                                  \
+    if (yydebug)                        \
+      yy_reduce_print Args;             \
+  } while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
+
+static void yypstack (yyGLRStack* yystackp, YYPTRDIFF_T yyk)
+  YY_ATTRIBUTE_UNUSED;
+static void yypdumpstack (yyGLRStack* yystackp)
+  YY_ATTRIBUTE_UNUSED;
+
 #else /* !YYDEBUG */
-# define YYDPRINTF(Args) ((void) 0)
+
+# define YY_DPRINTF(Args) do {} while (yyfalse)
 # define YY_SYMBOL_PRINT(Title, Kind, Value, Location)
-# define YY_STACK_PRINT(Bottom, Top)
-# define YY_REDUCE_PRINT(Rule)
+# define YY_REDUCE_PRINT(Args)
+
 #endif /* !YYDEBUG */
 
-
-/* YYINITDEPTH -- initial size of the parser's stacks.  */
-#ifndef YYINITDEPTH
-# define YYINITDEPTH 200
-#endif
-
-/* YYMAXDEPTH -- maximum size the stacks can grow to (effective only
-   if the built-in stack extension method is used).
-
-   Do not make this value too large; the results are undefined if
-   YYSTACK_ALLOC_MAXIMUM < YYSTACK_BYTES (YYMAXDEPTH)
-   evaluated with infinite-precision integer arithmetic.  */
-
-#ifndef YYMAXDEPTH
-# define YYMAXDEPTH 10000
-#endif
-
-
-/* Given a state stack such that *YYBOTTOM is its bottom, such that
-   *YYTOP is either its top or is YYTOP_EMPTY to indicate an empty
-   stack, and such that *YYCAPACITY is the maximum number of elements it
-   can hold without a reallocation, make sure there is enough room to
-   store YYADD more elements.  If not, allocate a new stack using
-   YYSTACK_ALLOC, copy the existing elements, and adjust *YYBOTTOM,
-   *YYTOP, and *YYCAPACITY to reflect the new capacity and memory
-   location.  If *YYBOTTOM != YYBOTTOM_NO_FREE, then free the old stack
-   using YYSTACK_FREE.  Return 0 if successful or if no reallocation is
-   required.  Return YYENOMEM if memory is exhausted.  */
-static int
-yy_lac_stack_realloc (YYPTRDIFF_T *yycapacity, YYPTRDIFF_T yyadd,
-#if YYDEBUG
-                      char const *yydebug_prefix,
-                      char const *yydebug_suffix,
-#endif
-                      yy_state_t **yybottom,
-                      yy_state_t *yybottom_no_free,
-                      yy_state_t **yytop, yy_state_t *yytop_empty)
-{
-  YYPTRDIFF_T yysize_old =
-    *yytop == yytop_empty ? 0 : *yytop - *yybottom + 1;
-  YYPTRDIFF_T yysize_new = yysize_old + yyadd;
-  if (*yycapacity < yysize_new)
-    {
-      YYPTRDIFF_T yyalloc = 2 * yysize_new;
-      yy_state_t *yybottom_new;
-      /* Use YYMAXDEPTH for maximum stack size given that the stack
-         should never need to grow larger than the main state stack
-         needs to grow without LAC.  */
-      if (YYMAXDEPTH < yysize_new)
-        {
-          YYDPRINTF ((stderr, "%smax size exceeded%s", yydebug_prefix,
-                      yydebug_suffix));
-          return YYENOMEM;
-        }
-      if (YYMAXDEPTH < yyalloc)
-        yyalloc = YYMAXDEPTH;
-      yybottom_new =
-        YY_CAST (yy_state_t *,
-                 YYSTACK_ALLOC (YY_CAST (YYSIZE_T,
-                                         yyalloc * YYSIZEOF (*yybottom_new))));
-      if (!yybottom_new)
-        {
-          YYDPRINTF ((stderr, "%srealloc failed%s", yydebug_prefix,
-                      yydebug_suffix));
-          return YYENOMEM;
-        }
-      if (*yytop != yytop_empty)
-        {
-          YYCOPY (yybottom_new, *yybottom, yysize_old);
-          *yytop = yybottom_new + (yysize_old - 1);
-        }
-      if (*yybottom != yybottom_no_free)
-        YYSTACK_FREE (*yybottom);
-      *yybottom = yybottom_new;
-      *yycapacity = yyalloc;
-    }
-  return 0;
-}
-
-/* Establish the initial context for the current lookahead if no initial
-   context is currently established.
-
-   We define a context as a snapshot of the parser stacks.  We define
-   the initial context for a lookahead as the context in which the
-   parser initially examines that lookahead in order to select a
-   syntactic action.  Thus, if the lookahead eventually proves
-   syntactically unacceptable (possibly in a later context reached via a
-   series of reductions), the initial context can be used to determine
-   the exact set of tokens that would be syntactically acceptable in the
-   lookahead's place.  Moreover, it is the context after which any
-   further semantic actions would be erroneous because they would be
-   determined by a syntactically unacceptable token.
-
-   YY_LAC_ESTABLISH should be invoked when a reduction is about to be
-   performed in an inconsistent state (which, for the purposes of LAC,
-   includes consistent states that don't know they're consistent because
-   their default reductions have been disabled).  Iff there is a
-   lookahead token, it should also be invoked before reporting a syntax
-   error.  This latter case is for the sake of the debugging output.
-
-   For parse.lac=full, the implementation of YY_LAC_ESTABLISH is as
-   follows.  If no initial context is currently established for the
-   current lookahead, then check if that lookahead can eventually be
-   shifted if syntactic actions continue from the current context.
-   Report a syntax error if it cannot.  */
-#define YY_LAC_ESTABLISH                                                \
-do {                                                                    \
-  if (!yy_lac_established)                                              \
-    {                                                                   \
-      YYDPRINTF ((stderr,                                               \
-                  "LAC: initial context established for %s\n",          \
-                  yysymbol_name (yytoken)));                            \
-      yy_lac_established = 1;                                           \
-      switch (yy_lac (yyesa, &yyes, &yyes_capacity, yyssp, yytoken))    \
-        {                                                               \
-        case YYENOMEM:                                                  \
-          YYNOMEM;                                                      \
-        case 1:                                                         \
-          goto yyerrlab;                                                \
-        }                                                               \
-    }                                                                   \
-} while (0)
-
-/* Discard any previous initial lookahead context because of Event,
-   which may be a lookahead change or an invalidation of the currently
-   established initial context for the current lookahead.
-
-   The most common example of a lookahead change is a shift.  An example
-   of both cases is syntax error recovery.  That is, a syntax error
-   occurs when the lookahead is syntactically erroneous for the
-   currently established initial context, so error recovery manipulates
-   the parser stacks to try to find a new initial context in which the
-   current lookahead is syntactically acceptable.  If it fails to find
-   such a context, it discards the lookahead.  */
-#if YYDEBUG
-# define YY_LAC_DISCARD(Event)                                           \
-do {                                                                     \
-  if (yy_lac_established)                                                \
-    {                                                                    \
-      YYDPRINTF ((stderr, "LAC: initial context discarded due to "       \
-                  Event "\n"));                                          \
-      yy_lac_established = 0;                                            \
-    }                                                                    \
-} while (0)
-#else
-# define YY_LAC_DISCARD(Event) yy_lac_established = 0
-#endif
-
-/* Given the stack whose top is *YYSSP, return 0 iff YYTOKEN can
-   eventually (after perhaps some reductions) be shifted, return 1 if
-   not, or return YYENOMEM if memory is exhausted.  As preconditions and
-   postconditions: *YYES_CAPACITY is the allocated size of the array to
-   which *YYES points, and either *YYES = YYESA or *YYES points to an
-   array allocated with YYSTACK_ALLOC.  yy_lac may overwrite the
-   contents of either array, alter *YYES and *YYES_CAPACITY, and free
-   any old *YYES other than YYESA.  */
-static int
-yy_lac (yy_state_t *yyesa, yy_state_t **yyes,
-        YYPTRDIFF_T *yyes_capacity, yy_state_t *yyssp, yysymbol_kind_t yytoken)
-{
-  yy_state_t *yyes_prev = yyssp;
-  yy_state_t *yyesp = yyes_prev;
-  /* Reduce until we encounter a shift and thereby accept the token.  */
-  YYDPRINTF ((stderr, "LAC: checking lookahead %s:", yysymbol_name (yytoken)));
-  if (yytoken == YYSYMBOL_YYUNDEF)
-    {
-      YYDPRINTF ((stderr, " Always Err\n"));
-      return 1;
-    }
-  while (1)
-    {
-      int yyrule = yypact[+*yyesp];
-      if (yypact_value_is_default (yyrule)
-          || (yyrule += yytoken) < 0 || YYLAST < yyrule
-          || yycheck[yyrule] != yytoken)
-        {
-          /* Use the default action.  */
-          yyrule = yydefact[+*yyesp];
-          if (yyrule == 0)
-            {
-              YYDPRINTF ((stderr, " Err\n"));
-              return 1;
-            }
-        }
-      else
-        {
-          /* Use the action from yytable.  */
-          yyrule = yytable[yyrule];
-          if (yytable_value_is_error (yyrule))
-            {
-              YYDPRINTF ((stderr, " Err\n"));
-              return 1;
-            }
-          if (0 < yyrule)
-            {
-              YYDPRINTF ((stderr, " S%d\n", yyrule));
-              return 0;
-            }
-          yyrule = -yyrule;
-        }
-      /* By now we know we have to simulate a reduce.  */
-      YYDPRINTF ((stderr, " R%d", yyrule - 1));
-      {
-        /* Pop the corresponding number of values from the stack.  */
-        YYPTRDIFF_T yylen = yyr2[yyrule];
-        /* First pop from the LAC stack as many tokens as possible.  */
-        if (yyesp != yyes_prev)
-          {
-            YYPTRDIFF_T yysize = yyesp - *yyes + 1;
-            if (yylen < yysize)
-              {
-                yyesp -= yylen;
-                yylen = 0;
-              }
-            else
-              {
-                yyesp = yyes_prev;
-                yylen -= yysize;
-              }
-          }
-        /* Only afterwards look at the main stack.  */
-        if (yylen)
-          yyesp = yyes_prev -= yylen;
-      }
-      /* Push the resulting state of the reduction.  */
-      {
-        yy_state_fast_t yystate;
-        {
-          const int yylhs = yyr1[yyrule] - YYNTOKENS;
-          const int yyi = yypgoto[yylhs] + *yyesp;
-          yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyesp
-                     ? yytable[yyi]
-                     : yydefgoto[yylhs]);
-        }
-        if (yyesp == yyes_prev)
-          {
-            yyesp = *yyes;
-            YY_IGNORE_USELESS_CAST_BEGIN
-            *yyesp = YY_CAST (yy_state_t, yystate);
-            YY_IGNORE_USELESS_CAST_END
-          }
-        else
-          {
-            if (yy_lac_stack_realloc (yyes_capacity, 1,
-#if YYDEBUG
-                                      " (", ")",
-#endif
-                                      yyes, yyesa, &yyesp, yyes_prev))
-              {
-                YYDPRINTF ((stderr, "\n"));
-                return YYENOMEM;
-              }
-            YY_IGNORE_USELESS_CAST_BEGIN
-            *++yyesp = YY_CAST (yy_state_t, yystate);
-            YY_IGNORE_USELESS_CAST_END
-          }
-        YYDPRINTF ((stderr, " G%d", yystate));
-      }
-    }
-}
-
-/* Context of a parse error.  */
-typedef struct
-{
-  yy_state_t *yyssp;
-  yy_state_t *yyesa;
-  yy_state_t **yyes;
-  YYPTRDIFF_T *yyes_capacity;
-  yysymbol_kind_t yytoken;
-} yypcontext_t;
-
-/* Put in YYARG at most YYARGN of the expected tokens given the
-   current YYCTX, and return the number of tokens stored in YYARG.  If
-   YYARG is null, return the number of expected tokens (guaranteed to
-   be less than YYNTOKENS).  Return YYENOMEM on memory exhaustion.
-   Return 0 if there are more than YYARGN expected tokens, yet fill
-   YYARG up to YYARGN. */
-static int
-yypcontext_expected_tokens (const yypcontext_t *yyctx,
-                            yysymbol_kind_t yyarg[], int yyargn)
-{
-  /* Actual size of YYARG. */
-  int yycount = 0;
-
-  int yyx;
-  for (yyx = 0; yyx < YYNTOKENS; ++yyx)
-    {
-      yysymbol_kind_t yysym = YY_CAST (yysymbol_kind_t, yyx);
-      if (yysym != YYSYMBOL_YYerror && yysym != YYSYMBOL_YYUNDEF)
-        switch (yy_lac (yyctx->yyesa, yyctx->yyes, yyctx->yyes_capacity, yyctx->yyssp, yysym))
-          {
-          case YYENOMEM:
-            return YYENOMEM;
-          case 1:
-            continue;
-          default:
-            if (!yyarg)
-              ++yycount;
-            else if (yycount == yyargn)
-              return 0;
-            else
-              yyarg[yycount++] = yysym;
-          }
-    }
-  if (yyarg && yycount == 0 && 0 < yyargn)
-    yyarg[0] = YYSYMBOL_YYEMPTY;
-  return yycount;
-}
-
-
-
-
 #ifndef yystrlen
-# if defined __GLIBC__ && defined _STRING_H
-#  define yystrlen(S) (YY_CAST (YYPTRDIFF_T, strlen (S)))
-# else
-/* Return the length of YYSTR.  */
-static YYPTRDIFF_T
-yystrlen (const char *yystr)
-{
-  YYPTRDIFF_T yylen;
-  for (yylen = 0; yystr[yylen]; yylen++)
-    continue;
-  return yylen;
-}
-# endif
+# define yystrlen(S) (YY_CAST (YYPTRDIFF_T, strlen (S)))
 #endif
 
 #ifndef yystpcpy
@@ -1367,6 +1175,7 @@ yytnamerr (char *yyres, const char *yystr)
     {
       YYPTRDIFF_T yyn = 0;
       char const *yyp = yystr;
+
       for (;;)
         switch (*++yyp)
           {
@@ -1403,141 +1212,1186 @@ yytnamerr (char *yyres, const char *yystr)
 #endif
 
 
-static int
-yy_syntax_error_arguments (const yypcontext_t *yyctx,
-                           yysymbol_kind_t yyarg[], int yyargn)
+/** Fill in YYVSP[YYLOW1 .. YYLOW0-1] from the chain of states starting
+ *  at YYVSP[YYLOW0].yystate.yypred.  Leaves YYVSP[YYLOW1].yystate.yypred
+ *  containing the pointer to the next state in the chain.  */
+static void yyfillin (yyGLRStackItem *, int, int) YY_ATTRIBUTE_UNUSED;
+static void
+yyfillin (yyGLRStackItem *yyvsp, int yylow0, int yylow1)
 {
-  /* Actual size of YYARG. */
-  int yycount = 0;
-  /* There are many possibilities here to consider:
-     - If this state is a consistent state with a default action, then
-       the only way this function was invoked is if the default action
-       is an error action.  In that case, don't check for expected
-       tokens because there are none.
-     - The only way there can be no lookahead present (in yychar) is if
-       this state is a consistent state with a default action.  Thus,
-       detecting the absence of a lookahead is sufficient to determine
-       that there is no unexpected or expected token to report.  In that
-       case, just report a simple "syntax error".
-     - Don't assume there isn't a lookahead just because this state is a
-       consistent state with a default action.  There might have been a
-       previous inconsistent state, consistent state with a non-default
-       action, or user semantic action that manipulated yychar.
-       In the first two cases, it might appear that the current syntax
-       error should have been detected in the previous state when yy_lac
-       was invoked.  However, at that time, there might have been a
-       different syntax error that discarded a different initial context
-       during error recovery, leaving behind the current lookahead.
-  */
-  if (yyctx->yytoken != YYSYMBOL_YYEMPTY)
+  int i;
+  yyGLRState *s = yyvsp[yylow0].yystate.yypred;
+  for (i = yylow0-1; i >= yylow1; i -= 1)
     {
-      int yyn;
-      YYDPRINTF ((stderr, "Constructing syntax error message\n"));
-      if (yyarg)
-        yyarg[yycount] = yyctx->yytoken;
-      ++yycount;
-      yyn = yypcontext_expected_tokens (yyctx,
-                                        yyarg ? yyarg + 1 : yyarg, yyargn - 1);
-      if (yyn == YYENOMEM)
-        return YYENOMEM;
-      else if (yyn == 0)
-        YYDPRINTF ((stderr, "No expected tokens.\n"));
+#if YYDEBUG
+      yyvsp[i].yystate.yylrState = s->yylrState;
+#endif
+      yyvsp[i].yystate.yyresolved = s->yyresolved;
+      if (s->yyresolved)
+        yyvsp[i].yystate.yysemantics.yyval = s->yysemantics.yyval;
       else
-        yycount += yyn;
+        /* The effect of using yyval or yyloc (in an immediate rule) is
+         * undefined.  */
+        yyvsp[i].yystate.yysemantics.yyfirstVal = YY_NULLPTR;
+      s = yyvsp[i].yystate.yypred = s->yypred;
     }
-  return yycount;
 }
 
-/* Copy into *YYMSG, which is of size *YYMSG_ALLOC, an error message
-   about the unexpected token YYTOKEN for the state stack whose top is
-   YYSSP.  In order to see if a particular token T is a
-   valid looakhead, invoke yy_lac (YYESA, YYES, YYES_CAPACITY, YYSSP, T).
 
-   Return 0 if *YYMSG was successfully written.  Return -1 if *YYMSG is
-   not large enough to hold the message.  In that case, also set
-   *YYMSG_ALLOC to the required number of bytes.  Return YYENOMEM if the
-   required number of bytes is too large to store or if
-   yy_lac returned YYENOMEM.  */
-static int
-yysyntax_error (YYPTRDIFF_T *yymsg_alloc, char **yymsg,
-                const yypcontext_t *yyctx)
+/** If yychar is empty, fetch the next token.  */
+static inline yysymbol_kind_t
+yygetToken (int *yycharp)
 {
-  enum { YYARGS_MAX = 5 };
-  /* Internationalized format string. */
-  const char *yyformat = YY_NULLPTR;
-  /* Arguments of yyformat: reported tokens (one for the "unexpected",
-     one per "expected"). */
-  yysymbol_kind_t yyarg[YYARGS_MAX];
-  /* Cumulated lengths of YYARG.  */
-  YYPTRDIFF_T yysize = 0;
-
-  /* Actual size of YYARG. */
-  int yycount = yy_syntax_error_arguments (yyctx, yyarg, YYARGS_MAX);
-  if (yycount == YYENOMEM)
-    return YYENOMEM;
-
-  switch (yycount)
+  yysymbol_kind_t yytoken;
+  if (*yycharp == YYEMPTY)
     {
-#define YYCASE_(N, S)                       \
-      case N:                               \
-        yyformat = S;                       \
-        break
-    default: /* Avoid compiler warnings. */
-      YYCASE_(0, YY_("syntax error"));
-      YYCASE_(1, YY_("syntax error, unexpected %s"));
-      YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
-      YYCASE_(3, YY_("syntax error, unexpected %s, expecting %s or %s"));
-      YYCASE_(4, YY_("syntax error, unexpected %s, expecting %s or %s or %s"));
-      YYCASE_(5, YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s"));
-#undef YYCASE_
+      YY_DPRINTF ((stderr, "Reading a token\n"));
+      *yycharp = yylex ();
     }
-
-  /* Compute error message size.  Don't count the "%s"s, but reserve
-     room for the terminator.  */
-  yysize = yystrlen (yyformat) - 2 * yycount + 1;
-  {
-    int yyi;
-    for (yyi = 0; yyi < yycount; ++yyi)
-      {
-        YYPTRDIFF_T yysize1
-          = yysize + yytnamerr (YY_NULLPTR, yytname[yyarg[yyi]]);
-        if (yysize <= yysize1 && yysize1 <= YYSTACK_ALLOC_MAXIMUM)
-          yysize = yysize1;
-        else
-          return YYENOMEM;
-      }
-  }
-
-  if (*yymsg_alloc < yysize)
+  if (*yycharp <= YYEOF)
     {
-      *yymsg_alloc = 2 * yysize;
-      if (! (yysize <= *yymsg_alloc
-             && *yymsg_alloc <= YYSTACK_ALLOC_MAXIMUM))
-        *yymsg_alloc = YYSTACK_ALLOC_MAXIMUM;
-      return -1;
+      *yycharp = YYEOF;
+      yytoken = YYSYMBOL_YYEOF;
+      YY_DPRINTF ((stderr, "Now at end of input.\n"));
     }
-
-  /* Avoid sprintf, as that infringes on the user's name space.
-     Don't have undefined behavior even if the translation
-     produced a string with the wrong number of "%s"s.  */
-  {
-    char *yyp = *yymsg;
-    int yyi = 0;
-    while ((*yyp = *yyformat) != '\0')
-      if (*yyp == '%' && yyformat[1] == 's' && yyi < yycount)
-        {
-          yyp += yytnamerr (yyp, yytname[yyarg[yyi++]]);
-          yyformat += 2;
-        }
-      else
-        {
-          ++yyp;
-          ++yyformat;
-        }
-  }
-  return 0;
+  else
+    {
+      yytoken = YYTRANSLATE (*yycharp);
+      YY_SYMBOL_PRINT ("Next token is", yytoken, &yylval, &yylloc);
+    }
+  return yytoken;
 }
 
+/* Do nothing if YYNORMAL or if *YYLOW <= YYLOW1.  Otherwise, fill in
+ * YYVSP[YYLOW1 .. *YYLOW-1] as in yyfillin and set *YYLOW = YYLOW1.
+ * For convenience, always return YYLOW1.  */
+static inline int yyfill (yyGLRStackItem *, int *, int, yybool)
+     YY_ATTRIBUTE_UNUSED;
+static inline int
+yyfill (yyGLRStackItem *yyvsp, int *yylow, int yylow1, yybool yynormal)
+{
+  if (!yynormal && yylow1 < *yylow)
+    {
+      yyfillin (yyvsp, *yylow, yylow1);
+      *yylow = yylow1;
+    }
+  return yylow1;
+}
+
+/** Perform user action for rule number YYN, with RHS length YYRHSLEN,
+ *  and top stack item YYVSP.  YYLVALP points to place to put semantic
+ *  value ($$), and yylocp points to place for location information
+ *  (@$).  Returns yyok for normal return, yyaccept for YYACCEPT,
+ *  yyerr for YYERROR, yyabort for YYABORT, yynomem for YYNOMEM.  */
+static YYRESULTTAG
+yyuserAction (yyRuleNum yyrule, int yyrhslen, yyGLRStackItem* yyvsp,
+              yyGLRStack* yystackp, YYPTRDIFF_T yyk,
+              YYSTYPE* yyvalp)
+{
+  const yybool yynormal YY_ATTRIBUTE_UNUSED = yystackp->yysplitPoint == YY_NULLPTR;
+  int yylow = 1;
+  YY_USE (yyvalp);
+  YY_USE (yyk);
+  YY_USE (yyrhslen);
+# undef yyerrok
+# define yyerrok (yystackp->yyerrState = 0)
+# undef YYACCEPT
+# define YYACCEPT return yyaccept
+# undef YYABORT
+# define YYABORT return yyabort
+# undef YYNOMEM
+# define YYNOMEM return yynomem
+# undef YYERROR
+# define YYERROR return yyerrok, yyerr
+# undef YYRECOVERING
+# define YYRECOVERING() (yystackp->yyerrState != 0)
+# undef yyclearin
+# define yyclearin (yychar = YYEMPTY)
+# undef YYFILL
+# define YYFILL(N) yyfill (yyvsp, &yylow, (N), yynormal)
+# undef YYBACKUP
+# define YYBACKUP(Token, Value)                                              \
+  return yyerror (YY_("syntax error: cannot back up")),     \
+         yyerrok, yyerr
+
+  if (yyrhslen == 0)
+    *yyvalp = yyval_default;
+  else
+    *yyvalp = yyvsp[YYFILL (1-yyrhslen)].yystate.yysemantics.yyval;
+  /* If yyk == -1, we are running a deferred action on a temporary
+     stack.  In that case, YY_REDUCE_PRINT must not play with YYFILL,
+     so pretend the stack is "normal". */
+  YY_REDUCE_PRINT ((yynormal || yyk == -1, yyvsp, yyk, yyrule));
+  switch (yyrule)
+    {
+  case 2: /* program: deamerreserved_star__stmt__ opt_pad  */
+#line 226 "./dregx_parser.y"
+                                             {
+		auto* const newNode = new dregx::ast::node::program({::dregx::ast::Type::program, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_deamerreserved_star__stmt__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_opt_pad) });
+		((*yyvalp).dregx_program) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+		outputTree = new ::deamer::external::cpp::ast::Tree(newNode);
+	}
+#line 1337 "dregx_parser.tab.c"
+    break;
+
+  case 3: /* deamerreserved_star__stmt__: stmt deamerreserved_star__stmt__  */
+#line 237 "./dregx_parser.y"
+                                          {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__stmt__({::dregx::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_stmt), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__stmt__) });
+		((*yyvalp).dregx_deamerreserved_star__stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1348 "dregx_parser.tab.c"
+    break;
+
+  case 4: /* deamerreserved_star__stmt__: %empty  */
+#line 243 "./dregx_parser.y"
+           {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__stmt__({::dregx::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		((*yyvalp).dregx_deamerreserved_star__stmt__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1359 "dregx_parser.tab.c"
+    break;
+
+  case 5: /* stmt: word  */
+#line 253 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::stmt({::dregx::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_word) });
+		((*yyvalp).dregx_stmt) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1370 "dregx_parser.tab.c"
+    break;
+
+  case 6: /* word: group  */
+#line 263 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_group) });
+		((*yyvalp).dregx_word) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1381 "dregx_parser.tab.c"
+    break;
+
+  case 7: /* word: square  */
+#line 269 "./dregx_parser.y"
+                  {
+		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_square) });
+		((*yyvalp).dregx_word) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1392 "dregx_parser.tab.c"
+    break;
+
+  case 8: /* word: standalone  */
+#line 275 "./dregx_parser.y"
+                      {
+		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_standalone) });
+		((*yyvalp).dregx_word) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1403 "dregx_parser.tab.c"
+    break;
+
+  case 9: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET STAR  */
+#line 285 "./dregx_parser.y"
+                                                                               {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1414 "dregx_parser.tab.c"
+    break;
+
+  case 10: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET PLUS  */
+#line 291 "./dregx_parser.y"
+                                                                                 {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1425 "dregx_parser.tab.c"
+    break;
+
+  case 11: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
+#line 297 "./dregx_parser.y"
+                                                                                               {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1436 "dregx_parser.tab.c"
+    break;
+
+  case 12: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET  */
+#line 303 "./dregx_parser.y"
+                                                                            {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1447 "dregx_parser.tab.c"
+    break;
+
+  case 13: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET STAR  */
+#line 309 "./dregx_parser.y"
+                                                                                                   {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1458 "dregx_parser.tab.c"
+    break;
+
+  case 14: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET PLUS  */
+#line 315 "./dregx_parser.y"
+                                                                                                   {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1469 "dregx_parser.tab.c"
+    break;
+
+  case 15: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
+#line 321 "./dregx_parser.y"
+                                                                                                                 {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1480 "dregx_parser.tab.c"
+    break;
+
+  case 16: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET  */
+#line 327 "./dregx_parser.y"
+                                                                                              {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1491 "dregx_parser.tab.c"
+    break;
+
+  case 17: /* deamerreserved_plus__word__: word  */
+#line 337 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::deamerreserved_plus__word__({::dregx::ast::Type::deamerreserved_plus__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_word) });
+		((*yyvalp).dregx_deamerreserved_plus__word__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1502 "dregx_parser.tab.c"
+    break;
+
+  case 18: /* deamerreserved_plus__word__: word deamerreserved_plus__word__  */
+#line 343 "./dregx_parser.y"
+                                            {
+		auto* const newNode = new dregx::ast::node::deamerreserved_plus__word__({::dregx::ast::Type::deamerreserved_plus__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__) });
+		((*yyvalp).dregx_deamerreserved_plus__word__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1513 "dregx_parser.tab.c"
+    break;
+
+  case 19: /* or_concat: word opt_pad OR deamerreserved_arrow__word__  */
+#line 353 "./dregx_parser.y"
+                                                      {
+		auto* const newNode = new dregx::ast::node::or_concat({::dregx::ast::Type::or_concat, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_arrow__word__) });
+		((*yyvalp).dregx_or_concat) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1524 "dregx_parser.tab.c"
+    break;
+
+  case 20: /* deamerreserved_arrow__word__: word deamerreserved_star__opt_pad__OR__word__  */
+#line 363 "./dregx_parser.y"
+                                                       {
+		auto* const newNode = new dregx::ast::node::deamerreserved_arrow__word__({::dregx::ast::Type::deamerreserved_arrow__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__opt_pad__OR__word__) });
+		((*yyvalp).dregx_deamerreserved_arrow__word__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1535 "dregx_parser.tab.c"
+    break;
+
+  case 21: /* deamerreserved_star__opt_pad__OR__word__: opt_pad OR word deamerreserved_star__opt_pad__OR__word__  */
+#line 373 "./dregx_parser.y"
+                                                                  {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__opt_pad__OR__word__) });
+		((*yyvalp).dregx_deamerreserved_star__opt_pad__OR__word__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1546 "dregx_parser.tab.c"
+    break;
+
+  case 22: /* deamerreserved_star__opt_pad__OR__word__: %empty  */
+#line 379 "./dregx_parser.y"
+           {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		((*yyvalp).dregx_deamerreserved_star__opt_pad__OR__word__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1557 "dregx_parser.tab.c"
+    break;
+
+  case 23: /* square: capture extension_modifier  */
+#line 389 "./dregx_parser.y"
+                                    {
+		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
+		((*yyvalp).dregx_square) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1568 "dregx_parser.tab.c"
+    break;
+
+  case 24: /* square: capture PLUS  */
+#line 395 "./dregx_parser.y"
+                        {
+		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_square) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1579 "dregx_parser.tab.c"
+    break;
+
+  case 25: /* square: capture STAR  */
+#line 401 "./dregx_parser.y"
+                        {
+		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_square) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1590 "dregx_parser.tab.c"
+    break;
+
+  case 26: /* square: capture  */
+#line 407 "./dregx_parser.y"
+                   {
+		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture) });
+		((*yyvalp).dregx_square) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1601 "dregx_parser.tab.c"
+    break;
+
+  case 27: /* capture: opt_pad LEFT_SQUARE_BRACKET_NOT deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
+#line 417 "./dregx_parser.y"
+                                                                                                   {
+		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_SQUARE_BRACKET_NOT({::dregx::ast::Type::LEFT_SQUARE_BRACKET_NOT, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__capture_logic__), new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1612 "dregx_parser.tab.c"
+    break;
+
+  case 28: /* capture: opt_pad LEFT_SQUARE_BRACKET deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
+#line 423 "./dregx_parser.y"
+                                                                                                 {
+		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__capture_logic__), new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1623 "dregx_parser.tab.c"
+    break;
+
+  case 29: /* deamerreserved_plus__capture_logic__: capture_logic  */
+#line 433 "./dregx_parser.y"
+                       {
+		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_logic) });
+		((*yyvalp).dregx_deamerreserved_plus__capture_logic__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1634 "dregx_parser.tab.c"
+    break;
+
+  case 30: /* deamerreserved_plus__capture_logic__: capture_logic deamerreserved_plus__capture_logic__  */
+#line 439 "./dregx_parser.y"
+                                                              {
+		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture_logic), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__capture_logic__) });
+		((*yyvalp).dregx_deamerreserved_plus__capture_logic__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1645 "dregx_parser.tab.c"
+    break;
+
+  case 31: /* capture_logic: capture_range  */
+#line 449 "./dregx_parser.y"
+                       {
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_range) });
+		((*yyvalp).dregx_capture_logic) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1656 "dregx_parser.tab.c"
+    break;
+
+  case 32: /* capture_logic: capture_special_character  */
+#line 455 "./dregx_parser.y"
+                                     {
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_special_character) });
+		((*yyvalp).dregx_capture_logic) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1667 "dregx_parser.tab.c"
+    break;
+
+  case 33: /* capture_logic: capture_letter  */
+#line 461 "./dregx_parser.y"
+                          {
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_letter) });
+		((*yyvalp).dregx_capture_logic) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1678 "dregx_parser.tab.c"
+    break;
+
+  case 34: /* capture_logic: capture_whitespace  */
+#line 467 "./dregx_parser.y"
+                              {
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_whitespace) });
+		((*yyvalp).dregx_capture_logic) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1689 "dregx_parser.tab.c"
+    break;
+
+  case 35: /* capture_logic: capture_symbols  */
+#line 473 "./dregx_parser.y"
+                           {
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_symbols) });
+		((*yyvalp).dregx_capture_logic) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1700 "dregx_parser.tab.c"
+    break;
+
+  case 36: /* capture_symbols: OTHER  */
+#line 483 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OTHER({::dregx::ast::Type::OTHER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_symbols) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1711 "dregx_parser.tab.c"
+    break;
+
+  case 37: /* capture_symbols: PLUS  */
+#line 489 "./dregx_parser.y"
+                {
+		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_symbols) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1722 "dregx_parser.tab.c"
+    break;
+
+  case 38: /* capture_symbols: STAR  */
+#line 495 "./dregx_parser.y"
+                {
+		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_symbols) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1733 "dregx_parser.tab.c"
+    break;
+
+  case 39: /* capture_symbols: COMMA  */
+#line 501 "./dregx_parser.y"
+                 {
+		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_symbols) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1744 "dregx_parser.tab.c"
+    break;
+
+  case 40: /* capture_symbols: OR  */
+#line 507 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_symbols) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1755 "dregx_parser.tab.c"
+    break;
+
+  case 41: /* capture_whitespace: SPACE  */
+#line 517 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::capture_whitespace({::dregx::ast::Type::capture_whitespace, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_whitespace) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1766 "dregx_parser.tab.c"
+    break;
+
+  case 42: /* capture_whitespace: TAB  */
+#line 523 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::capture_whitespace({::dregx::ast::Type::capture_whitespace, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_whitespace) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1777 "dregx_parser.tab.c"
+    break;
+
+  case 43: /* capture_range: capture_letter_range  */
+#line 533 "./dregx_parser.y"
+                              {
+		auto* const newNode = new dregx::ast::node::capture_range({::dregx::ast::Type::capture_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_letter_range) });
+		((*yyvalp).dregx_capture_range) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1788 "dregx_parser.tab.c"
+    break;
+
+  case 44: /* capture_range: capture_number_range  */
+#line 539 "./dregx_parser.y"
+                                {
+		auto* const newNode = new dregx::ast::node::capture_range({::dregx::ast::Type::capture_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_number_range) });
+		((*yyvalp).dregx_capture_range) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1799 "dregx_parser.tab.c"
+    break;
+
+  case 45: /* capture_letter_range: any_letter_exclude_underscore MIN any_letter_exclude_underscore  */
+#line 549 "./dregx_parser.y"
+                                                                         {
+		auto* const newNode = new dregx::ast::node::capture_letter_range({::dregx::ast::Type::capture_letter_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_any_letter_exclude_underscore), new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter_exclude_underscore) });
+		((*yyvalp).dregx_capture_letter_range) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1810 "dregx_parser.tab.c"
+    break;
+
+  case 46: /* capture_number_range: NUMBER MIN NUMBER  */
+#line 559 "./dregx_parser.y"
+                           {
+		auto* const newNode = new dregx::ast::node::capture_number_range({::dregx::ast::Type::capture_number_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_number_range) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1821 "dregx_parser.tab.c"
+    break;
+
+  case 47: /* capture_letter: any_letter  */
+#line 569 "./dregx_parser.y"
+                    {
+		auto* const newNode = new dregx::ast::node::capture_letter({::dregx::ast::Type::capture_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter) });
+		((*yyvalp).dregx_capture_letter) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1832 "dregx_parser.tab.c"
+    break;
+
+  case 48: /* capture_special_character: special_char_any  */
+#line 579 "./dregx_parser.y"
+                          {
+		auto* const newNode = new dregx::ast::node::capture_special_character({::dregx::ast::Type::capture_special_character, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_special_char_any) });
+		((*yyvalp).dregx_capture_special_character) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1843 "dregx_parser.tab.c"
+    break;
+
+  case 49: /* extension_modifier: opt_pad LEFT_BRACKET min_repition opt_pad COMMA max_repition opt_pad RIGHT_BRACKET  */
+#line 589 "./dregx_parser.y"
+                                                                                            {
+		auto* const newNode = new dregx::ast::node::extension_modifier({::dregx::ast::Type::extension_modifier, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-7)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_BRACKET({::dregx::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-6)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_min_repition), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_max_repition), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_BRACKET({::dregx::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_extension_modifier) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1854 "dregx_parser.tab.c"
+    break;
+
+  case 50: /* min_repition: opt_pad deamerreserved_plus__NUMBER__  */
+#line 599 "./dregx_parser.y"
+                                               {
+		auto* const newNode = new dregx::ast::node::min_repition({::dregx::ast::Type::min_repition, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__NUMBER__) });
+		((*yyvalp).dregx_min_repition) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1865 "dregx_parser.tab.c"
+    break;
+
+  case 51: /* deamerreserved_plus__NUMBER__: NUMBER  */
+#line 609 "./dregx_parser.y"
+                {
+		auto* const newNode = new dregx::ast::node::deamerreserved_plus__NUMBER__({::dregx::ast::Type::deamerreserved_plus__NUMBER__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_deamerreserved_plus__NUMBER__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1876 "dregx_parser.tab.c"
+    break;
+
+  case 52: /* deamerreserved_plus__NUMBER__: NUMBER deamerreserved_plus__NUMBER__  */
+#line 615 "./dregx_parser.y"
+                                                {
+		auto* const newNode = new dregx::ast::node::deamerreserved_plus__NUMBER__({::dregx::ast::Type::deamerreserved_plus__NUMBER__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__NUMBER__) });
+		((*yyvalp).dregx_deamerreserved_plus__NUMBER__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1887 "dregx_parser.tab.c"
+    break;
+
+  case 53: /* max_repition: opt_pad deamerreserved_plus__NUMBER__  */
+#line 625 "./dregx_parser.y"
+                                               {
+		auto* const newNode = new dregx::ast::node::max_repition({::dregx::ast::Type::max_repition, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__NUMBER__) });
+		((*yyvalp).dregx_max_repition) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1898 "dregx_parser.tab.c"
+    break;
+
+  case 54: /* standalone: opt_pad any_letter  */
+#line 635 "./dregx_parser.y"
+                            {
+		auto* const newNode = new dregx::ast::node::standalone({::dregx::ast::Type::standalone, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter) });
+		((*yyvalp).dregx_standalone) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1909 "dregx_parser.tab.c"
+    break;
+
+  case 55: /* opt_pad: optional_padding  */
+#line 645 "./dregx_parser.y"
+                          {
+		auto* const newNode = new dregx::ast::node::opt_pad({::dregx::ast::Type::opt_pad, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_optional_padding) });
+		((*yyvalp).dregx_opt_pad) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1920 "dregx_parser.tab.c"
+    break;
+
+  case 56: /* optional_padding: deamerreserved_star__padding__  */
+#line 655 "./dregx_parser.y"
+                                        {
+		auto* const newNode = new dregx::ast::node::optional_padding({::dregx::ast::Type::optional_padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__padding__) });
+		((*yyvalp).dregx_optional_padding) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1931 "dregx_parser.tab.c"
+    break;
+
+  case 57: /* deamerreserved_star__padding__: padding deamerreserved_star__padding__  */
+#line 665 "./dregx_parser.y"
+                                                {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__padding__({::dregx::ast::Type::deamerreserved_star__padding__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_padding), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__padding__) });
+		((*yyvalp).dregx_deamerreserved_star__padding__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1942 "dregx_parser.tab.c"
+    break;
+
+  case 58: /* deamerreserved_star__padding__: %empty  */
+#line 671 "./dregx_parser.y"
+           {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__padding__({::dregx::ast::Type::deamerreserved_star__padding__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		((*yyvalp).dregx_deamerreserved_star__padding__) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1953 "dregx_parser.tab.c"
+    break;
+
+  case 59: /* padding: SPACE  */
+#line 681 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::padding({::dregx::ast::Type::padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_padding) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1964 "dregx_parser.tab.c"
+    break;
+
+  case 60: /* padding: TAB  */
+#line 687 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::padding({::dregx::ast::Type::padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_padding) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1975 "dregx_parser.tab.c"
+    break;
+
+  case 61: /* special_char_any: SLASH any  */
+#line 697 "./dregx_parser.y"
+                   {
+		auto* const newNode = new dregx::ast::node::special_char_any({::dregx::ast::Type::special_char_any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SLASH({::dregx::ast::Type::SLASH, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any) });
+		((*yyvalp).dregx_special_char_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1986 "dregx_parser.tab.c"
+    break;
+
+  case 62: /* any_letter: any_letter_exclude_underscore  */
+#line 707 "./dregx_parser.y"
+                                       {
+		auto* const newNode = new dregx::ast::node::any_letter({::dregx::ast::Type::any_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter_exclude_underscore) });
+		((*yyvalp).dregx_any_letter) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1997 "dregx_parser.tab.c"
+    break;
+
+  case 63: /* any_letter: UNDERSCORE  */
+#line 713 "./dregx_parser.y"
+                      {
+		auto* const newNode = new dregx::ast::node::any_letter({::dregx::ast::Type::any_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::UNDERSCORE({::dregx::ast::Type::UNDERSCORE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2008 "dregx_parser.tab.c"
+    break;
+
+  case 64: /* any_letter_exclude_underscore: T_  */
+#line 723 "./dregx_parser.y"
+            {
+		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::T_({::dregx::ast::Type::T_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2019 "dregx_parser.tab.c"
+    break;
+
+  case 65: /* any_letter_exclude_underscore: R_  */
+#line 729 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::R_({::dregx::ast::Type::R_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2030 "dregx_parser.tab.c"
+    break;
+
+  case 66: /* any_letter_exclude_underscore: N_  */
+#line 735 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::N_({::dregx::ast::Type::N_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2041 "dregx_parser.tab.c"
+    break;
+
+  case 67: /* any_letter_exclude_underscore: B_  */
+#line 741 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::B_({::dregx::ast::Type::B_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2052 "dregx_parser.tab.c"
+    break;
+
+  case 68: /* any_letter_exclude_underscore: V_  */
+#line 747 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::V_({::dregx::ast::Type::V_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2063 "dregx_parser.tab.c"
+    break;
+
+  case 69: /* any_letter_exclude_underscore: A_  */
+#line 753 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::A_({::dregx::ast::Type::A_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2074 "dregx_parser.tab.c"
+    break;
+
+  case 70: /* any_letter_exclude_underscore: LETTER  */
+#line 759 "./dregx_parser.y"
+                  {
+		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2085 "dregx_parser.tab.c"
+    break;
+
+  case 71: /* any: LEFT_CURLY_BRACKET  */
+#line 769 "./dregx_parser.y"
+                            {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2096 "dregx_parser.tab.c"
+    break;
+
+  case 72: /* any: RIGHT_CURLY_BRACKET  */
+#line 775 "./dregx_parser.y"
+                               {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2107 "dregx_parser.tab.c"
+    break;
+
+  case 73: /* any: LEFT_SQUARE_BRACKET  */
+#line 781 "./dregx_parser.y"
+                               {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2118 "dregx_parser.tab.c"
+    break;
+
+  case 74: /* any: RIGHT_SQUARE_BRACKET  */
+#line 787 "./dregx_parser.y"
+                                {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2129 "dregx_parser.tab.c"
+    break;
+
+  case 75: /* any: LEFT_BRACKET  */
+#line 793 "./dregx_parser.y"
+                        {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_BRACKET({::dregx::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2140 "dregx_parser.tab.c"
+    break;
+
+  case 76: /* any: RIGHT_BRACKET  */
+#line 799 "./dregx_parser.y"
+                         {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_BRACKET({::dregx::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2151 "dregx_parser.tab.c"
+    break;
+
+  case 77: /* any: COMMA  */
+#line 805 "./dregx_parser.y"
+                 {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2162 "dregx_parser.tab.c"
+    break;
+
+  case 78: /* any: OR  */
+#line 811 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2173 "dregx_parser.tab.c"
+    break;
+
+  case 79: /* any: MIN  */
+#line 817 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 8, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2184 "dregx_parser.tab.c"
+    break;
+
+  case 80: /* any: UNDERSCORE  */
+#line 823 "./dregx_parser.y"
+                      {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 9, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::UNDERSCORE({::dregx::ast::Type::UNDERSCORE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2195 "dregx_parser.tab.c"
+    break;
+
+  case 81: /* any: NOT  */
+#line 829 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 10, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NOT({::dregx::ast::Type::NOT, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2206 "dregx_parser.tab.c"
+    break;
+
+  case 82: /* any: NUMBER  */
+#line 835 "./dregx_parser.y"
+                  {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 11, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2217 "dregx_parser.tab.c"
+    break;
+
+  case 83: /* any: T_  */
+#line 841 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 12, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::T_({::dregx::ast::Type::T_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2228 "dregx_parser.tab.c"
+    break;
+
+  case 84: /* any: N_  */
+#line 847 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 13, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::N_({::dregx::ast::Type::N_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2239 "dregx_parser.tab.c"
+    break;
+
+  case 85: /* any: R_  */
+#line 853 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 14, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::R_({::dregx::ast::Type::R_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2250 "dregx_parser.tab.c"
+    break;
+
+  case 86: /* any: B_  */
+#line 859 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 15, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::B_({::dregx::ast::Type::B_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2261 "dregx_parser.tab.c"
+    break;
+
+  case 87: /* any: V_  */
+#line 865 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 16, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::V_({::dregx::ast::Type::V_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2272 "dregx_parser.tab.c"
+    break;
+
+  case 88: /* any: A_  */
+#line 871 "./dregx_parser.y"
+              {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 17, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::A_({::dregx::ast::Type::A_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2283 "dregx_parser.tab.c"
+    break;
+
+  case 89: /* any: LETTER  */
+#line 877 "./dregx_parser.y"
+                  {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 18, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2294 "dregx_parser.tab.c"
+    break;
+
+  case 90: /* any: SPACE  */
+#line 883 "./dregx_parser.y"
+                 {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 19, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2305 "dregx_parser.tab.c"
+    break;
+
+  case 91: /* any: TAB  */
+#line 889 "./dregx_parser.y"
+               {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 20, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2316 "dregx_parser.tab.c"
+    break;
+
+  case 92: /* any: PLUS  */
+#line 895 "./dregx_parser.y"
+                {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 21, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2327 "dregx_parser.tab.c"
+    break;
+
+  case 93: /* any: STAR  */
+#line 901 "./dregx_parser.y"
+                {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 22, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2338 "dregx_parser.tab.c"
+    break;
+
+  case 94: /* any: OTHER  */
+#line 907 "./dregx_parser.y"
+                 {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 23, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OTHER({::dregx::ast::Type::OTHER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2349 "dregx_parser.tab.c"
+    break;
+
+  case 95: /* any: SLASH  */
+#line 913 "./dregx_parser.y"
+                 {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 24, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SLASH({::dregx::ast::Type::SLASH, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2360 "dregx_parser.tab.c"
+    break;
+
+
+#line 2364 "dregx_parser.tab.c"
+
+      default: break;
+    }
+  YY_SYMBOL_PRINT ("-> $$ =", yylhsNonterm (yyrule), yyvalp, yylocp);
+
+  return yyok;
+# undef yyerrok
+# undef YYABORT
+# undef YYACCEPT
+# undef YYNOMEM
+# undef YYERROR
+# undef YYBACKUP
+# undef yyclearin
+# undef YYRECOVERING
+}
+
+
+static void
+yyuserMerge (int yyn, YYSTYPE* yy0, YYSTYPE* yy1)
+{
+  YY_USE (yy0);
+  YY_USE (yy1);
+
+  switch (yyn)
+    {
+
+      default: break;
+    }
+}
+
+                              /* Bison grammar-table manipulation.  */
 
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |
@@ -1557,17 +2411,1332 @@ yydestruct (const char *yymsg,
   YY_IGNORE_MAYBE_UNINITIALIZED_END
 }
 
+/** Number of symbols composing the right hand side of rule #RULE.  */
+static inline int
+yyrhsLength (yyRuleNum yyrule)
+{
+  return yyr2[yyrule];
+}
 
-/* Lookahead token kind.  */
-int yychar;
+static void
+yydestroyGLRState (char const *yymsg, yyGLRState *yys)
+{
+  if (yys->yyresolved)
+    yydestruct (yymsg, yy_accessing_symbol (yys->yylrState),
+                &yys->yysemantics.yyval);
+  else
+    {
+#if YYDEBUG
+      if (yydebug)
+        {
+          if (yys->yysemantics.yyfirstVal)
+            YY_FPRINTF ((stderr, "%s unresolved", yymsg));
+          else
+            YY_FPRINTF ((stderr, "%s incomplete", yymsg));
+          YY_SYMBOL_PRINT ("", yy_accessing_symbol (yys->yylrState), YY_NULLPTR, &yys->yyloc);
+        }
+#endif
 
-/* The semantic value of the lookahead symbol.  */
-YYSTYPE yylval;
-/* Number of syntax errors so far.  */
-int yynerrs;
+      if (yys->yysemantics.yyfirstVal)
+        {
+          yySemanticOption *yyoption = yys->yysemantics.yyfirstVal;
+          yyGLRState *yyrh;
+          int yyn;
+          for (yyrh = yyoption->yystate, yyn = yyrhsLength (yyoption->yyrule);
+               yyn > 0;
+               yyrh = yyrh->yypred, yyn -= 1)
+            yydestroyGLRState (yymsg, yyrh);
+        }
+    }
+}
+
+#define yypact_value_is_default(Yyn) \
+  ((Yyn) == YYPACT_NINF)
+
+/** True iff LR state YYSTATE has only a default reduction (regardless
+ *  of token).  */
+static inline yybool
+yyisDefaultedState (yy_state_t yystate)
+{
+  return yypact_value_is_default (yypact[yystate]);
+}
+
+/** The default reduction for YYSTATE, assuming it has one.  */
+static inline yyRuleNum
+yydefaultAction (yy_state_t yystate)
+{
+  return yydefact[yystate];
+}
+
+#define yytable_value_is_error(Yyn) \
+  0
+
+/** The action to take in YYSTATE on seeing YYTOKEN.
+ *  Result R means
+ *    R < 0:  Reduce on rule -R.
+ *    R = 0:  Error.
+ *    R > 0:  Shift to state R.
+ *  Set *YYCONFLICTS to a pointer into yyconfl to a 0-terminated list
+ *  of conflicting reductions.
+ */
+static inline int
+yygetLRActions (yy_state_t yystate, yysymbol_kind_t yytoken, const short** yyconflicts)
+{
+  int yyindex = yypact[yystate] + yytoken;
+  if (yytoken == YYSYMBOL_YYerror)
+    {
+      // This is the error token.
+      *yyconflicts = yyconfl;
+      return 0;
+    }
+  else if (yyisDefaultedState (yystate)
+           || yyindex < 0 || YYLAST < yyindex || yycheck[yyindex] != yytoken)
+    {
+      *yyconflicts = yyconfl;
+      return -yydefact[yystate];
+    }
+  else if (! yytable_value_is_error (yytable[yyindex]))
+    {
+      *yyconflicts = yyconfl + yyconflp[yyindex];
+      return yytable[yyindex];
+    }
+  else
+    {
+      *yyconflicts = yyconfl + yyconflp[yyindex];
+      return 0;
+    }
+}
+
+/** Compute post-reduction state.
+ * \param yystate   the current state
+ * \param yysym     the nonterminal to push on the stack
+ */
+static inline yy_state_t
+yyLRgotoState (yy_state_t yystate, yysymbol_kind_t yysym)
+{
+  int yyr = yypgoto[yysym - YYNTOKENS] + yystate;
+  if (0 <= yyr && yyr <= YYLAST && yycheck[yyr] == yystate)
+    return yytable[yyr];
+  else
+    return yydefgoto[yysym - YYNTOKENS];
+}
+
+static inline yybool
+yyisShiftAction (int yyaction)
+{
+  return 0 < yyaction;
+}
+
+static inline yybool
+yyisErrorAction (int yyaction)
+{
+  return yyaction == 0;
+}
+
+                                /* GLRStates */
+
+/** Return a fresh GLRStackItem in YYSTACKP.  The item is an LR state
+ *  if YYISSTATE, and otherwise a semantic option.  Callers should call
+ *  YY_RESERVE_GLRSTACK afterwards to make sure there is sufficient
+ *  headroom.  */
+
+static inline yyGLRStackItem*
+yynewGLRStackItem (yyGLRStack* yystackp, yybool yyisState)
+{
+  yyGLRStackItem* yynewItem = yystackp->yynextFree;
+  yystackp->yyspaceLeft -= 1;
+  yystackp->yynextFree += 1;
+  yynewItem->yystate.yyisState = yyisState;
+  return yynewItem;
+}
+
+/** Add a new semantic action that will execute the action for rule
+ *  YYRULE on the semantic values in YYRHS to the list of
+ *  alternative actions for YYSTATE.  Assumes that YYRHS comes from
+ *  stack #YYK of *YYSTACKP. */
+static void
+yyaddDeferredAction (yyGLRStack* yystackp, YYPTRDIFF_T yyk, yyGLRState* yystate,
+                     yyGLRState* yyrhs, yyRuleNum yyrule)
+{
+  yySemanticOption* yynewOption =
+    &yynewGLRStackItem (yystackp, yyfalse)->yyoption;
+  YY_ASSERT (!yynewOption->yyisState);
+  yynewOption->yystate = yyrhs;
+  yynewOption->yyrule = yyrule;
+  if (yystackp->yytops.yylookaheadNeeds[yyk])
+    {
+      yynewOption->yyrawchar = yychar;
+      yynewOption->yyval = yylval;
+    }
+  else
+    yynewOption->yyrawchar = YYEMPTY;
+  yynewOption->yynext = yystate->yysemantics.yyfirstVal;
+  yystate->yysemantics.yyfirstVal = yynewOption;
+
+  YY_RESERVE_GLRSTACK (yystackp);
+}
+
+                                /* GLRStacks */
+
+/** Initialize YYSET to a singleton set containing an empty stack.  */
+static yybool
+yyinitStateSet (yyGLRStateSet* yyset)
+{
+  yyset->yysize = 1;
+  yyset->yycapacity = 16;
+  yyset->yystates
+    = YY_CAST (yyGLRState**,
+               YYMALLOC (YY_CAST (YYSIZE_T, yyset->yycapacity)
+                         * sizeof yyset->yystates[0]));
+  if (! yyset->yystates)
+    return yyfalse;
+  yyset->yystates[0] = YY_NULLPTR;
+  yyset->yylookaheadNeeds
+    = YY_CAST (yybool*,
+               YYMALLOC (YY_CAST (YYSIZE_T, yyset->yycapacity)
+                         * sizeof yyset->yylookaheadNeeds[0]));
+  if (! yyset->yylookaheadNeeds)
+    {
+      YYFREE (yyset->yystates);
+      return yyfalse;
+    }
+  memset (yyset->yylookaheadNeeds,
+          0,
+          YY_CAST (YYSIZE_T, yyset->yycapacity) * sizeof yyset->yylookaheadNeeds[0]);
+  return yytrue;
+}
+
+static void yyfreeStateSet (yyGLRStateSet* yyset)
+{
+  YYFREE (yyset->yystates);
+  YYFREE (yyset->yylookaheadNeeds);
+}
+
+/** Initialize *YYSTACKP to a single empty stack, with total maximum
+ *  capacity for all stacks of YYSIZE.  */
+static yybool
+yyinitGLRStack (yyGLRStack* yystackp, YYPTRDIFF_T yysize)
+{
+  yystackp->yyerrState = 0;
+  yynerrs = 0;
+  yystackp->yyspaceLeft = yysize;
+  yystackp->yyitems
+    = YY_CAST (yyGLRStackItem*,
+               YYMALLOC (YY_CAST (YYSIZE_T, yysize)
+                         * sizeof yystackp->yynextFree[0]));
+  if (!yystackp->yyitems)
+    return yyfalse;
+  yystackp->yynextFree = yystackp->yyitems;
+  yystackp->yysplitPoint = YY_NULLPTR;
+  yystackp->yylastDeleted = YY_NULLPTR;
+  return yyinitStateSet (&yystackp->yytops);
+}
+
+
+#if YYSTACKEXPANDABLE
+# define YYRELOC(YYFROMITEMS, YYTOITEMS, YYX, YYTYPE)                   \
+  &((YYTOITEMS)                                                         \
+    - ((YYFROMITEMS) - YY_REINTERPRET_CAST (yyGLRStackItem*, (YYX))))->YYTYPE
+
+/** If *YYSTACKP is expandable, extend it.  WARNING: Pointers into the
+    stack from outside should be considered invalid after this call.
+    We always expand when there are 1 or fewer items left AFTER an
+    allocation, so that we can avoid having external pointers exist
+    across an allocation.  */
+static void
+yyexpandGLRStack (yyGLRStack* yystackp)
+{
+  yyGLRStackItem* yynewItems;
+  yyGLRStackItem* yyp0, *yyp1;
+  YYPTRDIFF_T yynewSize;
+  YYPTRDIFF_T yyn;
+  YYPTRDIFF_T yysize = yystackp->yynextFree - yystackp->yyitems;
+  if (YYMAXDEPTH - YYHEADROOM < yysize)
+    yyMemoryExhausted (yystackp);
+  yynewSize = 2*yysize;
+  if (YYMAXDEPTH < yynewSize)
+    yynewSize = YYMAXDEPTH;
+  yynewItems
+    = YY_CAST (yyGLRStackItem*,
+               YYMALLOC (YY_CAST (YYSIZE_T, yynewSize)
+                         * sizeof yynewItems[0]));
+  if (! yynewItems)
+    yyMemoryExhausted (yystackp);
+  for (yyp0 = yystackp->yyitems, yyp1 = yynewItems, yyn = yysize;
+       0 < yyn;
+       yyn -= 1, yyp0 += 1, yyp1 += 1)
+    {
+      *yyp1 = *yyp0;
+      if (*YY_REINTERPRET_CAST (yybool *, yyp0))
+        {
+          yyGLRState* yys0 = &yyp0->yystate;
+          yyGLRState* yys1 = &yyp1->yystate;
+          if (yys0->yypred != YY_NULLPTR)
+            yys1->yypred =
+              YYRELOC (yyp0, yyp1, yys0->yypred, yystate);
+          if (! yys0->yyresolved && yys0->yysemantics.yyfirstVal != YY_NULLPTR)
+            yys1->yysemantics.yyfirstVal =
+              YYRELOC (yyp0, yyp1, yys0->yysemantics.yyfirstVal, yyoption);
+        }
+      else
+        {
+          yySemanticOption* yyv0 = &yyp0->yyoption;
+          yySemanticOption* yyv1 = &yyp1->yyoption;
+          if (yyv0->yystate != YY_NULLPTR)
+            yyv1->yystate = YYRELOC (yyp0, yyp1, yyv0->yystate, yystate);
+          if (yyv0->yynext != YY_NULLPTR)
+            yyv1->yynext = YYRELOC (yyp0, yyp1, yyv0->yynext, yyoption);
+        }
+    }
+  if (yystackp->yysplitPoint != YY_NULLPTR)
+    yystackp->yysplitPoint = YYRELOC (yystackp->yyitems, yynewItems,
+                                      yystackp->yysplitPoint, yystate);
+
+  for (yyn = 0; yyn < yystackp->yytops.yysize; yyn += 1)
+    if (yystackp->yytops.yystates[yyn] != YY_NULLPTR)
+      yystackp->yytops.yystates[yyn] =
+        YYRELOC (yystackp->yyitems, yynewItems,
+                 yystackp->yytops.yystates[yyn], yystate);
+  YYFREE (yystackp->yyitems);
+  yystackp->yyitems = yynewItems;
+  yystackp->yynextFree = yynewItems + yysize;
+  yystackp->yyspaceLeft = yynewSize - yysize;
+}
+#endif
+
+static void
+yyfreeGLRStack (yyGLRStack* yystackp)
+{
+  YYFREE (yystackp->yyitems);
+  yyfreeStateSet (&yystackp->yytops);
+}
+
+/** Assuming that YYS is a GLRState somewhere on *YYSTACKP, update the
+ *  splitpoint of *YYSTACKP, if needed, so that it is at least as deep as
+ *  YYS.  */
+static inline void
+yyupdateSplit (yyGLRStack* yystackp, yyGLRState* yys)
+{
+  if (yystackp->yysplitPoint != YY_NULLPTR && yystackp->yysplitPoint > yys)
+    yystackp->yysplitPoint = yys;
+}
+
+/** Invalidate stack #YYK in *YYSTACKP.  */
+static inline void
+yymarkStackDeleted (yyGLRStack* yystackp, YYPTRDIFF_T yyk)
+{
+  if (yystackp->yytops.yystates[yyk] != YY_NULLPTR)
+    yystackp->yylastDeleted = yystackp->yytops.yystates[yyk];
+  yystackp->yytops.yystates[yyk] = YY_NULLPTR;
+}
+
+/** Undelete the last stack in *YYSTACKP that was marked as deleted.  Can
+    only be done once after a deletion, and only when all other stacks have
+    been deleted.  */
+static void
+yyundeleteLastStack (yyGLRStack* yystackp)
+{
+  if (yystackp->yylastDeleted == YY_NULLPTR || yystackp->yytops.yysize != 0)
+    return;
+  yystackp->yytops.yystates[0] = yystackp->yylastDeleted;
+  yystackp->yytops.yysize = 1;
+  YY_DPRINTF ((stderr, "Restoring last deleted stack as stack #0.\n"));
+  yystackp->yylastDeleted = YY_NULLPTR;
+}
+
+static inline void
+yyremoveDeletes (yyGLRStack* yystackp)
+{
+  YYPTRDIFF_T yyi, yyj;
+  yyi = yyj = 0;
+  while (yyj < yystackp->yytops.yysize)
+    {
+      if (yystackp->yytops.yystates[yyi] == YY_NULLPTR)
+        {
+          if (yyi == yyj)
+            YY_DPRINTF ((stderr, "Removing dead stacks.\n"));
+          yystackp->yytops.yysize -= 1;
+        }
+      else
+        {
+          yystackp->yytops.yystates[yyj] = yystackp->yytops.yystates[yyi];
+          /* In the current implementation, it's unnecessary to copy
+             yystackp->yytops.yylookaheadNeeds[yyi] since, after
+             yyremoveDeletes returns, the parser immediately either enters
+             deterministic operation or shifts a token.  However, it doesn't
+             hurt, and the code might evolve to need it.  */
+          yystackp->yytops.yylookaheadNeeds[yyj] =
+            yystackp->yytops.yylookaheadNeeds[yyi];
+          if (yyj != yyi)
+            YY_DPRINTF ((stderr, "Rename stack %ld -> %ld.\n",
+                        YY_CAST (long, yyi), YY_CAST (long, yyj)));
+          yyj += 1;
+        }
+      yyi += 1;
+    }
+}
+
+/** Shift to a new state on stack #YYK of *YYSTACKP, corresponding to LR
+ * state YYLRSTATE, at input position YYPOSN, with (resolved) semantic
+ * value *YYVALP and source location *YYLOCP.  */
+static inline void
+yyglrShift (yyGLRStack* yystackp, YYPTRDIFF_T yyk, yy_state_t yylrState,
+            YYPTRDIFF_T yyposn,
+            YYSTYPE* yyvalp)
+{
+  yyGLRState* yynewState = &yynewGLRStackItem (yystackp, yytrue)->yystate;
+
+  yynewState->yylrState = yylrState;
+  yynewState->yyposn = yyposn;
+  yynewState->yyresolved = yytrue;
+  yynewState->yypred = yystackp->yytops.yystates[yyk];
+  yynewState->yysemantics.yyval = *yyvalp;
+  yystackp->yytops.yystates[yyk] = yynewState;
+
+  YY_RESERVE_GLRSTACK (yystackp);
+}
+
+/** Shift stack #YYK of *YYSTACKP, to a new state corresponding to LR
+ *  state YYLRSTATE, at input position YYPOSN, with the (unresolved)
+ *  semantic value of YYRHS under the action for YYRULE.  */
+static inline void
+yyglrShiftDefer (yyGLRStack* yystackp, YYPTRDIFF_T yyk, yy_state_t yylrState,
+                 YYPTRDIFF_T yyposn, yyGLRState* yyrhs, yyRuleNum yyrule)
+{
+  yyGLRState* yynewState = &yynewGLRStackItem (yystackp, yytrue)->yystate;
+  YY_ASSERT (yynewState->yyisState);
+
+  yynewState->yylrState = yylrState;
+  yynewState->yyposn = yyposn;
+  yynewState->yyresolved = yyfalse;
+  yynewState->yypred = yystackp->yytops.yystates[yyk];
+  yynewState->yysemantics.yyfirstVal = YY_NULLPTR;
+  yystackp->yytops.yystates[yyk] = yynewState;
+
+  /* Invokes YY_RESERVE_GLRSTACK.  */
+  yyaddDeferredAction (yystackp, yyk, yynewState, yyrhs, yyrule);
+}
+
+#if YYDEBUG
+
+/*----------------------------------------------------------------------.
+| Report that stack #YYK of *YYSTACKP is going to be reduced by YYRULE. |
+`----------------------------------------------------------------------*/
+
+static inline void
+yy_reduce_print (yybool yynormal, yyGLRStackItem* yyvsp, YYPTRDIFF_T yyk,
+                 yyRuleNum yyrule)
+{
+  int yynrhs = yyrhsLength (yyrule);
+  int yyi;
+  YY_FPRINTF ((stderr, "Reducing stack %ld by rule %d (line %d):\n",
+               YY_CAST (long, yyk), yyrule - 1, yyrline[yyrule]));
+  if (! yynormal)
+    yyfillin (yyvsp, 1, -yynrhs);
+  /* The symbols being reduced.  */
+  for (yyi = 0; yyi < yynrhs; yyi++)
+    {
+      YY_FPRINTF ((stderr, "   $%d = ", yyi + 1));
+      yy_symbol_print (stderr,
+                       yy_accessing_symbol (yyvsp[yyi - yynrhs + 1].yystate.yylrState),
+                       &yyvsp[yyi - yynrhs + 1].yystate.yysemantics.yyval                       );
+      if (!yyvsp[yyi - yynrhs + 1].yystate.yyresolved)
+        YY_FPRINTF ((stderr, " (unresolved)"));
+      YY_FPRINTF ((stderr, "\n"));
+    }
+}
+#endif
+
+/** Pop the symbols consumed by reduction #YYRULE from the top of stack
+ *  #YYK of *YYSTACKP, and perform the appropriate semantic action on their
+ *  semantic values.  Assumes that all ambiguities in semantic values
+ *  have been previously resolved.  Set *YYVALP to the resulting value,
+ *  and *YYLOCP to the computed location (if any).  Return value is as
+ *  for userAction.  */
+static inline YYRESULTTAG
+yydoAction (yyGLRStack* yystackp, YYPTRDIFF_T yyk, yyRuleNum yyrule,
+            YYSTYPE* yyvalp)
+{
+  int yynrhs = yyrhsLength (yyrule);
+
+  if (yystackp->yysplitPoint == YY_NULLPTR)
+    {
+      /* Standard special case: single stack.  */
+      yyGLRStackItem* yyrhs
+        = YY_REINTERPRET_CAST (yyGLRStackItem*, yystackp->yytops.yystates[yyk]);
+      YY_ASSERT (yyk == 0);
+      yystackp->yynextFree -= yynrhs;
+      yystackp->yyspaceLeft += yynrhs;
+      yystackp->yytops.yystates[0] = & yystackp->yynextFree[-1].yystate;
+      return yyuserAction (yyrule, yynrhs, yyrhs, yystackp, yyk,
+                           yyvalp);
+    }
+  else
+    {
+      yyGLRStackItem yyrhsVals[YYMAXRHS + YYMAXLEFT + 1];
+      yyGLRState* yys = yyrhsVals[YYMAXRHS + YYMAXLEFT].yystate.yypred
+        = yystackp->yytops.yystates[yyk];
+      int yyi;
+      for (yyi = 0; yyi < yynrhs; yyi += 1)
+        {
+          yys = yys->yypred;
+          YY_ASSERT (yys);
+        }
+      yyupdateSplit (yystackp, yys);
+      yystackp->yytops.yystates[yyk] = yys;
+      return yyuserAction (yyrule, yynrhs, yyrhsVals + YYMAXRHS + YYMAXLEFT - 1,
+                           yystackp, yyk, yyvalp);
+    }
+}
+
+/** Pop items off stack #YYK of *YYSTACKP according to grammar rule YYRULE,
+ *  and push back on the resulting nonterminal symbol.  Perform the
+ *  semantic action associated with YYRULE and store its value with the
+ *  newly pushed state, if YYFORCEEVAL or if *YYSTACKP is currently
+ *  unambiguous.  Otherwise, store the deferred semantic action with
+ *  the new state.  If the new state would have an identical input
+ *  position, LR state, and predecessor to an existing state on the stack,
+ *  it is identified with that existing state, eliminating stack #YYK from
+ *  *YYSTACKP.  In this case, the semantic value is
+ *  added to the options for the existing state's semantic value.
+ */
+static inline YYRESULTTAG
+yyglrReduce (yyGLRStack* yystackp, YYPTRDIFF_T yyk, yyRuleNum yyrule,
+             yybool yyforceEval)
+{
+  YYPTRDIFF_T yyposn = yystackp->yytops.yystates[yyk]->yyposn;
+
+  if (yyforceEval || yystackp->yysplitPoint == YY_NULLPTR)
+    {
+      YYSTYPE yyval;
+
+      YYRESULTTAG yyflag = yydoAction (yystackp, yyk, yyrule, &yyval);
+      if (yyflag == yyerr && yystackp->yysplitPoint != YY_NULLPTR)
+        YY_DPRINTF ((stderr,
+                     "Parse on stack %ld rejected by rule %d (line %d).\n",
+                     YY_CAST (long, yyk), yyrule - 1, yyrline[yyrule]));
+      if (yyflag != yyok)
+        return yyflag;
+      yyglrShift (yystackp, yyk,
+                  yyLRgotoState (yystackp->yytops.yystates[yyk]->yylrState,
+                                 yylhsNonterm (yyrule)),
+                  yyposn, &yyval);
+    }
+  else
+    {
+      YYPTRDIFF_T yyi;
+      int yyn;
+      yyGLRState* yys, *yys0 = yystackp->yytops.yystates[yyk];
+      yy_state_t yynewLRState;
+
+      for (yys = yystackp->yytops.yystates[yyk], yyn = yyrhsLength (yyrule);
+           0 < yyn; yyn -= 1)
+        {
+          yys = yys->yypred;
+          YY_ASSERT (yys);
+        }
+      yyupdateSplit (yystackp, yys);
+      yynewLRState = yyLRgotoState (yys->yylrState, yylhsNonterm (yyrule));
+      YY_DPRINTF ((stderr,
+                   "Reduced stack %ld by rule %d (line %d); action deferred.  "
+                   "Now in state %d.\n",
+                   YY_CAST (long, yyk), yyrule - 1, yyrline[yyrule],
+                   yynewLRState));
+      for (yyi = 0; yyi < yystackp->yytops.yysize; yyi += 1)
+        if (yyi != yyk && yystackp->yytops.yystates[yyi] != YY_NULLPTR)
+          {
+            yyGLRState *yysplit = yystackp->yysplitPoint;
+            yyGLRState *yyp = yystackp->yytops.yystates[yyi];
+            while (yyp != yys && yyp != yysplit && yyp->yyposn >= yyposn)
+              {
+                if (yyp->yylrState == yynewLRState && yyp->yypred == yys)
+                  {
+                    yyaddDeferredAction (yystackp, yyk, yyp, yys0, yyrule);
+                    yymarkStackDeleted (yystackp, yyk);
+                    YY_DPRINTF ((stderr, "Merging stack %ld into stack %ld.\n",
+                                 YY_CAST (long, yyk), YY_CAST (long, yyi)));
+                    return yyok;
+                  }
+                yyp = yyp->yypred;
+              }
+          }
+      yystackp->yytops.yystates[yyk] = yys;
+      yyglrShiftDefer (yystackp, yyk, yynewLRState, yyposn, yys0, yyrule);
+    }
+  return yyok;
+}
+
+static YYPTRDIFF_T
+yysplitStack (yyGLRStack* yystackp, YYPTRDIFF_T yyk)
+{
+  if (yystackp->yysplitPoint == YY_NULLPTR)
+    {
+      YY_ASSERT (yyk == 0);
+      yystackp->yysplitPoint = yystackp->yytops.yystates[yyk];
+    }
+  if (yystackp->yytops.yycapacity <= yystackp->yytops.yysize)
+    {
+      YYPTRDIFF_T state_size = YYSIZEOF (yystackp->yytops.yystates[0]);
+      YYPTRDIFF_T half_max_capacity = YYSIZE_MAXIMUM / 2 / state_size;
+      if (half_max_capacity < yystackp->yytops.yycapacity)
+        yyMemoryExhausted (yystackp);
+      yystackp->yytops.yycapacity *= 2;
+
+      {
+        yyGLRState** yynewStates
+          = YY_CAST (yyGLRState**,
+                     YYREALLOC (yystackp->yytops.yystates,
+                                (YY_CAST (YYSIZE_T, yystackp->yytops.yycapacity)
+                                 * sizeof yynewStates[0])));
+        if (yynewStates == YY_NULLPTR)
+          yyMemoryExhausted (yystackp);
+        yystackp->yytops.yystates = yynewStates;
+      }
+
+      {
+        yybool* yynewLookaheadNeeds
+          = YY_CAST (yybool*,
+                     YYREALLOC (yystackp->yytops.yylookaheadNeeds,
+                                (YY_CAST (YYSIZE_T, yystackp->yytops.yycapacity)
+                                 * sizeof yynewLookaheadNeeds[0])));
+        if (yynewLookaheadNeeds == YY_NULLPTR)
+          yyMemoryExhausted (yystackp);
+        yystackp->yytops.yylookaheadNeeds = yynewLookaheadNeeds;
+      }
+    }
+  yystackp->yytops.yystates[yystackp->yytops.yysize]
+    = yystackp->yytops.yystates[yyk];
+  yystackp->yytops.yylookaheadNeeds[yystackp->yytops.yysize]
+    = yystackp->yytops.yylookaheadNeeds[yyk];
+  yystackp->yytops.yysize += 1;
+  return yystackp->yytops.yysize - 1;
+}
+
+/** True iff YYY0 and YYY1 represent identical options at the top level.
+ *  That is, they represent the same rule applied to RHS symbols
+ *  that produce the same terminal symbols.  */
+static yybool
+yyidenticalOptions (yySemanticOption* yyy0, yySemanticOption* yyy1)
+{
+  if (yyy0->yyrule == yyy1->yyrule)
+    {
+      yyGLRState *yys0, *yys1;
+      int yyn;
+      for (yys0 = yyy0->yystate, yys1 = yyy1->yystate,
+           yyn = yyrhsLength (yyy0->yyrule);
+           yyn > 0;
+           yys0 = yys0->yypred, yys1 = yys1->yypred, yyn -= 1)
+        if (yys0->yyposn != yys1->yyposn)
+          return yyfalse;
+      return yytrue;
+    }
+  else
+    return yyfalse;
+}
+
+/** Assuming identicalOptions (YYY0,YYY1), destructively merge the
+ *  alternative semantic values for the RHS-symbols of YYY1 and YYY0.  */
+static void
+yymergeOptionSets (yySemanticOption* yyy0, yySemanticOption* yyy1)
+{
+  yyGLRState *yys0, *yys1;
+  int yyn;
+  for (yys0 = yyy0->yystate, yys1 = yyy1->yystate,
+       yyn = yyrhsLength (yyy0->yyrule);
+       0 < yyn;
+       yys0 = yys0->yypred, yys1 = yys1->yypred, yyn -= 1)
+    {
+      if (yys0 == yys1)
+        break;
+      else if (yys0->yyresolved)
+        {
+          yys1->yyresolved = yytrue;
+          yys1->yysemantics.yyval = yys0->yysemantics.yyval;
+        }
+      else if (yys1->yyresolved)
+        {
+          yys0->yyresolved = yytrue;
+          yys0->yysemantics.yyval = yys1->yysemantics.yyval;
+        }
+      else
+        {
+          yySemanticOption** yyz0p = &yys0->yysemantics.yyfirstVal;
+          yySemanticOption* yyz1 = yys1->yysemantics.yyfirstVal;
+          while (yytrue)
+            {
+              if (yyz1 == *yyz0p || yyz1 == YY_NULLPTR)
+                break;
+              else if (*yyz0p == YY_NULLPTR)
+                {
+                  *yyz0p = yyz1;
+                  break;
+                }
+              else if (*yyz0p < yyz1)
+                {
+                  yySemanticOption* yyz = *yyz0p;
+                  *yyz0p = yyz1;
+                  yyz1 = yyz1->yynext;
+                  (*yyz0p)->yynext = yyz;
+                }
+              yyz0p = &(*yyz0p)->yynext;
+            }
+          yys1->yysemantics.yyfirstVal = yys0->yysemantics.yyfirstVal;
+        }
+    }
+}
+
+/** Y0 and Y1 represent two possible actions to take in a given
+ *  parsing state; return 0 if no combination is possible,
+ *  1 if user-mergeable, 2 if Y0 is preferred, 3 if Y1 is preferred.  */
+static int
+yypreference (yySemanticOption* y0, yySemanticOption* y1)
+{
+  yyRuleNum r0 = y0->yyrule, r1 = y1->yyrule;
+  int p0 = yydprec[r0], p1 = yydprec[r1];
+
+  if (p0 == p1)
+    {
+      if (yymerger[r0] == 0 || yymerger[r0] != yymerger[r1])
+        return 0;
+      else
+        return 1;
+    }
+  if (p0 == 0 || p1 == 0)
+    return 0;
+  if (p0 < p1)
+    return 3;
+  if (p1 < p0)
+    return 2;
+  return 0;
+}
+
+static YYRESULTTAG
+yyresolveValue (yyGLRState* yys, yyGLRStack* yystackp);
+
+
+/** Resolve the previous YYN states starting at and including state YYS
+ *  on *YYSTACKP. If result != yyok, some states may have been left
+ *  unresolved possibly with empty semantic option chains.  Regardless
+ *  of whether result = yyok, each state has been left with consistent
+ *  data so that yydestroyGLRState can be invoked if necessary.  */
+static YYRESULTTAG
+yyresolveStates (yyGLRState* yys, int yyn,
+                 yyGLRStack* yystackp)
+{
+  if (0 < yyn)
+    {
+      YY_ASSERT (yys->yypred);
+      YYCHK (yyresolveStates (yys->yypred, yyn-1, yystackp));
+      if (! yys->yyresolved)
+        YYCHK (yyresolveValue (yys, yystackp));
+    }
+  return yyok;
+}
+
+/** Resolve the states for the RHS of YYOPT on *YYSTACKP, perform its
+ *  user action, and return the semantic value and location in *YYVALP
+ *  and *YYLOCP.  Regardless of whether result = yyok, all RHS states
+ *  have been destroyed (assuming the user action destroys all RHS
+ *  semantic values if invoked).  */
+static YYRESULTTAG
+yyresolveAction (yySemanticOption* yyopt, yyGLRStack* yystackp,
+                 YYSTYPE* yyvalp)
+{
+  yyGLRStackItem yyrhsVals[YYMAXRHS + YYMAXLEFT + 1];
+  int yynrhs = yyrhsLength (yyopt->yyrule);
+  YYRESULTTAG yyflag =
+    yyresolveStates (yyopt->yystate, yynrhs, yystackp);
+  if (yyflag != yyok)
+    {
+      yyGLRState *yys;
+      for (yys = yyopt->yystate; yynrhs > 0; yys = yys->yypred, yynrhs -= 1)
+        yydestroyGLRState ("Cleanup: popping", yys);
+      return yyflag;
+    }
+
+  yyrhsVals[YYMAXRHS + YYMAXLEFT].yystate.yypred = yyopt->yystate;
+  {
+    int yychar_current = yychar;
+    YYSTYPE yylval_current = yylval;
+    yychar = yyopt->yyrawchar;
+    yylval = yyopt->yyval;
+    yyflag = yyuserAction (yyopt->yyrule, yynrhs,
+                           yyrhsVals + YYMAXRHS + YYMAXLEFT - 1,
+                           yystackp, -1, yyvalp);
+    yychar = yychar_current;
+    yylval = yylval_current;
+  }
+  return yyflag;
+}
+
+#if YYDEBUG
+static void
+yyreportTree (yySemanticOption* yyx, int yyindent)
+{
+  int yynrhs = yyrhsLength (yyx->yyrule);
+  int yyi;
+  yyGLRState* yys;
+  yyGLRState* yystates[1 + YYMAXRHS];
+  yyGLRState yyleftmost_state;
+
+  for (yyi = yynrhs, yys = yyx->yystate; 0 < yyi; yyi -= 1, yys = yys->yypred)
+    yystates[yyi] = yys;
+  if (yys == YY_NULLPTR)
+    {
+      yyleftmost_state.yyposn = 0;
+      yystates[0] = &yyleftmost_state;
+    }
+  else
+    yystates[0] = yys;
+
+  if (yyx->yystate->yyposn < yys->yyposn + 1)
+    YY_FPRINTF ((stderr, "%*s%s -> <Rule %d, empty>\n",
+                 yyindent, "", yysymbol_name (yylhsNonterm (yyx->yyrule)),
+                 yyx->yyrule - 1));
+  else
+    YY_FPRINTF ((stderr, "%*s%s -> <Rule %d, tokens %ld .. %ld>\n",
+                 yyindent, "", yysymbol_name (yylhsNonterm (yyx->yyrule)),
+                 yyx->yyrule - 1, YY_CAST (long, yys->yyposn + 1),
+                 YY_CAST (long, yyx->yystate->yyposn)));
+  for (yyi = 1; yyi <= yynrhs; yyi += 1)
+    {
+      if (yystates[yyi]->yyresolved)
+        {
+          if (yystates[yyi-1]->yyposn+1 > yystates[yyi]->yyposn)
+            YY_FPRINTF ((stderr, "%*s%s <empty>\n", yyindent+2, "",
+                         yysymbol_name (yy_accessing_symbol (yystates[yyi]->yylrState))));
+          else
+            YY_FPRINTF ((stderr, "%*s%s <tokens %ld .. %ld>\n", yyindent+2, "",
+                         yysymbol_name (yy_accessing_symbol (yystates[yyi]->yylrState)),
+                         YY_CAST (long, yystates[yyi-1]->yyposn + 1),
+                         YY_CAST (long, yystates[yyi]->yyposn)));
+        }
+      else
+        yyreportTree (yystates[yyi]->yysemantics.yyfirstVal, yyindent+2);
+    }
+}
+#endif
+
+static YYRESULTTAG
+yyreportAmbiguity (yySemanticOption* yyx0,
+                   yySemanticOption* yyx1)
+{
+  YY_USE (yyx0);
+  YY_USE (yyx1);
+
+#if YYDEBUG
+  YY_FPRINTF ((stderr, "Ambiguity detected.\n"));
+  YY_FPRINTF ((stderr, "Option 1,\n"));
+  yyreportTree (yyx0, 2);
+  YY_FPRINTF ((stderr, "\nOption 2,\n"));
+  yyreportTree (yyx1, 2);
+  YY_FPRINTF ((stderr, "\n"));
+#endif
+
+  yyerror (YY_("syntax is ambiguous"));
+  return yyabort;
+}
+
+/** Resolve the ambiguity represented in state YYS in *YYSTACKP,
+ *  perform the indicated actions, and set the semantic value of YYS.
+ *  If result != yyok, the chain of semantic options in YYS has been
+ *  cleared instead or it has been left unmodified except that
+ *  redundant options may have been removed.  Regardless of whether
+ *  result = yyok, YYS has been left with consistent data so that
+ *  yydestroyGLRState can be invoked if necessary.  */
+static YYRESULTTAG
+yyresolveValue (yyGLRState* yys, yyGLRStack* yystackp)
+{
+  yySemanticOption* yyoptionList = yys->yysemantics.yyfirstVal;
+  yySemanticOption* yybest = yyoptionList;
+  yySemanticOption** yypp;
+  yybool yymerge = yyfalse;
+  YYSTYPE yyval;
+  YYRESULTTAG yyflag;
+
+  for (yypp = &yyoptionList->yynext; *yypp != YY_NULLPTR; )
+    {
+      yySemanticOption* yyp = *yypp;
+
+      if (yyidenticalOptions (yybest, yyp))
+        {
+          yymergeOptionSets (yybest, yyp);
+          *yypp = yyp->yynext;
+        }
+      else
+        {
+          switch (yypreference (yybest, yyp))
+            {
+            case 0:
+              return yyreportAmbiguity (yybest, yyp);
+              break;
+            case 1:
+              yymerge = yytrue;
+              break;
+            case 2:
+              break;
+            case 3:
+              yybest = yyp;
+              yymerge = yyfalse;
+              break;
+            default:
+              /* This cannot happen so it is not worth a YY_ASSERT (yyfalse),
+                 but some compilers complain if the default case is
+                 omitted.  */
+              break;
+            }
+          yypp = &yyp->yynext;
+        }
+    }
+
+  if (yymerge)
+    {
+      yySemanticOption* yyp;
+      int yyprec = yydprec[yybest->yyrule];
+      yyflag = yyresolveAction (yybest, yystackp, &yyval);
+      if (yyflag == yyok)
+        for (yyp = yybest->yynext; yyp != YY_NULLPTR; yyp = yyp->yynext)
+          {
+            if (yyprec == yydprec[yyp->yyrule])
+              {
+                YYSTYPE yyval_other;
+                yyflag = yyresolveAction (yyp, yystackp, &yyval_other);
+                if (yyflag != yyok)
+                  {
+                    yydestruct ("Cleanup: discarding incompletely merged value for",
+                                yy_accessing_symbol (yys->yylrState),
+                                &yyval);
+                    break;
+                  }
+                yyuserMerge (yymerger[yyp->yyrule], &yyval, &yyval_other);
+              }
+          }
+    }
+  else
+    yyflag = yyresolveAction (yybest, yystackp, &yyval);
+
+  if (yyflag == yyok)
+    {
+      yys->yyresolved = yytrue;
+      yys->yysemantics.yyval = yyval;
+    }
+  else
+    yys->yysemantics.yyfirstVal = YY_NULLPTR;
+  return yyflag;
+}
+
+static YYRESULTTAG
+yyresolveStack (yyGLRStack* yystackp)
+{
+  if (yystackp->yysplitPoint != YY_NULLPTR)
+    {
+      yyGLRState* yys;
+      int yyn;
+
+      for (yyn = 0, yys = yystackp->yytops.yystates[0];
+           yys != yystackp->yysplitPoint;
+           yys = yys->yypred, yyn += 1)
+        continue;
+      YYCHK (yyresolveStates (yystackp->yytops.yystates[0], yyn, yystackp
+                             ));
+    }
+  return yyok;
+}
+
+/** Called when returning to deterministic operation to clean up the extra
+ * stacks. */
+static void
+yycompressStack (yyGLRStack* yystackp)
+{
+  /* yyr is the state after the split point.  */
+  yyGLRState *yyr;
+
+  if (yystackp->yytops.yysize != 1 || yystackp->yysplitPoint == YY_NULLPTR)
+    return;
+
+  {
+    yyGLRState *yyp, *yyq;
+    for (yyp = yystackp->yytops.yystates[0], yyq = yyp->yypred, yyr = YY_NULLPTR;
+         yyp != yystackp->yysplitPoint;
+         yyr = yyp, yyp = yyq, yyq = yyp->yypred)
+      yyp->yypred = yyr;
+  }
+
+  yystackp->yyspaceLeft += yystackp->yynextFree - yystackp->yyitems;
+  yystackp->yynextFree = YY_REINTERPRET_CAST (yyGLRStackItem*, yystackp->yysplitPoint) + 1;
+  yystackp->yyspaceLeft -= yystackp->yynextFree - yystackp->yyitems;
+  yystackp->yysplitPoint = YY_NULLPTR;
+  yystackp->yylastDeleted = YY_NULLPTR;
+
+  while (yyr != YY_NULLPTR)
+    {
+      yystackp->yynextFree->yystate = *yyr;
+      yyr = yyr->yypred;
+      yystackp->yynextFree->yystate.yypred = &yystackp->yynextFree[-1].yystate;
+      yystackp->yytops.yystates[0] = &yystackp->yynextFree->yystate;
+      yystackp->yynextFree += 1;
+      yystackp->yyspaceLeft -= 1;
+    }
+}
+
+static YYRESULTTAG
+yyprocessOneStack (yyGLRStack* yystackp, YYPTRDIFF_T yyk,
+                   YYPTRDIFF_T yyposn)
+{
+  while (yystackp->yytops.yystates[yyk] != YY_NULLPTR)
+    {
+      yy_state_t yystate = yystackp->yytops.yystates[yyk]->yylrState;
+      YY_DPRINTF ((stderr, "Stack %ld Entering state %d\n",
+                   YY_CAST (long, yyk), yystate));
+
+      YY_ASSERT (yystate != YYFINAL);
+
+      if (yyisDefaultedState (yystate))
+        {
+          YYRESULTTAG yyflag;
+          yyRuleNum yyrule = yydefaultAction (yystate);
+          if (yyrule == 0)
+            {
+              YY_DPRINTF ((stderr, "Stack %ld dies.\n", YY_CAST (long, yyk)));
+              yymarkStackDeleted (yystackp, yyk);
+              return yyok;
+            }
+          yyflag = yyglrReduce (yystackp, yyk, yyrule, yyimmediate[yyrule]);
+          if (yyflag == yyerr)
+            {
+              YY_DPRINTF ((stderr,
+                           "Stack %ld dies "
+                           "(predicate failure or explicit user error).\n",
+                           YY_CAST (long, yyk)));
+              yymarkStackDeleted (yystackp, yyk);
+              return yyok;
+            }
+          if (yyflag != yyok)
+            return yyflag;
+        }
+      else
+        {
+          yysymbol_kind_t yytoken = yygetToken (&yychar);
+          const short* yyconflicts;
+          const int yyaction = yygetLRActions (yystate, yytoken, &yyconflicts);
+          yystackp->yytops.yylookaheadNeeds[yyk] = yytrue;
+
+          for (/* nothing */; *yyconflicts; yyconflicts += 1)
+            {
+              YYRESULTTAG yyflag;
+              YYPTRDIFF_T yynewStack = yysplitStack (yystackp, yyk);
+              YY_DPRINTF ((stderr, "Splitting off stack %ld from %ld.\n",
+                           YY_CAST (long, yynewStack), YY_CAST (long, yyk)));
+              yyflag = yyglrReduce (yystackp, yynewStack,
+                                    *yyconflicts,
+                                    yyimmediate[*yyconflicts]);
+              if (yyflag == yyok)
+                YYCHK (yyprocessOneStack (yystackp, yynewStack,
+                                          yyposn));
+              else if (yyflag == yyerr)
+                {
+                  YY_DPRINTF ((stderr, "Stack %ld dies.\n", YY_CAST (long, yynewStack)));
+                  yymarkStackDeleted (yystackp, yynewStack);
+                }
+              else
+                return yyflag;
+            }
+
+          if (yyisShiftAction (yyaction))
+            break;
+          else if (yyisErrorAction (yyaction))
+            {
+              YY_DPRINTF ((stderr, "Stack %ld dies.\n", YY_CAST (long, yyk)));
+              yymarkStackDeleted (yystackp, yyk);
+              break;
+            }
+          else
+            {
+              YYRESULTTAG yyflag = yyglrReduce (yystackp, yyk, -yyaction,
+                                                yyimmediate[-yyaction]);
+              if (yyflag == yyerr)
+                {
+                  YY_DPRINTF ((stderr,
+                               "Stack %ld dies "
+                               "(predicate failure or explicit user error).\n",
+                               YY_CAST (long, yyk)));
+                  yymarkStackDeleted (yystackp, yyk);
+                  break;
+                }
+              else if (yyflag != yyok)
+                return yyflag;
+            }
+        }
+    }
+  return yyok;
+}
+
+/* Put in YYARG at most YYARGN of the expected tokens given the
+   current YYSTACKP, and return the number of tokens stored in YYARG.  If
+   YYARG is null, return the number of expected tokens (guaranteed to
+   be less than YYNTOKENS).  */
+static int
+yypcontext_expected_tokens (const yyGLRStack* yystackp,
+                            yysymbol_kind_t yyarg[], int yyargn)
+{
+  /* Actual size of YYARG. */
+  int yycount = 0;
+  int yyn = yypact[yystackp->yytops.yystates[0]->yylrState];
+  if (!yypact_value_is_default (yyn))
+    {
+      /* Start YYX at -YYN if negative to avoid negative indexes in
+         YYCHECK.  In other words, skip the first -YYN actions for
+         this state because they are default actions.  */
+      int yyxbegin = yyn < 0 ? -yyn : 0;
+      /* Stay within bounds of both yycheck and yytname.  */
+      int yychecklim = YYLAST - yyn + 1;
+      int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+      int yyx;
+      for (yyx = yyxbegin; yyx < yyxend; ++yyx)
+        if (yycheck[yyx + yyn] == yyx && yyx != YYSYMBOL_YYerror
+            && !yytable_value_is_error (yytable[yyx + yyn]))
+          {
+            if (!yyarg)
+              ++yycount;
+            else if (yycount == yyargn)
+              return 0;
+            else
+              yyarg[yycount++] = YY_CAST (yysymbol_kind_t, yyx);
+          }
+    }
+  if (yyarg && yycount == 0 && 0 < yyargn)
+    yyarg[0] = YYSYMBOL_YYEMPTY;
+  return yycount;
+}
+
+static int
+yy_syntax_error_arguments (const yyGLRStack* yystackp,
+                           yysymbol_kind_t yyarg[], int yyargn)
+{
+  yysymbol_kind_t yytoken = yychar == YYEMPTY ? YYSYMBOL_YYEMPTY : YYTRANSLATE (yychar);
+  /* Actual size of YYARG. */
+  int yycount = 0;
+  /* There are many possibilities here to consider:
+     - If this state is a consistent state with a default action, then
+       the only way this function was invoked is if the default action
+       is an error action.  In that case, don't check for expected
+       tokens because there are none.
+     - The only way there can be no lookahead present (in yychar) is if
+       this state is a consistent state with a default action.  Thus,
+       detecting the absence of a lookahead is sufficient to determine
+       that there is no unexpected or expected token to report.  In that
+       case, just report a simple "syntax error".
+     - Don't assume there isn't a lookahead just because this state is a
+       consistent state with a default action.  There might have been a
+       previous inconsistent state, consistent state with a non-default
+       action, or user semantic action that manipulated yychar.
+     - Of course, the expected token list depends on states to have
+       correct lookahead information, and it depends on the parser not
+       to perform extra reductions after fetching a lookahead from the
+       scanner and before detecting a syntax error.  Thus, state merging
+       (from LALR or IELR) and default reductions corrupt the expected
+       token list.  However, the list is correct for canonical LR with
+       one exception: it will still contain any token that will not be
+       accepted due to an error action in a later state.
+  */
+  if (yytoken != YYSYMBOL_YYEMPTY)
+    {
+      int yyn;
+      if (yyarg)
+        yyarg[yycount] = yytoken;
+      ++yycount;
+      yyn = yypcontext_expected_tokens (yystackp,
+                                        yyarg ? yyarg + 1 : yyarg, yyargn - 1);
+      if (yyn == YYENOMEM)
+        return YYENOMEM;
+      else
+        yycount += yyn;
+    }
+  return yycount;
+}
 
 
 
+static void
+yyreportSyntaxError (yyGLRStack* yystackp)
+{
+  if (yystackp->yyerrState != 0)
+    return;
+  {
+  yybool yysize_overflow = yyfalse;
+  char* yymsg = YY_NULLPTR;
+  enum { YYARGS_MAX = 5 };
+  /* Internationalized format string. */
+  const char *yyformat = YY_NULLPTR;
+  /* Arguments of yyformat: reported tokens (one for the "unexpected",
+     one per "expected"). */
+  yysymbol_kind_t yyarg[YYARGS_MAX];
+  /* Cumulated lengths of YYARG.  */
+  YYPTRDIFF_T yysize = 0;
+
+  /* Actual size of YYARG. */
+  int yycount
+    = yy_syntax_error_arguments (yystackp, yyarg, YYARGS_MAX);
+  if (yycount == YYENOMEM)
+    yyMemoryExhausted (yystackp);
+
+  switch (yycount)
+    {
+#define YYCASE_(N, S)                   \
+      case N:                           \
+        yyformat = S;                   \
+      break
+    default: /* Avoid compiler warnings. */
+      YYCASE_(0, YY_("syntax error"));
+      YYCASE_(1, YY_("syntax error, unexpected %s"));
+      YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
+      YYCASE_(3, YY_("syntax error, unexpected %s, expecting %s or %s"));
+      YYCASE_(4, YY_("syntax error, unexpected %s, expecting %s or %s or %s"));
+      YYCASE_(5, YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s"));
+#undef YYCASE_
+    }
+
+  /* Compute error message size.  Don't count the "%s"s, but reserve
+     room for the terminator.  */
+  yysize = yystrlen (yyformat) - 2 * yycount + 1;
+  {
+    int yyi;
+    for (yyi = 0; yyi < yycount; ++yyi)
+      {
+        YYPTRDIFF_T yysz
+          = yytnamerr (YY_NULLPTR, yytname[yyarg[yyi]]);
+        if (YYSIZE_MAXIMUM - yysize < yysz)
+          yysize_overflow = yytrue;
+        else
+          yysize += yysz;
+      }
+  }
+
+  if (!yysize_overflow)
+    yymsg = YY_CAST (char *, YYMALLOC (YY_CAST (YYSIZE_T, yysize)));
+
+  if (yymsg)
+    {
+      char *yyp = yymsg;
+      int yyi = 0;
+      while ((*yyp = *yyformat))
+        {
+          if (*yyp == '%' && yyformat[1] == 's' && yyi < yycount)
+            {
+              yyp += yytnamerr (yyp, yytname[yyarg[yyi++]]);
+              yyformat += 2;
+            }
+          else
+            {
+              ++yyp;
+              ++yyformat;
+            }
+        }
+      yyerror (yymsg);
+      YYFREE (yymsg);
+    }
+  else
+    {
+      yyerror (YY_("syntax error"));
+      yyMemoryExhausted (yystackp);
+    }
+  }
+  yynerrs += 1;
+}
+
+/* Recover from a syntax error on *YYSTACKP, assuming that *YYSTACKP->YYTOKENP,
+   yylval, and yylloc are the syntactic category, semantic value, and location
+   of the lookahead.  */
+static void
+yyrecoverSyntaxError (yyGLRStack* yystackp)
+{
+  if (yystackp->yyerrState == 3)
+    /* We just shifted the error token and (perhaps) took some
+       reductions.  Skip tokens until we can proceed.  */
+    while (yytrue)
+      {
+        yysymbol_kind_t yytoken;
+        int yyj;
+        if (yychar == YYEOF)
+          yyFail (yystackp, YY_NULLPTR);
+        if (yychar != YYEMPTY)
+          {
+            yytoken = YYTRANSLATE (yychar);
+            yydestruct ("Error: discarding",
+                        yytoken, &yylval);
+            yychar = YYEMPTY;
+          }
+        yytoken = yygetToken (&yychar);
+        yyj = yypact[yystackp->yytops.yystates[0]->yylrState];
+        if (yypact_value_is_default (yyj))
+          return;
+        yyj += yytoken;
+        if (yyj < 0 || YYLAST < yyj || yycheck[yyj] != yytoken)
+          {
+            if (yydefact[yystackp->yytops.yystates[0]->yylrState] != 0)
+              return;
+          }
+        else if (! yytable_value_is_error (yytable[yyj]))
+          return;
+      }
+
+  /* Reduce to one stack.  */
+  {
+    YYPTRDIFF_T yyk;
+    for (yyk = 0; yyk < yystackp->yytops.yysize; yyk += 1)
+      if (yystackp->yytops.yystates[yyk] != YY_NULLPTR)
+        break;
+    if (yyk >= yystackp->yytops.yysize)
+      yyFail (yystackp, YY_NULLPTR);
+    for (yyk += 1; yyk < yystackp->yytops.yysize; yyk += 1)
+      yymarkStackDeleted (yystackp, yyk);
+    yyremoveDeletes (yystackp);
+    yycompressStack (yystackp);
+  }
+
+  /* Pop stack until we find a state that shifts the error token.  */
+  yystackp->yyerrState = 3;
+  while (yystackp->yytops.yystates[0] != YY_NULLPTR)
+    {
+      yyGLRState *yys = yystackp->yytops.yystates[0];
+      int yyj = yypact[yys->yylrState];
+      if (! yypact_value_is_default (yyj))
+        {
+          yyj += YYSYMBOL_YYerror;
+          if (0 <= yyj && yyj <= YYLAST && yycheck[yyj] == YYSYMBOL_YYerror
+              && yyisShiftAction (yytable[yyj]))
+            {
+              /* Shift the error token.  */
+              int yyaction = yytable[yyj];
+              YY_SYMBOL_PRINT ("Shifting", yy_accessing_symbol (yyaction),
+                               &yylval, &yyerrloc);
+              yyglrShift (yystackp, 0, yyaction,
+                          yys->yyposn, &yylval);
+              yys = yystackp->yytops.yystates[0];
+              break;
+            }
+        }
+      if (yys->yypred != YY_NULLPTR)
+        yydestroyGLRState ("Error: popping", yys);
+      yystackp->yytops.yystates[0] = yys->yypred;
+      yystackp->yynextFree -= 1;
+      yystackp->yyspaceLeft += 1;
+    }
+  if (yystackp->yytops.yystates[0] == YY_NULLPTR)
+    yyFail (yystackp, YY_NULLPTR);
+}
+
+#define YYCHK1(YYE)                             \
+  do {                                          \
+    switch (YYE) {                              \
+    case yyok:     break;                       \
+    case yyabort:  goto yyabortlab;             \
+    case yyaccept: goto yyacceptlab;            \
+    case yyerr:    goto yyuser_error;           \
+    case yynomem:  goto yyexhaustedlab;         \
+    default:       goto yybuglab;               \
+    }                                           \
+  } while (0)
 
 /*----------.
 | yyparse.  |
@@ -1576,1555 +3745,311 @@ int yynerrs;
 int
 yyparse (void)
 {
-    yy_state_fast_t yystate = 0;
-    /* Number of tokens to shift before error messages enabled.  */
-    int yyerrstatus = 0;
-
-    /* Refer to the stacks through separate pointers, to allow yyoverflow
-       to reallocate them elsewhere.  */
-
-    /* Their size.  */
-    YYPTRDIFF_T yystacksize = YYINITDEPTH;
-
-    /* The state stack: array, bottom, top.  */
-    yy_state_t yyssa[YYINITDEPTH];
-    yy_state_t *yyss = yyssa;
-    yy_state_t *yyssp = yyss;
-
-    /* The semantic value stack: array, bottom, top.  */
-    YYSTYPE yyvsa[YYINITDEPTH];
-    YYSTYPE *yyvs = yyvsa;
-    YYSTYPE *yyvsp = yyvs;
-
-    yy_state_t yyesa[20];
-    yy_state_t *yyes = yyesa;
-    YYPTRDIFF_T yyes_capacity = 20 < YYMAXDEPTH ? 20 : YYMAXDEPTH;
-
-  /* Whether LAC context is established.  A Boolean.  */
-  int yy_lac_established = 0;
-  int yyn;
-  /* The return value of yyparse.  */
   int yyresult;
-  /* Lookahead symbol kind.  */
-  yysymbol_kind_t yytoken = YYSYMBOL_YYEMPTY;
-  /* The variables used to return semantic value and location from the
-     action routines.  */
-  YYSTYPE yyval;
+  yyGLRStack yystack;
+  yyGLRStack* const yystackp = &yystack;
+  YYPTRDIFF_T yyposn;
 
-  /* Buffer for error messages, and its allocated size.  */
-  char yymsgbuf[128];
-  char *yymsg = yymsgbuf;
-  YYPTRDIFF_T yymsg_alloc = sizeof yymsgbuf;
+  YY_DPRINTF ((stderr, "Starting parse\n"));
 
-#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
-
-  /* The number of symbols on the RHS of the reduced rule.
-     Keep to zero when no symbol should be popped.  */
-  int yylen = 0;
-
-  YYDPRINTF ((stderr, "Starting parse\n"));
-
-  yychar = YYEMPTY; /* Cause a token to be read.  */
-
-  goto yysetstate;
-
-
-/*------------------------------------------------------------.
-| yynewstate -- push a new state, which is found in yystate.  |
-`------------------------------------------------------------*/
-yynewstate:
-  /* In all cases, when you get here, the value and location stacks
-     have just been pushed.  So pushing a state here evens the stacks.  */
-  yyssp++;
-
-
-/*--------------------------------------------------------------------.
-| yysetstate -- set current state (the top of the stack) to yystate.  |
-`--------------------------------------------------------------------*/
-yysetstate:
-  YYDPRINTF ((stderr, "Entering state %d\n", yystate));
-  YY_ASSERT (0 <= yystate && yystate < YYNSTATES);
-  YY_IGNORE_USELESS_CAST_BEGIN
-  *yyssp = YY_CAST (yy_state_t, yystate);
-  YY_IGNORE_USELESS_CAST_END
-  YY_STACK_PRINT (yyss, yyssp);
-
-  if (yyss + yystacksize - 1 <= yyssp)
-#if !defined yyoverflow && !defined YYSTACK_RELOCATE
-    YYNOMEM;
-#else
-    {
-      /* Get the current used size of the three stacks, in elements.  */
-      YYPTRDIFF_T yysize = yyssp - yyss + 1;
-
-# if defined yyoverflow
-      {
-        /* Give user a chance to reallocate the stack.  Use copies of
-           these so that the &'s don't force the real ones into
-           memory.  */
-        yy_state_t *yyss1 = yyss;
-        YYSTYPE *yyvs1 = yyvs;
-
-        /* Each stack pointer address is followed by the size of the
-           data in use in that stack, in bytes.  This used to be a
-           conditional around just the two extra args, but that might
-           be undefined if yyoverflow is a macro.  */
-        yyoverflow (YY_("memory exhausted"),
-                    &yyss1, yysize * YYSIZEOF (*yyssp),
-                    &yyvs1, yysize * YYSIZEOF (*yyvsp),
-                    &yystacksize);
-        yyss = yyss1;
-        yyvs = yyvs1;
-      }
-# else /* defined YYSTACK_RELOCATE */
-      /* Extend the stack our own way.  */
-      if (YYMAXDEPTH <= yystacksize)
-        YYNOMEM;
-      yystacksize *= 2;
-      if (YYMAXDEPTH < yystacksize)
-        yystacksize = YYMAXDEPTH;
-
-      {
-        yy_state_t *yyss1 = yyss;
-        union yyalloc *yyptr =
-          YY_CAST (union yyalloc *,
-                   YYSTACK_ALLOC (YY_CAST (YYSIZE_T, YYSTACK_BYTES (yystacksize))));
-        if (! yyptr)
-          YYNOMEM;
-        YYSTACK_RELOCATE (yyss_alloc, yyss);
-        YYSTACK_RELOCATE (yyvs_alloc, yyvs);
-#  undef YYSTACK_RELOCATE
-        if (yyss1 != yyssa)
-          YYSTACK_FREE (yyss1);
-      }
-# endif
-
-      yyssp = yyss + yysize - 1;
-      yyvsp = yyvs + yysize - 1;
-
-      YY_IGNORE_USELESS_CAST_BEGIN
-      YYDPRINTF ((stderr, "Stack size increased to %ld\n",
-                  YY_CAST (long, yystacksize)));
-      YY_IGNORE_USELESS_CAST_END
-
-      if (yyss + yystacksize - 1 <= yyssp)
-        YYABORT;
-    }
-#endif /* !defined yyoverflow && !defined YYSTACK_RELOCATE */
-
-
-  if (yystate == YYFINAL)
-    YYACCEPT;
-
-  goto yybackup;
-
-
-/*-----------.
-| yybackup.  |
-`-----------*/
-yybackup:
-  /* Do appropriate processing given the current state.  Read a
-     lookahead token if we need one and don't already have one.  */
-
-  /* First try to decide what to do without reference to lookahead token.  */
-  yyn = yypact[yystate];
-  if (yypact_value_is_default (yyn))
-    goto yydefault;
-
-  /* Not known => get a lookahead token if don't already have one.  */
-
-  /* YYCHAR is either empty, or end-of-input, or a valid lookahead.  */
-  if (yychar == YYEMPTY)
-    {
-      YYDPRINTF ((stderr, "Reading a token\n"));
-      yychar = yylex ();
-    }
-
-  if (yychar <= YYEOF)
-    {
-      yychar = YYEOF;
-      yytoken = YYSYMBOL_YYEOF;
-      YYDPRINTF ((stderr, "Now at end of input.\n"));
-    }
-  else if (yychar == YYerror)
-    {
-      /* The scanner already issued an error message, process directly
-         to error recovery.  But do not keep the error token as
-         lookahead, it is too special and may lead us to an endless
-         loop in error recovery. */
-      yychar = YYUNDEF;
-      yytoken = YYSYMBOL_YYerror;
-      goto yyerrlab1;
-    }
-  else
-    {
-      yytoken = YYTRANSLATE (yychar);
-      YY_SYMBOL_PRINT ("Next token is", yytoken, &yylval, &yylloc);
-    }
-
-  /* If the proper action on seeing token YYTOKEN is to reduce or to
-     detect an error, take that action.  */
-  yyn += yytoken;
-  if (yyn < 0 || YYLAST < yyn || yycheck[yyn] != yytoken)
-    {
-      YY_LAC_ESTABLISH;
-      goto yydefault;
-    }
-  yyn = yytable[yyn];
-  if (yyn <= 0)
-    {
-      if (yytable_value_is_error (yyn))
-        goto yyerrlab;
-      yyn = -yyn;
-      YY_LAC_ESTABLISH;
-      goto yyreduce;
-    }
-
-  /* Count tokens shifted since error; after three, turn off error
-     status.  */
-  if (yyerrstatus)
-    yyerrstatus--;
-
-  /* Shift the lookahead token.  */
-  YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
-  yystate = yyn;
-  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-  *++yyvsp = yylval;
-  YY_IGNORE_MAYBE_UNINITIALIZED_END
-
-  /* Discard the shifted token.  */
   yychar = YYEMPTY;
-  YY_LAC_DISCARD ("shift");
-  goto yynewstate;
-
-
-/*-----------------------------------------------------------.
-| yydefault -- do the default action for the current state.  |
-`-----------------------------------------------------------*/
-yydefault:
-  yyn = yydefact[yystate];
-  if (yyn == 0)
-    goto yyerrlab;
-  goto yyreduce;
-
-
-/*-----------------------------.
-| yyreduce -- do a reduction.  |
-`-----------------------------*/
-yyreduce:
-  /* yyn is the number of a rule to reduce with.  */
-  yylen = yyr2[yyn];
-
-  /* If YYLEN is nonzero, implement the default value of the action:
-     '$$ = $1'.
-
-     Otherwise, the following line sets YYVAL to garbage.
-     This behavior is undocumented and Bison
-     users should not rely upon it.  Assigning to YYVAL
-     unconditionally makes the parser a bit smaller, and it avoids a
-     GCC warning that YYVAL may be used uninitialized.  */
-  yyval = yyvsp[1-yylen];
-
-
-  YY_REDUCE_PRINT (yyn);
-  {
-    int yychar_backup = yychar;
-    switch (yyn)
-      {
-  case 2: /* program: deamerreserved_star__stmt__  */
-#line 229 "./dregx_parser.y"
-                                     {
-		auto* const newNode = new dregx::ast::node::program({::dregx::ast::Type::program, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_deamerreserved_star__stmt__) });
-		(yyval.dregx_program) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-		outputTree = new ::deamer::external::cpp::ast::Tree(newNode);
-	}
-#line 1844 "dregx_parser.tab.c"
-    break;
-
-  case 3: /* deamerreserved_star__stmt__: stmt deamerreserved_star__stmt__  */
-#line 240 "./dregx_parser.y"
-                                          {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__stmt__({::dregx::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].dregx_stmt), (yyvsp[0].dregx_deamerreserved_star__stmt__) });
-		(yyval.dregx_deamerreserved_star__stmt__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1855 "dregx_parser.tab.c"
-    break;
-
-  case 4: /* deamerreserved_star__stmt__: %empty  */
-#line 246 "./dregx_parser.y"
-           {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__stmt__({::dregx::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
-		(yyval.dregx_deamerreserved_star__stmt__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1866 "dregx_parser.tab.c"
-    break;
-
-  case 5: /* stmt: word  */
-#line 256 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::stmt({::dregx::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_word) });
-		(yyval.dregx_stmt) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1877 "dregx_parser.tab.c"
-    break;
-
-  case 6: /* word: group  */
-#line 266 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_group) });
-		(yyval.dregx_word) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1888 "dregx_parser.tab.c"
-    break;
-
-  case 7: /* word: square  */
-#line 272 "./dregx_parser.y"
-                  {
-		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_square) });
-		(yyval.dregx_word) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1899 "dregx_parser.tab.c"
-    break;
-
-  case 8: /* word: standalone  */
-#line 278 "./dregx_parser.y"
-                      {
-		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_standalone) });
-		(yyval.dregx_word) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1910 "dregx_parser.tab.c"
-    break;
-
-  case 9: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET STAR  */
-#line 288 "./dregx_parser.y"
-                                                                               {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-5].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-3].dregx_or_concat), (yyvsp[-2].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1921 "dregx_parser.tab.c"
-    break;
-
-  case 10: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET PLUS  */
-#line 294 "./dregx_parser.y"
-                                                                                 {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-5].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-3].dregx_or_concat), (yyvsp[-2].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1932 "dregx_parser.tab.c"
-    break;
-
-  case 11: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
-#line 300 "./dregx_parser.y"
-                                                                                               {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-5].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-3].dregx_or_concat), (yyvsp[-2].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].dregx_extension_modifier) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1943 "dregx_parser.tab.c"
-    break;
-
-  case 12: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET  */
-#line 306 "./dregx_parser.y"
-                                                                            {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-4].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-3].Terminal) }), (yyvsp[-2].dregx_or_concat), (yyvsp[-1].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1954 "dregx_parser.tab.c"
-    break;
-
-  case 13: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET STAR  */
-#line 312 "./dregx_parser.y"
-                                                                                                   {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-5].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-3].dregx_deamerreserved_plus__word__), (yyvsp[-2].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1965 "dregx_parser.tab.c"
-    break;
-
-  case 14: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET PLUS  */
-#line 318 "./dregx_parser.y"
-                                                                                                   {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-5].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-3].dregx_deamerreserved_plus__word__), (yyvsp[-2].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1976 "dregx_parser.tab.c"
-    break;
-
-  case 15: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
-#line 324 "./dregx_parser.y"
-                                                                                                                 {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-5].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-4].Terminal) }), (yyvsp[-3].dregx_deamerreserved_plus__word__), (yyvsp[-2].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].dregx_extension_modifier) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1987 "dregx_parser.tab.c"
-    break;
-
-  case 16: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET  */
-#line 330 "./dregx_parser.y"
-                                                                                              {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-4].dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-3].Terminal) }), (yyvsp[-2].dregx_deamerreserved_plus__word__), (yyvsp[-1].dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_group) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 1998 "dregx_parser.tab.c"
-    break;
-
-  case 17: /* deamerreserved_plus__word__: word  */
-#line 340 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__word__({::dregx::ast::Type::deamerreserved_plus__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[0].dregx_word) });
-		(yyval.dregx_deamerreserved_plus__word__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2009 "dregx_parser.tab.c"
-    break;
-
-  case 18: /* deamerreserved_plus__word__: word deamerreserved_plus__word__  */
-#line 346 "./dregx_parser.y"
-                                            {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__word__({::dregx::ast::Type::deamerreserved_plus__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].dregx_word), (yyvsp[0].dregx_deamerreserved_plus__word__) });
-		(yyval.dregx_deamerreserved_plus__word__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2020 "dregx_parser.tab.c"
-    break;
-
-  case 19: /* or_concat: word opt_pad OR deamerreserved_arrow__word__  */
-#line 356 "./dregx_parser.y"
-                                                      {
-		auto* const newNode = new dregx::ast::node::or_concat({::dregx::ast::Type::or_concat, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-3].dregx_word), (yyvsp[-2].dregx_opt_pad), new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].dregx_deamerreserved_arrow__word__) });
-		(yyval.dregx_or_concat) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2031 "dregx_parser.tab.c"
-    break;
-
-  case 20: /* deamerreserved_arrow__word__: word deamerreserved_star__opt_pad__OR__word__  */
-#line 366 "./dregx_parser.y"
-                                                       {
-		auto* const newNode = new dregx::ast::node::deamerreserved_arrow__word__({::dregx::ast::Type::deamerreserved_arrow__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].dregx_word), (yyvsp[0].dregx_deamerreserved_star__opt_pad__OR__word__) });
-		(yyval.dregx_deamerreserved_arrow__word__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2042 "dregx_parser.tab.c"
-    break;
-
-  case 21: /* deamerreserved_star__opt_pad__OR__word__: opt_pad OR word deamerreserved_star__opt_pad__OR__word__  */
-#line 376 "./dregx_parser.y"
-                                                                  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-3].dregx_opt_pad), new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal) }), (yyvsp[-1].dregx_word), (yyvsp[0].dregx_deamerreserved_star__opt_pad__OR__word__) });
-		(yyval.dregx_deamerreserved_star__opt_pad__OR__word__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2053 "dregx_parser.tab.c"
-    break;
-
-  case 22: /* deamerreserved_star__opt_pad__OR__word__: %empty  */
-#line 382 "./dregx_parser.y"
-           {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
-		(yyval.dregx_deamerreserved_star__opt_pad__OR__word__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2064 "dregx_parser.tab.c"
-    break;
-
-  case 23: /* square: capture extension_modifier  */
-#line 392 "./dregx_parser.y"
-                                    {
-		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].dregx_capture), (yyvsp[0].dregx_extension_modifier) });
-		(yyval.dregx_square) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2075 "dregx_parser.tab.c"
-    break;
-
-  case 24: /* square: capture PLUS  */
-#line 398 "./dregx_parser.y"
-                        {
-		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].dregx_capture), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_square) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2086 "dregx_parser.tab.c"
-    break;
-
-  case 25: /* square: capture STAR  */
-#line 404 "./dregx_parser.y"
-                        {
-		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].dregx_capture), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_square) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2097 "dregx_parser.tab.c"
-    break;
-
-  case 26: /* square: capture  */
-#line 410 "./dregx_parser.y"
-                   {
-		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture) });
-		(yyval.dregx_square) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2108 "dregx_parser.tab.c"
-    break;
-
-  case 27: /* capture: opt_pad LEFT_SQUARE_BRACKET_NOT deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
-#line 420 "./dregx_parser.y"
-                                                                                                   {
-		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-3].dregx_opt_pad), new dregx::ast::node::LEFT_SQUARE_BRACKET_NOT({::dregx::ast::Type::LEFT_SQUARE_BRACKET_NOT, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal) }), (yyvsp[-1].dregx_deamerreserved_plus__capture_logic__), new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2119 "dregx_parser.tab.c"
-    break;
-
-  case 28: /* capture: opt_pad LEFT_SQUARE_BRACKET deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
-#line 426 "./dregx_parser.y"
-                                                                                                 {
-		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-3].dregx_opt_pad), new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal) }), (yyvsp[-1].dregx_deamerreserved_plus__capture_logic__), new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2130 "dregx_parser.tab.c"
-    break;
-
-  case 29: /* deamerreserved_plus__capture_logic__: capture_logic  */
-#line 436 "./dregx_parser.y"
-                       {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[0].dregx_capture_logic) });
-		(yyval.dregx_deamerreserved_plus__capture_logic__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2141 "dregx_parser.tab.c"
-    break;
-
-  case 30: /* deamerreserved_plus__capture_logic__: capture_logic deamerreserved_plus__capture_logic__  */
-#line 442 "./dregx_parser.y"
-                                                              {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].dregx_capture_logic), (yyvsp[0].dregx_deamerreserved_plus__capture_logic__) });
-		(yyval.dregx_deamerreserved_plus__capture_logic__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2152 "dregx_parser.tab.c"
-    break;
-
-  case 31: /* capture_logic: capture_range  */
-#line 452 "./dregx_parser.y"
-                       {
-		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture_range) });
-		(yyval.dregx_capture_logic) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2163 "dregx_parser.tab.c"
-    break;
-
-  case 32: /* capture_logic: capture_special_character  */
-#line 458 "./dregx_parser.y"
-                                     {
-		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture_special_character) });
-		(yyval.dregx_capture_logic) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2174 "dregx_parser.tab.c"
-    break;
-
-  case 33: /* capture_logic: capture_letter  */
-#line 464 "./dregx_parser.y"
-                          {
-		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture_letter) });
-		(yyval.dregx_capture_logic) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2185 "dregx_parser.tab.c"
-    break;
-
-  case 34: /* capture_logic: capture_whitespace  */
-#line 470 "./dregx_parser.y"
-                              {
-		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture_whitespace) });
-		(yyval.dregx_capture_logic) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2196 "dregx_parser.tab.c"
-    break;
-
-  case 35: /* capture_logic: capture_symbols  */
-#line 476 "./dregx_parser.y"
-                           {
-		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture_symbols) });
-		(yyval.dregx_capture_logic) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2207 "dregx_parser.tab.c"
-    break;
-
-  case 36: /* capture_symbols: OTHER  */
-#line 486 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OTHER({::dregx::ast::Type::OTHER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_symbols) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2218 "dregx_parser.tab.c"
-    break;
-
-  case 37: /* capture_symbols: PLUS  */
-#line 492 "./dregx_parser.y"
-                {
-		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_symbols) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2229 "dregx_parser.tab.c"
-    break;
-
-  case 38: /* capture_symbols: STAR  */
-#line 498 "./dregx_parser.y"
-                {
-		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_symbols) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2240 "dregx_parser.tab.c"
-    break;
-
-  case 39: /* capture_symbols: COMMA  */
-#line 504 "./dregx_parser.y"
-                 {
-		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_symbols) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2251 "dregx_parser.tab.c"
-    break;
-
-  case 40: /* capture_symbols: OR  */
-#line 510 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_symbols) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2262 "dregx_parser.tab.c"
-    break;
-
-  case 41: /* capture_whitespace: SPACE  */
-#line 520 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::capture_whitespace({::dregx::ast::Type::capture_whitespace, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_whitespace) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2273 "dregx_parser.tab.c"
-    break;
-
-  case 42: /* capture_whitespace: TAB  */
-#line 526 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::capture_whitespace({::dregx::ast::Type::capture_whitespace, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_whitespace) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2284 "dregx_parser.tab.c"
-    break;
-
-  case 43: /* capture_range: capture_letter_range  */
-#line 536 "./dregx_parser.y"
-                              {
-		auto* const newNode = new dregx::ast::node::capture_range({::dregx::ast::Type::capture_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture_letter_range) });
-		(yyval.dregx_capture_range) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2295 "dregx_parser.tab.c"
-    break;
-
-  case 44: /* capture_range: capture_number_range  */
-#line 542 "./dregx_parser.y"
-                                {
-		auto* const newNode = new dregx::ast::node::capture_range({::dregx::ast::Type::capture_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_capture_number_range) });
-		(yyval.dregx_capture_range) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2306 "dregx_parser.tab.c"
-    break;
-
-  case 45: /* capture_letter_range: any_letter_exclude_underscore MIN any_letter_exclude_underscore  */
-#line 552 "./dregx_parser.y"
-                                                                         {
-		auto* const newNode = new dregx::ast::node::capture_letter_range({::dregx::ast::Type::capture_letter_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-2].dregx_any_letter_exclude_underscore), new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].dregx_any_letter_exclude_underscore) });
-		(yyval.dregx_capture_letter_range) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2317 "dregx_parser.tab.c"
-    break;
-
-  case 46: /* capture_number_range: NUMBER MIN NUMBER  */
-#line 562 "./dregx_parser.y"
-                           {
-		auto* const newNode = new dregx::ast::node::capture_number_range({::dregx::ast::Type::capture_number_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-2].Terminal) }), new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_capture_number_range) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2328 "dregx_parser.tab.c"
-    break;
-
-  case 47: /* capture_letter: any_letter  */
-#line 572 "./dregx_parser.y"
-                    {
-		auto* const newNode = new dregx::ast::node::capture_letter({::dregx::ast::Type::capture_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_any_letter) });
-		(yyval.dregx_capture_letter) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2339 "dregx_parser.tab.c"
-    break;
-
-  case 48: /* capture_special_character: special_char_any  */
-#line 582 "./dregx_parser.y"
-                          {
-		auto* const newNode = new dregx::ast::node::capture_special_character({::dregx::ast::Type::capture_special_character, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_special_char_any) });
-		(yyval.dregx_capture_special_character) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2350 "dregx_parser.tab.c"
-    break;
-
-  case 49: /* extension_modifier: opt_pad LEFT_BRACKET min_repition opt_pad COMMA max_repition opt_pad RIGHT_BRACKET  */
-#line 592 "./dregx_parser.y"
-                                                                                            {
-		auto* const newNode = new dregx::ast::node::extension_modifier({::dregx::ast::Type::extension_modifier, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-7].dregx_opt_pad), new dregx::ast::node::LEFT_BRACKET({::dregx::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-6].Terminal) }), (yyvsp[-5].dregx_min_repition), (yyvsp[-4].dregx_opt_pad), new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-3].Terminal) }), (yyvsp[-2].dregx_max_repition), (yyvsp[-1].dregx_opt_pad), new dregx::ast::node::RIGHT_BRACKET({::dregx::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_extension_modifier) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2361 "dregx_parser.tab.c"
-    break;
-
-  case 50: /* min_repition: opt_pad deamerreserved_plus__NUMBER__  */
-#line 602 "./dregx_parser.y"
-                                               {
-		auto* const newNode = new dregx::ast::node::min_repition({::dregx::ast::Type::min_repition, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].dregx_opt_pad), (yyvsp[0].dregx_deamerreserved_plus__NUMBER__) });
-		(yyval.dregx_min_repition) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2372 "dregx_parser.tab.c"
-    break;
-
-  case 51: /* deamerreserved_plus__NUMBER__: NUMBER  */
-#line 612 "./dregx_parser.y"
-                {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__NUMBER__({::dregx::ast::Type::deamerreserved_plus__NUMBER__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_deamerreserved_plus__NUMBER__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2383 "dregx_parser.tab.c"
-    break;
-
-  case 52: /* deamerreserved_plus__NUMBER__: NUMBER deamerreserved_plus__NUMBER__  */
-#line 618 "./dregx_parser.y"
-                                                {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__NUMBER__({::dregx::ast::Type::deamerreserved_plus__NUMBER__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].dregx_deamerreserved_plus__NUMBER__) });
-		(yyval.dregx_deamerreserved_plus__NUMBER__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2394 "dregx_parser.tab.c"
-    break;
-
-  case 53: /* max_repition: opt_pad deamerreserved_plus__NUMBER__  */
-#line 628 "./dregx_parser.y"
-                                               {
-		auto* const newNode = new dregx::ast::node::max_repition({::dregx::ast::Type::max_repition, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].dregx_opt_pad), (yyvsp[0].dregx_deamerreserved_plus__NUMBER__) });
-		(yyval.dregx_max_repition) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2405 "dregx_parser.tab.c"
-    break;
-
-  case 54: /* standalone: opt_pad deamerreserved_plus__any_letter__  */
-#line 638 "./dregx_parser.y"
-                                                   {
-		auto* const newNode = new dregx::ast::node::standalone({::dregx::ast::Type::standalone, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[-1].dregx_opt_pad), (yyvsp[0].dregx_deamerreserved_plus__any_letter__) });
-		(yyval.dregx_standalone) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2416 "dregx_parser.tab.c"
-    break;
-
-  case 55: /* deamerreserved_plus__any_letter__: any_letter  */
-#line 648 "./dregx_parser.y"
-                    {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__any_letter__({::dregx::ast::Type::deamerreserved_plus__any_letter__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[0].dregx_any_letter) });
-		(yyval.dregx_deamerreserved_plus__any_letter__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2427 "dregx_parser.tab.c"
-    break;
-
-  case 56: /* deamerreserved_plus__any_letter__: any_letter deamerreserved_plus__any_letter__  */
-#line 654 "./dregx_parser.y"
-                                                        {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__any_letter__({::dregx::ast::Type::deamerreserved_plus__any_letter__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].dregx_any_letter), (yyvsp[0].dregx_deamerreserved_plus__any_letter__) });
-		(yyval.dregx_deamerreserved_plus__any_letter__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2438 "dregx_parser.tab.c"
-    break;
-
-  case 57: /* opt_pad: optional_padding  */
-#line 664 "./dregx_parser.y"
-                          {
-		auto* const newNode = new dregx::ast::node::opt_pad({::dregx::ast::Type::opt_pad, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_optional_padding) });
-		(yyval.dregx_opt_pad) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2449 "dregx_parser.tab.c"
-    break;
-
-  case 58: /* optional_padding: deamerreserved_star__padding__  */
-#line 674 "./dregx_parser.y"
-                                        {
-		auto* const newNode = new dregx::ast::node::optional_padding({::dregx::ast::Type::optional_padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_deamerreserved_star__padding__) });
-		(yyval.dregx_optional_padding) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2460 "dregx_parser.tab.c"
-    break;
-
-  case 59: /* deamerreserved_star__padding__: padding deamerreserved_star__padding__  */
-#line 684 "./dregx_parser.y"
-                                                {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__padding__({::dregx::ast::Type::deamerreserved_star__padding__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (yyvsp[-1].dregx_padding), (yyvsp[0].dregx_deamerreserved_star__padding__) });
-		(yyval.dregx_deamerreserved_star__padding__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2471 "dregx_parser.tab.c"
-    break;
-
-  case 60: /* deamerreserved_star__padding__: %empty  */
-#line 690 "./dregx_parser.y"
-           {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__padding__({::dregx::ast::Type::deamerreserved_star__padding__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
-		(yyval.dregx_deamerreserved_star__padding__) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2482 "dregx_parser.tab.c"
-    break;
-
-  case 61: /* padding: SPACE  */
-#line 700 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::padding({::dregx::ast::Type::padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_padding) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2493 "dregx_parser.tab.c"
-    break;
-
-  case 62: /* padding: TAB  */
-#line 706 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::padding({::dregx::ast::Type::padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_padding) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2504 "dregx_parser.tab.c"
-    break;
-
-  case 63: /* special_char_any: SLASH any  */
-#line 716 "./dregx_parser.y"
-                   {
-		auto* const newNode = new dregx::ast::node::special_char_any({::dregx::ast::Type::special_char_any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SLASH({::dregx::ast::Type::SLASH, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[-1].Terminal) }), (yyvsp[0].dregx_any) });
-		(yyval.dregx_special_char_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2515 "dregx_parser.tab.c"
-    break;
-
-  case 64: /* any_letter: any_letter_exclude_underscore  */
-#line 726 "./dregx_parser.y"
-                                       {
-		auto* const newNode = new dregx::ast::node::any_letter({::dregx::ast::Type::any_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (yyvsp[0].dregx_any_letter_exclude_underscore) });
-		(yyval.dregx_any_letter) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2526 "dregx_parser.tab.c"
-    break;
-
-  case 65: /* any_letter: UNDERSCORE  */
-#line 732 "./dregx_parser.y"
-                      {
-		auto* const newNode = new dregx::ast::node::any_letter({::dregx::ast::Type::any_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::UNDERSCORE({::dregx::ast::Type::UNDERSCORE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2537 "dregx_parser.tab.c"
-    break;
-
-  case 66: /* any_letter_exclude_underscore: T_  */
-#line 742 "./dregx_parser.y"
-            {
-		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::T_({::dregx::ast::Type::T_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter_exclude_underscore) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2548 "dregx_parser.tab.c"
-    break;
-
-  case 67: /* any_letter_exclude_underscore: R_  */
-#line 748 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::R_({::dregx::ast::Type::R_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter_exclude_underscore) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2559 "dregx_parser.tab.c"
-    break;
-
-  case 68: /* any_letter_exclude_underscore: N_  */
-#line 754 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::N_({::dregx::ast::Type::N_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter_exclude_underscore) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2570 "dregx_parser.tab.c"
-    break;
-
-  case 69: /* any_letter_exclude_underscore: B_  */
-#line 760 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::B_({::dregx::ast::Type::B_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter_exclude_underscore) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2581 "dregx_parser.tab.c"
-    break;
-
-  case 70: /* any_letter_exclude_underscore: V_  */
-#line 766 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::V_({::dregx::ast::Type::V_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter_exclude_underscore) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2592 "dregx_parser.tab.c"
-    break;
-
-  case 71: /* any_letter_exclude_underscore: A_  */
-#line 772 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::A_({::dregx::ast::Type::A_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter_exclude_underscore) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2603 "dregx_parser.tab.c"
-    break;
-
-  case 72: /* any_letter_exclude_underscore: LETTER  */
-#line 778 "./dregx_parser.y"
-                  {
-		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any_letter_exclude_underscore) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2614 "dregx_parser.tab.c"
-    break;
-
-  case 73: /* any: LEFT_CURLY_BRACKET  */
-#line 788 "./dregx_parser.y"
-                            {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2625 "dregx_parser.tab.c"
-    break;
-
-  case 74: /* any: RIGHT_CURLY_BRACKET  */
-#line 794 "./dregx_parser.y"
-                               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2636 "dregx_parser.tab.c"
-    break;
-
-  case 75: /* any: LEFT_SQUARE_BRACKET  */
-#line 800 "./dregx_parser.y"
-                               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2647 "dregx_parser.tab.c"
-    break;
-
-  case 76: /* any: RIGHT_SQUARE_BRACKET  */
-#line 806 "./dregx_parser.y"
-                                {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2658 "dregx_parser.tab.c"
-    break;
-
-  case 77: /* any: LEFT_BRACKET  */
-#line 812 "./dregx_parser.y"
-                        {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_BRACKET({::dregx::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2669 "dregx_parser.tab.c"
-    break;
-
-  case 78: /* any: RIGHT_BRACKET  */
-#line 818 "./dregx_parser.y"
-                         {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_BRACKET({::dregx::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2680 "dregx_parser.tab.c"
-    break;
-
-  case 79: /* any: COMMA  */
-#line 824 "./dregx_parser.y"
-                 {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2691 "dregx_parser.tab.c"
-    break;
-
-  case 80: /* any: OR  */
-#line 830 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2702 "dregx_parser.tab.c"
-    break;
-
-  case 81: /* any: MIN  */
-#line 836 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 8, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2713 "dregx_parser.tab.c"
-    break;
-
-  case 82: /* any: UNDERSCORE  */
-#line 842 "./dregx_parser.y"
-                      {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 9, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::UNDERSCORE({::dregx::ast::Type::UNDERSCORE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2724 "dregx_parser.tab.c"
-    break;
-
-  case 83: /* any: NOT  */
-#line 848 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 10, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NOT({::dregx::ast::Type::NOT, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2735 "dregx_parser.tab.c"
-    break;
-
-  case 84: /* any: NUMBER  */
-#line 854 "./dregx_parser.y"
-                  {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 11, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2746 "dregx_parser.tab.c"
-    break;
-
-  case 85: /* any: T_  */
-#line 860 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 12, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::T_({::dregx::ast::Type::T_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2757 "dregx_parser.tab.c"
-    break;
-
-  case 86: /* any: N_  */
-#line 866 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 13, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::N_({::dregx::ast::Type::N_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2768 "dregx_parser.tab.c"
-    break;
-
-  case 87: /* any: R_  */
-#line 872 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 14, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::R_({::dregx::ast::Type::R_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2779 "dregx_parser.tab.c"
-    break;
-
-  case 88: /* any: B_  */
-#line 878 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 15, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::B_({::dregx::ast::Type::B_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2790 "dregx_parser.tab.c"
-    break;
-
-  case 89: /* any: V_  */
-#line 884 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 16, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::V_({::dregx::ast::Type::V_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2801 "dregx_parser.tab.c"
-    break;
-
-  case 90: /* any: A_  */
-#line 890 "./dregx_parser.y"
-              {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 17, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::A_({::dregx::ast::Type::A_, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2812 "dregx_parser.tab.c"
-    break;
-
-  case 91: /* any: LETTER  */
-#line 896 "./dregx_parser.y"
-                  {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 18, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2823 "dregx_parser.tab.c"
-    break;
-
-  case 92: /* any: SPACE  */
-#line 902 "./dregx_parser.y"
-                 {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 19, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2834 "dregx_parser.tab.c"
-    break;
-
-  case 93: /* any: TAB  */
-#line 908 "./dregx_parser.y"
-               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 20, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2845 "dregx_parser.tab.c"
-    break;
-
-  case 94: /* any: PLUS  */
-#line 914 "./dregx_parser.y"
-                {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 21, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2856 "dregx_parser.tab.c"
-    break;
-
-  case 95: /* any: STAR  */
-#line 920 "./dregx_parser.y"
-                {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 22, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2867 "dregx_parser.tab.c"
-    break;
-
-  case 96: /* any: OTHER  */
-#line 926 "./dregx_parser.y"
-                 {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 23, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OTHER({::dregx::ast::Type::OTHER, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2878 "dregx_parser.tab.c"
-    break;
-
-  case 97: /* any: SLASH  */
-#line 932 "./dregx_parser.y"
-                 {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 24, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SLASH({::dregx::ast::Type::SLASH, ::deamer::external::cpp::ast::NodeValue::terminal, (yyvsp[0].Terminal) }) });
-		(yyval.dregx_any) = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-#line 2889 "dregx_parser.tab.c"
-    break;
-
-
-#line 2893 "dregx_parser.tab.c"
-
-        default: break;
-      }
-    if (yychar_backup != yychar)
-      YY_LAC_DISCARD ("yychar change");
-  }
-  /* User semantic actions sometimes alter yychar, and that requires
-     that yytoken be updated with the new translation.  We take the
-     approach of translating immediately before every use of yytoken.
-     One alternative is translating here after every semantic action,
-     but that translation would be missed if the semantic action invokes
-     YYABORT, YYACCEPT, or YYERROR immediately after altering yychar or
-     if it invokes YYBACKUP.  In the case of YYABORT or YYACCEPT, an
-     incorrect destructor might then be invoked immediately.  In the
-     case of YYERROR or YYBACKUP, subsequent parser actions might lead
-     to an incorrect destructor call or verbose syntax error message
-     before the lookahead is translated.  */
-  YY_SYMBOL_PRINT ("-> $$ =", YY_CAST (yysymbol_kind_t, yyr1[yyn]), &yyval, &yyloc);
-
-  YYPOPSTACK (yylen);
-  yylen = 0;
-
-  *++yyvsp = yyval;
-
-  /* Now 'shift' the result of the reduction.  Determine what state
-     that goes to, based on the state we popped back to and the rule
-     number reduced by.  */
-  {
-    const int yylhs = yyr1[yyn] - YYNTOKENS;
-    const int yyi = yypgoto[yylhs] + *yyssp;
-    yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyssp
-               ? yytable[yyi]
-               : yydefgoto[yylhs]);
-  }
-
-  goto yynewstate;
-
-
-/*--------------------------------------.
-| yyerrlab -- here on detecting error.  |
-`--------------------------------------*/
-yyerrlab:
-  /* Make sure we have latest lookahead translation.  See comments at
-     user semantic actions for why this is necessary.  */
-  yytoken = yychar == YYEMPTY ? YYSYMBOL_YYEMPTY : YYTRANSLATE (yychar);
-  /* If not already recovering from an error, report this error.  */
-  if (!yyerrstatus)
+  yylval = yyval_default;
+
+  if (! yyinitGLRStack (yystackp, YYINITDEPTH))
+    goto yyexhaustedlab;
+  switch (YYSETJMP (yystack.yyexception_buffer))
     {
-      ++yynerrs;
-      {
-        yypcontext_t yyctx
-          = {yyssp, yyesa, &yyes, &yyes_capacity, yytoken};
-        char const *yymsgp = YY_("syntax error");
-        int yysyntax_error_status;
-        if (yychar != YYEMPTY)
-          YY_LAC_ESTABLISH;
-        yysyntax_error_status = yysyntax_error (&yymsg_alloc, &yymsg, &yyctx);
-        if (yysyntax_error_status == 0)
-          yymsgp = yymsg;
-        else if (yysyntax_error_status == -1)
-          {
-            if (yymsg != yymsgbuf)
-              YYSTACK_FREE (yymsg);
-            yymsg = YY_CAST (char *,
-                             YYSTACK_ALLOC (YY_CAST (YYSIZE_T, yymsg_alloc)));
-            if (yymsg)
-              {
-                yysyntax_error_status
-                  = yysyntax_error (&yymsg_alloc, &yymsg, &yyctx);
-                yymsgp = yymsg;
-              }
-            else
-              {
-                yymsg = yymsgbuf;
-                yymsg_alloc = sizeof yymsgbuf;
-                yysyntax_error_status = YYENOMEM;
-              }
-          }
-        yyerror (yymsgp);
-        if (yysyntax_error_status == YYENOMEM)
-          YYNOMEM;
-      }
+    case 0: break;
+    case 1: goto yyabortlab;
+    case 2: goto yyexhaustedlab;
+    default: goto yybuglab;
     }
+  yyglrShift (&yystack, 0, 0, 0, &yylval);
+  yyposn = 0;
 
-  if (yyerrstatus == 3)
+  while (yytrue)
     {
-      /* If just tried and failed to reuse lookahead token after an
-         error, discard it.  */
-
-      if (yychar <= YYEOF)
+      /* For efficiency, we have two loops, the first of which is
+         specialized to deterministic operation (single stack, no
+         potential ambiguity).  */
+      /* Standard mode. */
+      while (yytrue)
         {
-          /* Return failure if at end of input.  */
-          if (yychar == YYEOF)
-            YYABORT;
-        }
-      else
-        {
-          yydestruct ("Error: discarding",
-                      yytoken, &yylval);
-          yychar = YYEMPTY;
-        }
-    }
-
-  /* Else will try to reuse lookahead token after shifting the error
-     token.  */
-  goto yyerrlab1;
-
-
-/*---------------------------------------------------.
-| yyerrorlab -- error raised explicitly by YYERROR.  |
-`---------------------------------------------------*/
-yyerrorlab:
-  /* Pacify compilers when the user code never invokes YYERROR and the
-     label yyerrorlab therefore never appears in user code.  */
-  if (0)
-    YYERROR;
-  ++yynerrs;
-
-  /* Do not reclaim the symbols of the rule whose action triggered
-     this YYERROR.  */
-  YYPOPSTACK (yylen);
-  yylen = 0;
-  YY_STACK_PRINT (yyss, yyssp);
-  yystate = *yyssp;
-  goto yyerrlab1;
-
-
-/*-------------------------------------------------------------.
-| yyerrlab1 -- common code for both syntax error and YYERROR.  |
-`-------------------------------------------------------------*/
-yyerrlab1:
-  yyerrstatus = 3;      /* Each real token shifted decrements this.  */
-
-  /* Pop stack until we find a state that shifts the error token.  */
-  for (;;)
-    {
-      yyn = yypact[yystate];
-      if (!yypact_value_is_default (yyn))
-        {
-          yyn += YYSYMBOL_YYerror;
-          if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYSYMBOL_YYerror)
+          yy_state_t yystate = yystack.yytops.yystates[0]->yylrState;
+          YY_DPRINTF ((stderr, "Entering state %d\n", yystate));
+          if (yystate == YYFINAL)
+            goto yyacceptlab;
+          if (yyisDefaultedState (yystate))
             {
-              yyn = yytable[yyn];
-              if (0 < yyn)
+              yyRuleNum yyrule = yydefaultAction (yystate);
+              if (yyrule == 0)
+                {
+                  yyreportSyntaxError (&yystack);
+                  goto yyuser_error;
+                }
+              YYCHK1 (yyglrReduce (&yystack, 0, yyrule, yytrue));
+            }
+          else
+            {
+              yysymbol_kind_t yytoken = yygetToken (&yychar);
+              const short* yyconflicts;
+              int yyaction = yygetLRActions (yystate, yytoken, &yyconflicts);
+              if (*yyconflicts)
+                /* Enter nondeterministic mode.  */
                 break;
+              if (yyisShiftAction (yyaction))
+                {
+                  YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
+                  yychar = YYEMPTY;
+                  yyposn += 1;
+                  yyglrShift (&yystack, 0, yyaction, yyposn, &yylval);
+                  if (0 < yystack.yyerrState)
+                    yystack.yyerrState -= 1;
+                }
+              else if (yyisErrorAction (yyaction))
+                {
+                  /* Issue an error message unless the scanner already
+                     did. */
+                  if (yychar != YYerror)
+                    yyreportSyntaxError (&yystack);
+                  goto yyuser_error;
+                }
+              else
+                YYCHK1 (yyglrReduce (&yystack, 0, -yyaction, yytrue));
             }
         }
 
-      /* Pop the current state because it cannot handle the error token.  */
-      if (yyssp == yyss)
-        YYABORT;
+      /* Nondeterministic mode. */
+      while (yytrue)
+        {
+          yysymbol_kind_t yytoken_to_shift;
+          YYPTRDIFF_T yys;
 
+          for (yys = 0; yys < yystack.yytops.yysize; yys += 1)
+            yystackp->yytops.yylookaheadNeeds[yys] = yychar != YYEMPTY;
 
-      yydestruct ("Error: popping",
-                  YY_ACCESSING_SYMBOL (yystate), yyvsp);
-      YYPOPSTACK (1);
-      yystate = *yyssp;
-      YY_STACK_PRINT (yyss, yyssp);
+          /* yyprocessOneStack returns one of three things:
+
+              - An error flag.  If the caller is yyprocessOneStack, it
+                immediately returns as well.  When the caller is finally
+                yyparse, it jumps to an error label via YYCHK1.
+
+              - yyok, but yyprocessOneStack has invoked yymarkStackDeleted
+                (&yystack, yys), which sets the top state of yys to NULL.  Thus,
+                yyparse's following invocation of yyremoveDeletes will remove
+                the stack.
+
+              - yyok, when ready to shift a token.
+
+             Except in the first case, yyparse will invoke yyremoveDeletes and
+             then shift the next token onto all remaining stacks.  This
+             synchronization of the shift (that is, after all preceding
+             reductions on all stacks) helps prevent double destructor calls
+             on yylval in the event of memory exhaustion.  */
+
+          for (yys = 0; yys < yystack.yytops.yysize; yys += 1)
+            YYCHK1 (yyprocessOneStack (&yystack, yys, yyposn));
+          yyremoveDeletes (&yystack);
+          if (yystack.yytops.yysize == 0)
+            {
+              yyundeleteLastStack (&yystack);
+              if (yystack.yytops.yysize == 0)
+                yyFail (&yystack, YY_("syntax error"));
+              YYCHK1 (yyresolveStack (&yystack));
+              YY_DPRINTF ((stderr, "Returning to deterministic operation.\n"));
+              yyreportSyntaxError (&yystack);
+              goto yyuser_error;
+            }
+
+          /* If any yyglrShift call fails, it will fail after shifting.  Thus,
+             a copy of yylval will already be on stack 0 in the event of a
+             failure in the following loop.  Thus, yychar is set to YYEMPTY
+             before the loop to make sure the user destructor for yylval isn't
+             called twice.  */
+          yytoken_to_shift = YYTRANSLATE (yychar);
+          yychar = YYEMPTY;
+          yyposn += 1;
+          for (yys = 0; yys < yystack.yytops.yysize; yys += 1)
+            {
+              yy_state_t yystate = yystack.yytops.yystates[yys]->yylrState;
+              const short* yyconflicts;
+              int yyaction = yygetLRActions (yystate, yytoken_to_shift,
+                              &yyconflicts);
+              /* Note that yyconflicts were handled by yyprocessOneStack.  */
+              YY_DPRINTF ((stderr, "On stack %ld, ", YY_CAST (long, yys)));
+              YY_SYMBOL_PRINT ("shifting", yytoken_to_shift, &yylval, &yylloc);
+              yyglrShift (&yystack, yys, yyaction, yyposn,
+                          &yylval);
+              YY_DPRINTF ((stderr, "Stack %ld now in state %d\n",
+                           YY_CAST (long, yys),
+                           yystack.yytops.yystates[yys]->yylrState));
+            }
+
+          if (yystack.yytops.yysize == 1)
+            {
+              YYCHK1 (yyresolveStack (&yystack));
+              YY_DPRINTF ((stderr, "Returning to deterministic operation.\n"));
+              yycompressStack (&yystack);
+              break;
+            }
+        }
+      continue;
+    yyuser_error:
+      yyrecoverSyntaxError (&yystack);
+      yyposn = yystack.yytops.yystates[0]->yyposn;
     }
 
-  /* If the stack popping above didn't lose the initial context for the
-     current lookahead token, the shift below will for sure.  */
-  YY_LAC_DISCARD ("error recovery");
-
-  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
-  *++yyvsp = yylval;
-  YY_IGNORE_MAYBE_UNINITIALIZED_END
-
-
-  /* Shift the error token.  */
-  YY_SYMBOL_PRINT ("Shifting", YY_ACCESSING_SYMBOL (yyn), yyvsp, yylsp);
-
-  yystate = yyn;
-  goto yynewstate;
-
-
-/*-------------------------------------.
-| yyacceptlab -- YYACCEPT comes here.  |
-`-------------------------------------*/
-yyacceptlab:
+ yyacceptlab:
   yyresult = 0;
   goto yyreturnlab;
 
+ yybuglab:
+  YY_ASSERT (yyfalse);
+  goto yyabortlab;
 
-/*-----------------------------------.
-| yyabortlab -- YYABORT comes here.  |
-`-----------------------------------*/
-yyabortlab:
+ yyabortlab:
   yyresult = 1;
   goto yyreturnlab;
 
-
-/*-----------------------------------------------------------.
-| yyexhaustedlab -- YYNOMEM (memory exhaustion) comes here.  |
-`-----------------------------------------------------------*/
-yyexhaustedlab:
+ yyexhaustedlab:
   yyerror (YY_("memory exhausted"));
   yyresult = 2;
   goto yyreturnlab;
 
-
-/*----------------------------------------------------------.
-| yyreturnlab -- parsing is finished, clean up and return.  |
-`----------------------------------------------------------*/
-yyreturnlab:
+ yyreturnlab:
   if (yychar != YYEMPTY)
+    yydestruct ("Cleanup: discarding lookahead",
+                YYTRANSLATE (yychar), &yylval);
+
+  /* If the stack is well-formed, pop the stack until it is empty,
+     destroying its entries as we go.  But free the stack regardless
+     of whether it is well-formed.  */
+  if (yystack.yyitems)
     {
-      /* Make sure we have latest lookahead translation.  See comments at
-         user semantic actions for why this is necessary.  */
-      yytoken = YYTRANSLATE (yychar);
-      yydestruct ("Cleanup: discarding lookahead",
-                  yytoken, &yylval);
+      yyGLRState** yystates = yystack.yytops.yystates;
+      if (yystates)
+        {
+          YYPTRDIFF_T yysize = yystack.yytops.yysize;
+          YYPTRDIFF_T yyk;
+          for (yyk = 0; yyk < yysize; yyk += 1)
+            if (yystates[yyk])
+              {
+                while (yystates[yyk])
+                  {
+                    yyGLRState *yys = yystates[yyk];
+                    if (yys->yypred != YY_NULLPTR)
+                      yydestroyGLRState ("Cleanup: popping", yys);
+                    yystates[yyk] = yys->yypred;
+                    yystack.yynextFree -= 1;
+                    yystack.yyspaceLeft += 1;
+                  }
+                break;
+              }
+        }
+      yyfreeGLRStack (&yystack);
     }
-  /* Do not reclaim the symbols of the rule whose action triggered
-     this YYABORT or YYACCEPT.  */
-  YYPOPSTACK (yylen);
-  YY_STACK_PRINT (yyss, yyssp);
-  while (yyssp != yyss)
-    {
-      yydestruct ("Cleanup: popping",
-                  YY_ACCESSING_SYMBOL (+*yyssp), yyvsp);
-      YYPOPSTACK (1);
-    }
-#ifndef yyoverflow
-  if (yyss != yyssa)
-    YYSTACK_FREE (yyss);
-#endif
-  if (yyes != yyesa)
-    YYSTACK_FREE (yyes);
-  if (yymsg != yymsgbuf)
-    YYSTACK_FREE (yymsg);
+
   return yyresult;
 }
 
-#line 942 "./dregx_parser.y"
+/* DEBUGGING ONLY */
+#if YYDEBUG
+/* Print *YYS and its predecessors. */
+static void
+yy_yypstack (yyGLRState* yys)
+{
+  if (yys->yypred)
+    {
+      yy_yypstack (yys->yypred);
+      YY_FPRINTF ((stderr, " -> "));
+    }
+  YY_FPRINTF ((stderr, "%d@%ld", yys->yylrState, YY_CAST (long, yys->yyposn)));
+}
+
+/* Print YYS (possibly NULL) and its predecessors. */
+static void
+yypstates (yyGLRState* yys)
+{
+  if (yys == YY_NULLPTR)
+    YY_FPRINTF ((stderr, "<null>"));
+  else
+    yy_yypstack (yys);
+  YY_FPRINTF ((stderr, "\n"));
+}
+
+/* Print the stack #YYK.  */
+static void
+yypstack (yyGLRStack* yystackp, YYPTRDIFF_T yyk)
+{
+  yypstates (yystackp->yytops.yystates[yyk]);
+}
+
+/* Print all the stacks.  */
+static void
+yypdumpstack (yyGLRStack* yystackp)
+{
+#define YYINDEX(YYX)                                                    \
+  YY_CAST (long,                                                        \
+           ((YYX)                                                       \
+            ? YY_REINTERPRET_CAST (yyGLRStackItem*, (YYX)) - yystackp->yyitems \
+            : -1))
+
+  yyGLRStackItem* yyp;
+  for (yyp = yystackp->yyitems; yyp < yystackp->yynextFree; yyp += 1)
+    {
+      YY_FPRINTF ((stderr, "%3ld. ",
+                   YY_CAST (long, yyp - yystackp->yyitems)));
+      if (*YY_REINTERPRET_CAST (yybool *, yyp))
+        {
+          YY_ASSERT (yyp->yystate.yyisState);
+          YY_ASSERT (yyp->yyoption.yyisState);
+          YY_FPRINTF ((stderr, "Res: %d, LR State: %d, posn: %ld, pred: %ld",
+                       yyp->yystate.yyresolved, yyp->yystate.yylrState,
+                       YY_CAST (long, yyp->yystate.yyposn),
+                       YYINDEX (yyp->yystate.yypred)));
+          if (! yyp->yystate.yyresolved)
+            YY_FPRINTF ((stderr, ", firstVal: %ld",
+                         YYINDEX (yyp->yystate.yysemantics.yyfirstVal)));
+        }
+      else
+        {
+          YY_ASSERT (!yyp->yystate.yyisState);
+          YY_ASSERT (!yyp->yyoption.yyisState);
+          YY_FPRINTF ((stderr, "Option. rule: %d, state: %ld, next: %ld",
+                       yyp->yyoption.yyrule - 1,
+                       YYINDEX (yyp->yyoption.yystate),
+                       YYINDEX (yyp->yyoption.yynext)));
+        }
+      YY_FPRINTF ((stderr, "\n"));
+    }
+
+  YY_FPRINTF ((stderr, "Tops:"));
+  {
+    YYPTRDIFF_T yyi;
+    for (yyi = 0; yyi < yystackp->yytops.yysize; yyi += 1)
+      YY_FPRINTF ((stderr, "%ld: %ld; ", YY_CAST (long, yyi),
+                   YYINDEX (yystackp->yytops.yystates[yyi])));
+    YY_FPRINTF ((stderr, "\n"));
+  }
+#undef YYINDEX
+}
+#endif
+
+#undef yylval
+#undef yychar
+#undef yynerrs
+
+/* Substitute the variable and function names.  */
+#define yyparse dregxparse
+#define yylex   dregxlex
+#define yyerror dregxerror
+#define yylval  dregxlval
+#define yychar  dregxchar
+#define yydebug dregxdebug
+#define yynerrs dregxnerrs
+
+
+#line 923 "./dregx_parser.y"
 
 
 void dregxerror(const char* s)

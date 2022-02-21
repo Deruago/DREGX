@@ -6,7 +6,7 @@
 / Padding exists of spaces and or tabs.
 
 program
-	stmt*
+	stmt* opt_pad
 
 stmt
 	word
@@ -78,7 +78,7 @@ max_repition
 	opt_pad NUMBER+
 
 standalone
-	opt_pad any_letter+
+	opt_pad any_letter
 
 opt_pad
 	optional_padding

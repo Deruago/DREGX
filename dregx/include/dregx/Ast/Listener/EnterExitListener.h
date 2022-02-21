@@ -58,7 +58,6 @@
 #include "dregx/Ast/Node/deamerreserved_plus__NUMBER__.h"
 #include "dregx/Ast/Node/max_repition.h"
 #include "dregx/Ast/Node/standalone.h"
-#include "dregx/Ast/Node/deamerreserved_plus__any_letter__.h"
 #include "dregx/Ast/Node/opt_pad.h"
 #include "dregx/Ast/Node/optional_padding.h"
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
@@ -566,15 +565,6 @@ namespace dregx { namespace ast { namespace listener {
 				EnterAnything(node);
 				EnterNonTerminal(node);
 				ListenEntry(static_cast<const dregx::ast::node::standalone*>(node));
-				break;
-			}
-
-			case dregx::ast::Type::deamerreserved_plus__any_letter__:
-			{
-				// Enter nonterminal
-				EnterAnything(node);
-				EnterNonTerminal(node);
-				ListenEntry(static_cast<const dregx::ast::node::deamerreserved_plus__any_letter__*>(node));
 				break;
 			}
 
@@ -1131,15 +1121,6 @@ namespace dregx { namespace ast { namespace listener {
 				break;
 			}
 
-			case dregx::ast::Type::deamerreserved_plus__any_letter__:
-			{
-				// Exit nonterminal
-				ListenExit(static_cast<const dregx::ast::node::deamerreserved_plus__any_letter__*>(node));
-				ExitNonTerminal(node);
-				ExitAnything(node);
-				break;
-			}
-
 			case dregx::ast::Type::opt_pad:
 			{
 				// Exit nonterminal
@@ -1535,10 +1516,6 @@ namespace dregx { namespace ast { namespace listener {
 		{
 		}
 
-		virtual void ListenEntry(const dregx::ast::node::deamerreserved_plus__any_letter__* node) 
-		{
-		}
-
 		virtual void ListenEntry(const dregx::ast::node::opt_pad* node) 
 		{
 		}
@@ -1669,10 +1646,6 @@ namespace dregx { namespace ast { namespace listener {
 		}
 
 		virtual void ListenExit(const dregx::ast::node::standalone* node) 
-		{
-		}
-
-		virtual void ListenExit(const dregx::ast::node::deamerreserved_plus__any_letter__* node) 
 		{
 		}
 

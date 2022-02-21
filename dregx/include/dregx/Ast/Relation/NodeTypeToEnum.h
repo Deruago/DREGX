@@ -30,7 +30,6 @@ class min_repition;
 class deamerreserved_plus__NUMBER__;
 class max_repition;
 class standalone;
-class deamerreserved_plus__any_letter__;
 class opt_pad;
 class optional_padding;
 class deamerreserved_star__padding__;
@@ -252,13 +251,6 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::standalone;
 		using type = ::dregx::ast::node::standalone;
-	};
-
-	template<>
-	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_plus__any_letter__>
-	{
-		constexpr static auto value = ::dregx::ast::Type::deamerreserved_plus__any_letter__;
-		using type = ::dregx::ast::node::deamerreserved_plus__any_letter__;
 	};
 
 	template<>

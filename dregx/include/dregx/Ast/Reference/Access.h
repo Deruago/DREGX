@@ -31,7 +31,6 @@
 #include "dregx/Ast/Node/deamerreserved_plus__NUMBER__.h"
 #include "dregx/Ast/Node/max_repition.h"
 #include "dregx/Ast/Node/standalone.h"
-#include "dregx/Ast/Node/deamerreserved_plus__any_letter__.h"
 #include "dregx/Ast/Node/opt_pad.h"
 #include "dregx/Ast/Node/optional_padding.h"
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
@@ -209,8 +208,6 @@ namespace dregx { namespace ast { namespace reference {
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::standalone>;
 	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>;
-	template<>
 	struct AccessTemplateBase<::dregx::ast::node::opt_pad>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::optional_padding>;
@@ -357,6 +354,7 @@ namespace dregx { namespace ast { namespace reference {
 	public:
 		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__stmt__> deamerreserved_star__stmt__();
 AccessTemplateBase<::dregx::ast::node::stmt> stmt();
+AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
 
 
 		template<typename FunctionType>
@@ -2977,121 +2975,12 @@ AccessTemplateBase<::dregx::ast::node::NUMBER> NUMBER();
 		}
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__> deamerreserved_plus__any_letter__();
-AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
+		AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
 AccessTemplateBase<::dregx::ast::node::any_letter> any_letter();
 
 
 		template<typename FunctionType>
 		AccessTemplateBase<::dregx::ast::node::standalone>& for_all(FunctionType function)
-		{
-			for (const auto* const t : ts)
-			{
-				function(t);
-			}
-
-			return *this;
-		}
-
-	public:
-		auto begin()
-		{
-			return ts.begin();
-		}
-		auto cbegin()
-		{
-			return ts.cbegin();
-		}
-		
-		auto end()
-		{
-			return ts.end();
-		}
-		
-		auto cend()
-		{
-			return ts.cend();
-		}
-	};
-
-	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__> : public AccessBase
-	{
-	protected:
-		std::vector<const ::dregx::ast::node::deamerreserved_plus__any_letter__*> ts;
-
-	public:
-		AccessTemplateBase(std::vector<const ::dregx::ast::node::deamerreserved_plus__any_letter__*> ts_) : ts(std::move(ts_))
-		{
-		}
-
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_plus__any_letter__& t) : ts({&t})
-		{
-		}
-
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_plus__any_letter__* t) : ts({t})
-		{
-		}
-
-		AccessTemplateBase() = default;
-
-	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>& operator[](::std::size_t index)
-		{
-			if (index >= ts.size())
-			{
-				ts.clear();
-			}
-			else
-			{
-				const auto* const copy = ts[index];
-				ts.clear();
-				ts.push_back(copy);
-			}
-
-			return *this;
-		}
-
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
-		{
-			// swap if the other is larger
-			if (indexBegin > indexEnd)
-			{
-				const auto tmp = indexBegin;
-				indexBegin = indexEnd;
-				indexEnd = tmp;
-			}
-
-			if (indexBegin >= ts.size())
-			{
-				ts.clear();
-			}
-			else
-			{
-				std::vector<const ::dregx::ast::node::deamerreserved_plus__any_letter__*> temporaries;
-				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
-				{
-					temporaries.push_back(ts[i]);
-				}
-				ts.clear();
-				ts = temporaries;
-			}
-
-			return *this;
-		}
-
-		std::vector<const ::dregx::ast::node::deamerreserved_plus__any_letter__*> GetContent()
-		{
-			return ts;
-		}
-
-	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__> deamerreserved_plus__any_letter__();
-AccessTemplateBase<::dregx::ast::node::any_letter> any_letter();
-
-
-		template<typename FunctionType>
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -6893,6 +6782,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::stmt>(Get<::dregx::ast::Type::stmt>(ts));
 		}
 
+		inline AccessTemplateBase<::dregx::ast::node::opt_pad> AccessTemplateBase<::dregx::ast::node::program>::opt_pad()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::opt_pad>(Get<::dregx::ast::Type::opt_pad>(ts));
+		}
+
 		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__stmt__> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__stmt__>::deamerreserved_star__stmt__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -7501,14 +7398,6 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::NUMBER>(Get<::dregx::ast::Type::NUMBER>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__> AccessTemplateBase<::dregx::ast::node::standalone>::deamerreserved_plus__any_letter__()
-		{
-			// Optimized search, if it fails continue using unoptimized search.
-
-			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>(Get<::dregx::ast::Type::deamerreserved_plus__any_letter__>(ts));
-		}
-
 		inline AccessTemplateBase<::dregx::ast::node::opt_pad> AccessTemplateBase<::dregx::ast::node::standalone>::opt_pad()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -7518,22 +7407,6 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::any_letter> AccessTemplateBase<::dregx::ast::node::standalone>::any_letter()
-		{
-			// Optimized search, if it fails continue using unoptimized search.
-
-			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::any_letter>(Get<::dregx::ast::Type::any_letter>(ts));
-		}
-
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__> AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>::deamerreserved_plus__any_letter__()
-		{
-			// Optimized search, if it fails continue using unoptimized search.
-
-			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>(Get<::dregx::ast::Type::deamerreserved_plus__any_letter__>(ts));
-		}
-
-		inline AccessTemplateBase<::dregx::ast::node::any_letter> AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__any_letter__>::any_letter()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 

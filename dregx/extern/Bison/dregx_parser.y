@@ -1,5 +1,5 @@
 %define parse.error verbose
-%define parse.lac full
+%glr-parser
 
 %{
 #include <iostream>
@@ -67,7 +67,6 @@
 #include "dregx/Ast/Node/deamerreserved_plus__NUMBER__.h"
 #include "dregx/Ast/Node/max_repition.h"
 #include "dregx/Ast/Node/standalone.h"
-#include "dregx/Ast/Node/deamerreserved_plus__any_letter__.h"
 #include "dregx/Ast/Node/opt_pad.h"
 #include "dregx/Ast/Node/optional_padding.h"
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
@@ -145,7 +144,6 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 %nterm<dregx_deamerreserved_plus__NUMBER__> deamerreserved_plus__NUMBER__
 %nterm<dregx_max_repition> max_repition
 %nterm<dregx_standalone> standalone
-%nterm<dregx_deamerreserved_plus__any_letter__> deamerreserved_plus__any_letter__
 %nterm<dregx_opt_pad> opt_pad
 %nterm<dregx_optional_padding> optional_padding
 %nterm<dregx_deamerreserved_star__padding__> deamerreserved_star__padding__
@@ -210,7 +208,6 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 	::dregx::ast::node::deamerreserved_plus__NUMBER__* dregx_deamerreserved_plus__NUMBER__;
 	::dregx::ast::node::max_repition* dregx_max_repition;
 	::dregx::ast::node::standalone* dregx_standalone;
-	::dregx::ast::node::deamerreserved_plus__any_letter__* dregx_deamerreserved_plus__any_letter__;
 	::dregx::ast::node::opt_pad* dregx_opt_pad;
 	::dregx::ast::node::optional_padding* dregx_optional_padding;
 	::dregx::ast::node::deamerreserved_star__padding__* dregx_deamerreserved_star__padding__;
@@ -226,8 +223,8 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 
 
 program:
-	deamerreserved_star__stmt__  {
-		auto* const newNode = new dregx::ast::node::program({::dregx::ast::Type::program, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
+	deamerreserved_star__stmt__ opt_pad  {
+		auto* const newNode = new dregx::ast::node::program({::dregx::ast::Type::program, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, $2 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
@@ -635,24 +632,8 @@ max_repition:
 
 
 standalone:
-	opt_pad deamerreserved_plus__any_letter__  {
+	opt_pad any_letter  {
 		auto* const newNode = new dregx::ast::node::standalone({::dregx::ast::Type::standalone, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, $2 });
-		$$ = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-;
-
-
-deamerreserved_plus__any_letter__:
-	any_letter  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__any_letter__({::dregx::ast::Type::deamerreserved_plus__any_letter__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1 });
-		$$ = newNode;
-
-		// Ignored, Deleted, tokens are deleted
-	}
-	| any_letter deamerreserved_plus__any_letter__  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__any_letter__({::dregx::ast::Type::deamerreserved_plus__any_letter__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, $2 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted

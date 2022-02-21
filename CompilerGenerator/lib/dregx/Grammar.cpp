@@ -18,7 +18,7 @@ dregx::Grammar::Grammar(dregx::Language* language)
 void dregx::Grammar::GenerateObjects()
 {
 	// Non-Terminal initialization
-	program.Set(::deamer::language::type::definition::object::main::NonTerminal("program", { program_deamerreserved_star__stmt__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
+	program.Set(::deamer::language::type::definition::object::main::NonTerminal("program", { program_deamerreserved_star__stmt___opt_pad.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_star__stmt__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__stmt__", { deamerreserved_star__stmt___stmt_deamerreserved_star__stmt__.Pointer(),deamerreserved_star__stmt___EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 stmt.Set(::deamer::language::type::definition::object::main::NonTerminal("stmt", { stmt_word.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 word.Set(::deamer::language::type::definition::object::main::NonTerminal("word", { word_group.Pointer(),word_square.Pointer(),word_standalone.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
@@ -42,8 +42,7 @@ extension_modifier.Set(::deamer::language::type::definition::object::main::NonTe
 min_repition.Set(::deamer::language::type::definition::object::main::NonTerminal("min_repition", { min_repition_opt_pad_deamerreserved_plus__NUMBER__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_plus__NUMBER__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_plus__NUMBER__", { deamerreserved_plus__NUMBER___NUMBER.Pointer(),deamerreserved_plus__NUMBER___NUMBER_deamerreserved_plus__NUMBER__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
 max_repition.Set(::deamer::language::type::definition::object::main::NonTerminal("max_repition", { max_repition_opt_pad_deamerreserved_plus__NUMBER__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
-standalone.Set(::deamer::language::type::definition::object::main::NonTerminal("standalone", { standalone_opt_pad_deamerreserved_plus__any_letter__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
-deamerreserved_plus__any_letter__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_plus__any_letter__", { deamerreserved_plus__any_letter___any_letter.Pointer(),deamerreserved_plus__any_letter___any_letter_deamerreserved_plus__any_letter__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
+standalone.Set(::deamer::language::type::definition::object::main::NonTerminal("standalone", { standalone_opt_pad_any_letter.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 opt_pad.Set(::deamer::language::type::definition::object::main::NonTerminal("opt_pad", { opt_pad_optional_padding.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 optional_padding.Set(::deamer::language::type::definition::object::main::NonTerminal("optional_padding", { optional_padding_deamerreserved_star__padding__.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , false));
 deamerreserved_star__padding__.Set(::deamer::language::type::definition::object::main::NonTerminal("deamerreserved_star__padding__", { deamerreserved_star__padding___padding_deamerreserved_star__padding__.Pointer(),deamerreserved_star__padding___EMPTY.Pointer() } , ::deamer::language::type::definition::object::main::NonTerminalAbstraction::Standard , true));
@@ -57,7 +56,7 @@ any.Set(::deamer::language::type::definition::object::main::NonTerminal("any", {
 	// Production-Rule initialization
 	deamerreserved_star__stmt___stmt_deamerreserved_star__stmt__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->stmt.Pointer(),Language->deamerreserved_star__stmt__.Pointer() }));
 deamerreserved_star__stmt___EMPTY.Set(::deamer::language::type::definition::object::main::ProductionRule());
-program_deamerreserved_star__stmt__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->deamerreserved_star__stmt__.Pointer() }));
+program_deamerreserved_star__stmt___opt_pad.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->deamerreserved_star__stmt__.Pointer(),Language->opt_pad.Pointer() }));
 stmt_word.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->word.Pointer() }));
 word_group.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->group.Pointer() }));
 word_square.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->square.Pointer() }));
@@ -107,9 +106,7 @@ deamerreserved_plus__NUMBER___NUMBER.Set(::deamer::language::type::definition::o
 deamerreserved_plus__NUMBER___NUMBER_deamerreserved_plus__NUMBER__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->NUMBER.Pointer(),Language->deamerreserved_plus__NUMBER__.Pointer() }));
 min_repition_opt_pad_deamerreserved_plus__NUMBER__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->opt_pad.Pointer(),Language->deamerreserved_plus__NUMBER__.Pointer() }));
 max_repition_opt_pad_deamerreserved_plus__NUMBER__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->opt_pad.Pointer(),Language->deamerreserved_plus__NUMBER__.Pointer() }));
-deamerreserved_plus__any_letter___any_letter.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->any_letter.Pointer() }));
-deamerreserved_plus__any_letter___any_letter_deamerreserved_plus__any_letter__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->any_letter.Pointer(),Language->deamerreserved_plus__any_letter__.Pointer() }));
-standalone_opt_pad_deamerreserved_plus__any_letter__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->opt_pad.Pointer(),Language->deamerreserved_plus__any_letter__.Pointer() }));
+standalone_opt_pad_any_letter.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->opt_pad.Pointer(),Language->any_letter.Pointer() }));
 opt_pad_optional_padding.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->optional_padding.Pointer() }));
 deamerreserved_star__padding___padding_deamerreserved_star__padding__.Set(::deamer::language::type::definition::object::main::ProductionRule({ Language->padding.Pointer(),Language->deamerreserved_star__padding__.Pointer() }));
 deamerreserved_star__padding___EMPTY.Set(::deamer::language::type::definition::object::main::ProductionRule());
@@ -183,7 +180,6 @@ AddObject(min_repition);
 AddObject(deamerreserved_plus__NUMBER__);
 AddObject(max_repition);
 AddObject(standalone);
-AddObject(deamerreserved_plus__any_letter__);
 AddObject(opt_pad);
 AddObject(optional_padding);
 AddObject(deamerreserved_star__padding__);
@@ -196,7 +192,7 @@ AddObject(any);
 
 	AddObject(deamerreserved_star__stmt___stmt_deamerreserved_star__stmt__);
 AddObject(deamerreserved_star__stmt___EMPTY);
-AddObject(program_deamerreserved_star__stmt__);
+AddObject(program_deamerreserved_star__stmt___opt_pad);
 AddObject(stmt_word);
 AddObject(word_group);
 AddObject(word_square);
@@ -246,9 +242,7 @@ AddObject(deamerreserved_plus__NUMBER___NUMBER);
 AddObject(deamerreserved_plus__NUMBER___NUMBER_deamerreserved_plus__NUMBER__);
 AddObject(min_repition_opt_pad_deamerreserved_plus__NUMBER__);
 AddObject(max_repition_opt_pad_deamerreserved_plus__NUMBER__);
-AddObject(deamerreserved_plus__any_letter___any_letter);
-AddObject(deamerreserved_plus__any_letter___any_letter_deamerreserved_plus__any_letter__);
-AddObject(standalone_opt_pad_deamerreserved_plus__any_letter__);
+AddObject(standalone_opt_pad_any_letter);
 AddObject(opt_pad_optional_padding);
 AddObject(deamerreserved_star__padding___padding_deamerreserved_star__padding__);
 AddObject(deamerreserved_star__padding___EMPTY);

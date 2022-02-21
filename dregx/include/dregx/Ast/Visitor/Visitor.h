@@ -57,7 +57,6 @@
 #include "dregx/Ast/Node/deamerreserved_plus__NUMBER__.h"
 #include "dregx/Ast/Node/max_repition.h"
 #include "dregx/Ast/Node/standalone.h"
-#include "dregx/Ast/Node/deamerreserved_plus__any_letter__.h"
 #include "dregx/Ast/Node/opt_pad.h"
 #include "dregx/Ast/Node/optional_padding.h"
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
@@ -342,11 +341,6 @@ namespace dregx { namespace ast { namespace Visitor {
 				Visit(static_cast<const dregx::ast::node::standalone*>(node));
 				break;
 			}
-			case dregx::ast::Type::deamerreserved_plus__any_letter__:
-			{
-				Visit(static_cast<const dregx::ast::node::deamerreserved_plus__any_letter__*>(node));
-				break;
-			}
 			case dregx::ast::Type::opt_pad:
 			{
 				Visit(static_cast<const dregx::ast::node::opt_pad*>(node));
@@ -544,9 +538,6 @@ namespace dregx { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const dregx::ast::node::standalone* node)
-		{
-		}
-		virtual void Visit(const dregx::ast::node::deamerreserved_plus__any_letter__* node)
 		{
 		}
 		virtual void Visit(const dregx::ast::node::opt_pad* node)
