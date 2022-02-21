@@ -213,3 +213,53 @@ TEST_F(TestParserInput, Regex_OrSequence5Elements_ShouldCorrectlyParse)
 	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("(A|B|C|D|E)"));
 	ASSERT_NE(nullptr, tree);
 }
+
+TEST_F(TestParserInput, Regex_GroupSequence3Elements_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("(A)(B)(C)"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_SquareSequence3Elements_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("[A][B][C]"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_SquareAndGroupSequence5Elements_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("(A)[B][C](D)(E)"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_PaddedSquareAndGroupSequence5Elements_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(
+		parser.Parse("			(A)		  [B]	 [C]		 (D)+	  (E) "));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_RegexWithPadding_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(
+		parser.Parse(" (   A| B|C   |D|		E )+		 [a] (   A| B|C   |D|		E)+		 [a]"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_WordWith1Character_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("a"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_WordWith2Character_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("ab"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_WordWith3Character_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("abc"));
+	ASSERT_NE(nullptr, tree);
+}
