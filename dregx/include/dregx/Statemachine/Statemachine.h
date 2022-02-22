@@ -5,6 +5,7 @@
 #include "dregx/Statemachine/State.h"
 #include "dregx/Statemachine/Transition.h"
 #include <memory>
+#include <set>
 #include <vector>
 
 namespace dregx::statemachine
@@ -55,6 +56,12 @@ namespace dregx::statemachine
 	private:
 		void OrSpecificState(State* state, State* getStartState, Transition* transition,
 							 Statemachine& rhs);
+
+		void ConcatenateSpecificState(State* state, State* rhsState, Transition* transition,
+									  Statemachine& rhs, std::size_t depth,
+									  std::tuple<std::size_t, std::vector<State*>>& linkStates);
+		void GetStatesToSource(const std::vector<State*>& states, std::set<State*>& embeddedStates);
+		void GetStatesToSource(const State* state, std::set<State*>& embeddedStates);
 	};
 }
 

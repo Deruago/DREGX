@@ -7,12 +7,10 @@ dregx::statemachine::State::~State()
 	for (auto inTransition : inTransitions)
 	{
 		inTransition->SetOutState(nullptr);
-		delete inTransition;
 	}
 	for (auto outTransition : outTransitions)
 	{
 		outTransition->SetInState(nullptr);
-		delete outTransition;
 	}
 
 	inTransitions.clear();

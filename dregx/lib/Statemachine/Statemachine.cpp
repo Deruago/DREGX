@@ -1,7 +1,9 @@
 #include "dregx/Statemachine/Statemachine.h"
 #include <algorithm>
+#include <limits>
 #include <map>
 #include <memory>
+#include <set>
 #include <stdexcept>
 #include <utility>
 
@@ -48,9 +50,6 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 	{
 		return;
 	}
-	auto rhs_startStateOutTransitions = rhs.GetStartState()->GetOutTransitions();
-	auto rhs_startStateInTransitions = rhs.GetStartState()->GetInTransitions();
-
 	// Does not support extension cases
 
 	// In case there are no cycles in the Statemachine
@@ -59,55 +58,34 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 	// If start state is accepted, our accepted state will still be accepted
 	const bool ourAcceptStateStillAccepted = rhs.GetStartState()->IsAcceptState();
 
-	for (auto* acceptState : GetAcceptStates())
+	std::tuple<std::size_t, std::vector<State*>> linkedStates = {
+		std::numeric_limits<std::size_t>::max(), {}};
+
+	for (auto& acceptState : GetAcceptStates())
 	{
-		acceptState->SetAccept(ourAcceptStateStillAccepted);
-		for (auto* transition : rhs_startStateOutTransitions)
+		for (auto* currentTransition : rhs.GetStartState()->GetOutTransitions())
 		{
-			auto newTransition = std::make_unique<Transition>(
-				acceptState, transition->GetConditions(), transition->GetOutState());
-			AddTransition(std::move(newTransition));
-		}
-		for (auto* transition : rhs_startStateInTransitions)
-		{
-			auto newTransition = std::make_unique<Transition>(
-				transition->GetInState(), transition->GetConditions(), acceptState);
-			AddTransition(std::move(newTransition));
+			acceptState->SetAccept(ourAcceptStateStillAccepted);
+			ConcatenateSpecificState(acceptState, rhs.GetStartState(), currentTransition, rhs, 0,
+									 linkedStates);
 		}
 	}
 
-	for (auto& newState : rhs.states)
+	std::set<State*> removeStates;
+	GetStatesToSource(std::get<std::vector<State*>>(linkedStates), removeStates);
+	for (auto& removeState : removeStates)
 	{
-		if (newState.get() == rhs.GetStartState())
-		{
-			continue;
-		}
-
-		AddState(std::move(newState));
+		rhs.RemoveState(removeState);
 	}
 
-	for (auto& newTransition : rhs.transitions)
+	for (auto& existingState : rhs.states)
 	{
-		if (newTransition->GetInState() == rhs.GetStartState() ||
-			newTransition->GetOutState() == rhs.GetStartState())
-		{
-			continue;
-		}
+		AddState(std::move(existingState));
+	}
 
-		bool exist = false;
-		for (auto& existingTransition : transitions)
-		{
-			if (newTransition == existingTransition)
-			{
-				exist = true;
-				break;
-			}
-		}
-		if (exist)
-		{
-			continue;
-		}
-		AddTransition(std::move(newTransition));
+	for (auto& existingTransition : rhs.transitions)
+	{
+		AddTransition(std::move(existingTransition));
 	}
 
 	rhs.transitions.clear();
@@ -247,6 +225,14 @@ void dregx::statemachine::Statemachine::RemoveState(State* state)
 	{
 		if (iter->get() == state)
 		{
+			for (auto* inTransition : (*iter)->GetInTransitions())
+			{
+				RemoveTransition(inTransition);
+			}
+			for (auto* outTransition : (*iter)->GetOutTransitions())
+			{
+				RemoveTransition(outTransition);
+			}
 			states.erase(iter);
 			return;
 		}
@@ -387,6 +373,76 @@ void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* get
 		AddTransition(std::move(newTransition));
 
 		rhs.RemoveTransition(transition);
+	}
+}
+
+void dregx::statemachine::Statemachine::ConcatenateSpecificState(
+	State* state, State* rhsState, Transition* transition, Statemachine& rhs, std::size_t depth,
+	std::tuple<std::size_t, std::vector<State*>>& linkStates)
+{
+	if (state->DoesOutTransitionExistWithSameCondition(transition))
+	{
+		// There exists a route to equal state logic.
+		// Follow the path,
+		auto* ourTransition = state->GetOutTransitionWithSameCondition(transition);
+		state = ourTransition->GetOutState();
+		auto* const newRhsState = transition->GetOutState();
+
+		for (auto* newTransition : newRhsState->GetOutTransitions())
+		{
+			ConcatenateSpecificState(state, newRhsState, newTransition, rhs, depth + 1, linkStates);
+		}
+	}
+	else
+	{
+		// The state reference state logic not captured in our DFA
+		// Copy the transition and relink to our DFA
+
+		auto newTransition = std::make_unique<Transition>(state, transition->GetConditions(),
+														  transition->GetOutState());
+
+		if (depth == std::get<std::size_t>(linkStates))
+		{
+			std::get<std::vector<State*>>(linkStates).push_back(transition->GetOutState());
+		}
+		else if (depth <= std::get<std::size_t>(linkStates))
+		{
+			std::get<std::vector<State*>>(linkStates).clear();
+			std::get<std::size_t>(linkStates) = depth;
+			std::get<std::vector<State*>>(linkStates).push_back(transition->GetOutState());
+		}
+
+		// Current state should be linked with rest of the state logic
+		AddTransition(std::move(newTransition));
+	}
+}
+
+void dregx::statemachine::Statemachine::GetStatesToSource(const std::vector<State*>& states,
+														  std::set<State*>& embeddedStates)
+{
+	for (auto& state : states)
+	{
+		GetStatesToSource(state, embeddedStates);
+	}
+}
+
+void dregx::statemachine::Statemachine::GetStatesToSource(const State* state,
+														  std::set<State*>& embeddedStates)
+{
+	for (auto& inTransition : state->GetInTransitions())
+	{
+		auto inState = inTransition->GetInState();
+		if (inState == nullptr)
+		{
+			continue;
+		}
+
+		const auto iter = embeddedStates.find(inState);
+		if (iter == embeddedStates.end())
+		{
+			embeddedStates.insert({inState});
+			GetStatesToSource(inState, embeddedStates);
+		}
 	}
 }
 

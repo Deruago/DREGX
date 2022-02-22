@@ -1,5 +1,6 @@
 #include "dregx/Statemachine/Transition.h"
 #include "dregx/Statemachine/State.h"
+#include <stdexcept>
 
 dregx::statemachine::Transition::Transition(State* in_, std::vector<Conditional> condition_,
 											State* out_)
@@ -7,6 +8,15 @@ dregx::statemachine::Transition::Transition(State* in_, std::vector<Conditional>
 	  condition(condition_),
 	  out(out_)
 {
+	if (in == nullptr)
+	{
+		throw std::logic_error("Cannot link nullptr to in state");
+	}
+	if (out == nullptr)
+	{
+		throw std::logic_error("Cannot link nullptr to out state");
+	}
+
 	in->AddOutTransition(this);
 	out->AddInTransition(this);
 }
