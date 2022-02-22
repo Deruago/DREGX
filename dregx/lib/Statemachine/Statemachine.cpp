@@ -1,14 +1,9 @@
 #include "dregx/Statemachine/Statemachine.h"
 #include <algorithm>
+#include <map>
+#include <memory>
+#include <stdexcept>
 #include <utility>
-
-dregx::statemachine::Statemachine::~Statemachine()
-{
-	for (auto* transition : transitions)
-	{
-		delete transition;
-	}
-}
 
 void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 {
@@ -20,7 +15,7 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 	// Does not support extension cases
 
 	// In case there are no cycles in the Statemachine
-	// Each transition of the rhs.startstate can be set to each accept states
+	// Each state logic of the rhs.DFA is merged with this.DFA
 
 	// a -> b -> c OR a -> d -> e
 	//      -> b -> c
@@ -38,13 +33,13 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 		AddState(std::move(existingState));
 	}
 
-	for (auto* existingTransition : rhs.GetTransitions())
+	for (auto& existingTransition : rhs.transitions)
 	{
-		AddTransition(existingTransition);
+		AddTransition(std::move(existingTransition));
 	}
 
-	rhs.SetTransitions({});
-	rhs.SetStates({});
+	rhs.transitions.clear();
+	rhs.states.clear();
 }
 
 void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
@@ -60,20 +55,24 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 
 	// In case there are no cycles in the Statemachine
 	// Each transition of the rhs.startstate can be set to each accept states
+
+	// If start state is accepted, our accepted state will still be accepted
+	const bool ourAcceptStateStillAccepted = rhs.GetStartState()->IsAcceptState();
+
 	for (auto* acceptState : GetAcceptStates())
 	{
-		acceptState->SetAccept(false);
+		acceptState->SetAccept(ourAcceptStateStillAccepted);
 		for (auto* transition : rhs_startStateOutTransitions)
 		{
-			auto* const newTransition =
-				new Transition(acceptState, transition->GetConditions(), transition->GetOutState());
-			AddTransition(newTransition);
+			auto newTransition = std::make_unique<Transition>(
+				acceptState, transition->GetConditions(), transition->GetOutState());
+			AddTransition(std::move(newTransition));
 		}
 		for (auto* transition : rhs_startStateInTransitions)
 		{
-			auto* const newTransition =
-				new Transition(transition->GetInState(), transition->GetConditions(), acceptState);
-			AddTransition(newTransition);
+			auto newTransition = std::make_unique<Transition>(
+				transition->GetInState(), transition->GetConditions(), acceptState);
+			AddTransition(std::move(newTransition));
 		}
 	}
 
@@ -87,7 +86,7 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 		AddState(std::move(newState));
 	}
 
-	for (auto* newTransition : rhs.GetTransitions())
+	for (auto& newTransition : rhs.transitions)
 	{
 		if (newTransition->GetInState() == rhs.GetStartState() ||
 			newTransition->GetOutState() == rhs.GetStartState())
@@ -96,7 +95,7 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 		}
 
 		bool exist = false;
-		for (auto* existingTransition : transitions)
+		for (auto& existingTransition : transitions)
 		{
 			if (newTransition == existingTransition)
 			{
@@ -108,25 +107,47 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 		{
 			continue;
 		}
-		AddTransition(newTransition);
+		AddTransition(std::move(newTransition));
 	}
 
-	for (auto* transition : rhs_startStateOutTransitions)
-	{
-		delete transition;
-	}
-
-	for (auto* transition : rhs_startStateInTransitions)
-	{
-		delete transition;
-	}
-
-	rhs.GetStartState()->SetInTransitions({});
-	rhs.GetStartState()->SetOutTransitions({});
 	rhs.transitions.clear();
 	rhs.states.clear();
+}
 
-	rhs.RemoveState(rhs.GetStartState());
+std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemachine::Copy() const
+{
+	auto newStatemachine = std::make_unique<Statemachine>();
+
+	std::map<State*, State*> mapExistingStateWithCopiedState;
+
+	for (const auto& existingState : states)
+	{
+		auto copyState = std::make_unique<State>();
+		copyState->SetAccept(existingState->IsAcceptState());
+		copyState->SetStart(existingState->IsStartState());
+		mapExistingStateWithCopiedState.insert({existingState.get(), copyState.get()});
+		newStatemachine->AddState(std::move(copyState));
+	}
+
+	for (const auto& existingTransition : transitions)
+	{
+		auto in = mapExistingStateWithCopiedState.find(existingTransition->GetInState());
+		auto out = mapExistingStateWithCopiedState.find(existingTransition->GetOutState());
+
+		if (in == mapExistingStateWithCopiedState.end())
+		{
+			throw std::logic_error("In state is not contained in statemachine.");
+		}
+		if (out == mapExistingStateWithCopiedState.end())
+		{
+			throw std::logic_error("Out state is not contained in statemachine.");
+		}
+		auto copyTransition = std::make_unique<Transition>(
+			in->second, existingTransition->GetConditions(), out->second);
+		newStatemachine->AddTransition(std::move(copyTransition));
+	}
+
+	return std::move(newStatemachine);
 }
 
 dregx::statemachine::Statemachine& dregx::statemachine::Statemachine::operator|(Statemachine& rhs)
@@ -158,9 +179,9 @@ void dregx::statemachine::Statemachine::AddState(std::unique_ptr<State> state)
 	states.push_back(std::move(state));
 }
 
-void dregx::statemachine::Statemachine::AddTransition(Transition* transition)
+void dregx::statemachine::Statemachine::AddTransition(std::unique_ptr<Transition> transition)
 {
-	transitions.push_back(transition);
+	transitions.push_back(std::move(transition));
 }
 
 void dregx::statemachine::Statemachine::SetStates(std::vector<std::unique_ptr<State>> states_)
@@ -168,26 +189,51 @@ void dregx::statemachine::Statemachine::SetStates(std::vector<std::unique_ptr<St
 	states = std::move(states_);
 }
 
-void dregx::statemachine::Statemachine::SetTransitions(std::vector<Transition*> transitions_)
+void dregx::statemachine::Statemachine::SetTransitions(
+	std::vector<std::unique_ptr<Transition>> transitions_)
 {
 	transitions = std::move(transitions_);
 }
 
 void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 {
-	if (extension.GetLowerBound() == 1 && extension.GetUpperBound() == 1)
+	// Extending some DFA is trivial
+	// Upper bound specifies the copies of the current DFA.
+	// Lower bound specifies when the start state of some copy is an accepting state.
+
+	std::vector<std::unique_ptr<Statemachine>> copiedStatemachines;
+	for (std::size_t i = 1; i < extension.GetUpperBound(); i++)
 	{
-		return; // Default statemachine
+		auto copiedStatemachine = Copy();
+		if (i >= extension.GetLowerBound())
+		{
+			copiedStatemachine->GetStartState()->SetAccept(true);
+		}
+		copiedStatemachines.push_back(std::move(copiedStatemachine));
 	}
 
-	// Not yet implemented
+	for (auto& copiedStatemachine : copiedStatemachines)
+	{
+		Concatenate(*copiedStatemachine);
+	}
+
+	if (extension.GetLowerBound() == 0)
+	{
+		GetStartState()->SetAccept(true);
+	}
+
+	// If the upper bound is infinite
+	// Cycle should be embedded
+	if (extension.IsUpperBoundInfinite())
+	{
+	}
 }
 
 void dregx::statemachine::Statemachine::RemoveTransition(Transition* transition)
 {
 	for (auto iter = std::cbegin(transitions); iter != std::cend(transitions); iter++)
 	{
-		if (*iter == transition)
+		if (iter->get() == transition)
 		{
 			transitions.erase(iter);
 			return;
@@ -230,7 +276,7 @@ std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetS
 	return outStates;
 }
 
-std::vector<dregx::statemachine::Transition*>
+const std::vector<std::unique_ptr<dregx::statemachine::Transition>>&
 dregx::statemachine::Statemachine::GetTransitions() const
 {
 	return transitions;
@@ -267,7 +313,7 @@ std::string dregx::statemachine::Statemachine::Print() const
 {
 	std::string graph = "digraph DFA {\n";
 
-	for (auto transition : GetTransitions())
+	for (auto& transition : GetTransitions())
 	{
 		graph += std::to_string((std::size_t)transition->GetInState());
 		graph += " -> ";
@@ -315,7 +361,6 @@ void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* get
 
 		// Transition is no longer further required
 		rhs.RemoveTransition(transition);
-		delete transition;
 
 		if (newRhsState->IsAcceptState())
 		{
@@ -337,12 +382,11 @@ void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* get
 		// The state reference state logic not captured in our DFA
 		// Copy the transition and relink to our DFA
 
-		auto newTransition =
-			new Transition(state, transition->GetConditions(), transition->GetOutState());
-		AddTransition(newTransition);
+		auto newTransition = std::make_unique<Transition>(state, transition->GetConditions(),
+														  transition->GetOutState());
+		AddTransition(std::move(newTransition));
 
 		rhs.RemoveTransition(transition);
-		delete transition;
 	}
 }
 
@@ -359,13 +403,12 @@ void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 		{
 			for (auto linkedTransition : acceptState->GetInTransitions())
 			{
-				auto newTransition =
-					new Transition(linkedTransition->GetInState(),
-								   linkedTransition->GetConditions(), sharedAcceptState);
-				AddTransition(newTransition);
+				auto newTransition = std::make_unique<Transition>(linkedTransition->GetInState(),
+																  linkedTransition->GetConditions(),
+																  sharedAcceptState);
+				AddTransition(std::move(newTransition));
 
 				RemoveTransition(linkedTransition);
-				delete linkedTransition;
 			}
 
 			RemoveState(acceptState);

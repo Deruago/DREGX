@@ -13,15 +13,16 @@ namespace dregx::statemachine
 	{
 	private:
 		std::vector<std::unique_ptr<State>> states;
-		std::vector<Transition*> transitions;
+		std::vector<std::unique_ptr<Transition>> transitions;
 
 	public:
 		Statemachine() = default;
-		~Statemachine();
+		~Statemachine() = default;
 
 	public:
 		void Or(Statemachine& rhs);
 		void Concatenate(Statemachine& rhs);
+		std::unique_ptr<Statemachine> Copy() const;
 
 	public:
 		Statemachine& operator|(Statemachine& rhs);
@@ -29,9 +30,9 @@ namespace dregx::statemachine
 
 	public:
 		void AddState(std::unique_ptr<State> value);
-		void AddTransition(Transition* transition);
+		void AddTransition(std::unique_ptr<Transition> transition);
 		void SetStates(std::vector<std::unique_ptr<State>> states_);
-		void SetTransitions(std::vector<Transition*> transitions_);
+		void SetTransitions(std::vector<std::unique_ptr<Transition>> transitions_);
 		void Extend(const ir::Extension& extension);
 
 		void RemoveTransition(Transition* transition);
@@ -42,7 +43,7 @@ namespace dregx::statemachine
 		std::vector<dregx::statemachine::State*>
 		GetStates(std::vector<std::vector<Conditional>> inConditions,
 				  std::vector<std::vector<Conditional>> outConditions) const;
-		std::vector<Transition*> GetTransitions() const;
+		const std::vector<std::unique_ptr<Transition>>& GetTransitions() const;
 		State* GetStartState() const;
 		std::vector<State*> GetAcceptStates() const;
 

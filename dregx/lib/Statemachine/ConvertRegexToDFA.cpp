@@ -45,7 +45,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Capture* captu
 	}
 	}
 
-	if (embed && newStatemachine != nullptr)
+	if (!embed && newStatemachine != nullptr)
 	{
 		newStatemachine->OptimizeFinalAcceptStates();
 	}
@@ -99,7 +99,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 {
 	auto statemachine = std::make_unique<dregx::statemachine::Statemachine>();
 	auto states = std::vector<std::unique_ptr<State>>();
-	auto transitions = std::vector<Transition*>();
+	auto transitions = std::vector<std::unique_ptr<Transition>>();
 	auto startState = std::make_unique<State>();
 	startState->SetStart(true);
 
@@ -128,8 +128,9 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 				{
 					continue;
 				}
-				auto newTransition = new Transition(startState.get(), {regex}, acceptState.get());
-				transitions.push_back(newTransition);
+				auto newTransition = std::make_unique<Transition>(
+					startState.get(), std::vector<Conditional>{regex}, acceptState.get());
+				transitions.push_back(std::move(newTransition));
 			}
 		}
 		else
@@ -139,16 +140,17 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 			{
 				continue;
 			}
-			auto newTransition =
-				new Transition(startState.get(), {capture->GetFormattedRegex()}, acceptState.get());
-			transitions.push_back(newTransition);
+			auto newTransition = std::make_unique<Transition>(
+				startState.get(), std::vector<Conditional>{capture->GetFormattedRegex()},
+				acceptState.get());
+			transitions.push_back(std::move(newTransition));
 		}
 	}
 
 	states.push_back(std::move(startState));
 	states.push_back(std::move(acceptState));
 	statemachine->SetStates(std::move(states));
-	statemachine->SetTransitions(transitions);
+	statemachine->SetTransitions(std::move(transitions));
 	statemachine->Extend(square->GetExtension());
 
 	return std::move(statemachine);
