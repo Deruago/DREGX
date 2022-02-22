@@ -8,11 +8,6 @@ dregx::statemachine::Statemachine::~Statemachine()
 	{
 		delete transition;
 	}
-
-	for (auto* state : states)
-	{
-		delete state;
-	}
 }
 
 void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
@@ -36,10 +31,11 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 	{
 		OrSpecificState(this->GetStartState(), rhs.GetStartState(), currentTransition, rhs);
 	}
+	rhs.RemoveState(rhs.GetStartState());
 
-	for (auto* existingState : rhs.GetStates())
+	for (auto& existingState : rhs.states)
 	{
-		AddState(existingState);
+		AddState(std::move(existingState));
 	}
 
 	for (auto* existingTransition : rhs.GetTransitions())
@@ -47,7 +43,6 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 		AddTransition(existingTransition);
 	}
 
-	delete rhs.GetStartState();
 	rhs.SetTransitions({});
 	rhs.SetStates({});
 }
@@ -82,14 +77,14 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 		}
 	}
 
-	for (auto* newState : rhs.GetStates())
+	for (auto& newState : rhs.states)
 	{
-		if (newState == rhs.GetStartState())
+		if (newState.get() == rhs.GetStartState())
 		{
 			continue;
 		}
 
-		AddState(newState);
+		AddState(std::move(newState));
 	}
 
 	for (auto* newTransition : rhs.GetTransitions())
@@ -131,7 +126,7 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 	rhs.transitions.clear();
 	rhs.states.clear();
 
-	delete rhs.GetStartState();
+	rhs.RemoveState(rhs.GetStartState());
 }
 
 dregx::statemachine::Statemachine& dregx::statemachine::Statemachine::operator|(Statemachine& rhs)
@@ -158,9 +153,9 @@ dregx::statemachine::Statemachine& dregx::statemachine::Statemachine::operator&(
 	return *this;
 }
 
-void dregx::statemachine::Statemachine::AddState(State* state)
+void dregx::statemachine::Statemachine::AddState(std::unique_ptr<State> state)
 {
-	states.push_back(state);
+	states.push_back(std::move(state));
 }
 
 void dregx::statemachine::Statemachine::AddTransition(Transition* transition)
@@ -168,7 +163,7 @@ void dregx::statemachine::Statemachine::AddTransition(Transition* transition)
 	transitions.push_back(transition);
 }
 
-void dregx::statemachine::Statemachine::SetStates(std::vector<State*> states_)
+void dregx::statemachine::Statemachine::SetStates(std::vector<std::unique_ptr<State>> states_)
 {
 	states = std::move(states_);
 }
@@ -190,27 +185,30 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 
 void dregx::statemachine::Statemachine::RemoveTransition(Transition* transition)
 {
-	const auto iter = std::find(std::cbegin(transitions), std::cend(transitions), transition);
-	if (iter == std::cend(transitions))
+	for (auto iter = std::cbegin(transitions); iter != std::cend(transitions); iter++)
 	{
-		return;
+		if (*iter == transition)
+		{
+			transitions.erase(iter);
+			return;
+		}
 	}
-
-	transitions.erase(iter);
 }
 
 void dregx::statemachine::Statemachine::RemoveState(State* state)
 {
-	const auto iter = std::find(std::cbegin(states), std::cend(states), state);
-	if (iter == std::cend(states))
+	for (auto iter = std::cbegin(states); iter != std::cend(states); iter++)
 	{
-		return;
+		if (iter->get() == state)
+		{
+			states.erase(iter);
+			return;
+		}
 	}
-
-	states.erase(iter);
 }
 
-std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetStates() const
+const std::vector<std::unique_ptr<dregx::statemachine::State>>&
+dregx::statemachine::Statemachine::GetStates() const
 {
 	return states;
 }
@@ -221,11 +219,11 @@ std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetS
 {
 	std::vector<dregx::statemachine::State*> outStates;
 
-	for (auto state : GetStates())
+	for (auto& state : GetStates())
 	{
 		if (state->HasConditions(inConditions, outConditions))
 		{
-			outStates.push_back(state);
+			outStates.push_back(state.get());
 		}
 	}
 
@@ -240,11 +238,11 @@ dregx::statemachine::Statemachine::GetTransitions() const
 
 dregx::statemachine::State* dregx::statemachine::Statemachine::GetStartState() const
 {
-	for (auto* state : states)
+	for (auto& state : states)
 	{
 		if (state->IsStartState())
 		{
-			return state;
+			return state.get();
 		}
 	}
 
@@ -254,11 +252,11 @@ dregx::statemachine::State* dregx::statemachine::Statemachine::GetStartState() c
 std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetAcceptStates() const
 {
 	std::vector<dregx::statemachine::State*> acceptStates;
-	for (auto* state : states)
+	for (auto& state : states)
 	{
 		if (state->IsAcceptState())
 		{
-			acceptStates.push_back(state);
+			acceptStates.push_back(state.get());
 		}
 	}
 
@@ -279,9 +277,9 @@ std::string dregx::statemachine::Statemachine::Print() const
 		graph += "\"];\n";
 	}
 
-	for (auto state : GetStates())
+	for (auto& state : GetStates())
 	{
-		graph += std::to_string((std::size_t)state);
+		graph += std::to_string((std::size_t)state.get());
 
 		if (state->IsAcceptState())
 		{
@@ -295,7 +293,7 @@ std::string dregx::statemachine::Statemachine::Print() const
 		{
 			graph += " [label = \"Inter State: ";
 		}
-		graph += std::to_string((std::size_t)state);
+		graph += std::to_string((std::size_t)state.get());
 		graph += "\"]";
 		graph += ";\n";
 	}
@@ -332,8 +330,7 @@ void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* get
 
 		// The state was covered fully
 		// We do not require the state anymore
-		rhs.RemoveState(getStartState);
-		delete getStartState;
+		rhs.RemoveState(newRhsState);
 	}
 	else
 	{
@@ -345,7 +342,6 @@ void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* get
 		AddTransition(newTransition);
 
 		rhs.RemoveTransition(transition);
-		rhs.RemoveState(getStartState);
 		delete transition;
 	}
 }
@@ -373,7 +369,6 @@ void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 			}
 
 			RemoveState(acceptState);
-			delete acceptState;
 		}
 	}
 }

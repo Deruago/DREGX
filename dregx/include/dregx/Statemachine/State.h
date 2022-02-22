@@ -19,7 +19,7 @@ namespace dregx::statemachine
 
 	public:
 		State() = default;
-		~State() = default;
+		~State();
 
 	public:
 		void SetStart(bool start_);

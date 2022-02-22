@@ -4,6 +4,7 @@
 #include "dregx/Ir/Extension.h"
 #include "dregx/Statemachine/State.h"
 #include "dregx/Statemachine/Transition.h"
+#include <memory>
 #include <vector>
 
 namespace dregx::statemachine
@@ -11,7 +12,7 @@ namespace dregx::statemachine
 	class Statemachine
 	{
 	private:
-		std::vector<State*> states;
+		std::vector<std::unique_ptr<State>> states;
 		std::vector<Transition*> transitions;
 
 	public:
@@ -27,9 +28,9 @@ namespace dregx::statemachine
 		Statemachine& operator&(Statemachine& rhs);
 
 	public:
-		void AddState(State* value);
+		void AddState(std::unique_ptr<State> value);
 		void AddTransition(Transition* transition);
-		void SetStates(std::vector<State*> states_);
+		void SetStates(std::vector<std::unique_ptr<State>> states_);
 		void SetTransitions(std::vector<Transition*> transitions_);
 		void Extend(const ir::Extension& extension);
 
@@ -37,9 +38,10 @@ namespace dregx::statemachine
 		void RemoveState(State* state);
 
 	public:
-		std::vector<State*> GetStates() const;
-		std::vector<State*> GetStates(std::vector<std::vector<Conditional>> inConditions,
-									  std::vector<std::vector<Conditional>> outConditions) const;
+		const std::vector<std::unique_ptr<State>>& GetStates() const;
+		std::vector<dregx::statemachine::State*>
+		GetStates(std::vector<std::vector<Conditional>> inConditions,
+				  std::vector<std::vector<Conditional>> outConditions) const;
 		std::vector<Transition*> GetTransitions() const;
 		State* GetStartState() const;
 		std::vector<State*> GetAcceptStates() const;

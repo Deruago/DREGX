@@ -2,6 +2,23 @@
 #include "dregx/Statemachine/Transition.h"
 #include <algorithm>
 
+dregx::statemachine::State::~State()
+{
+	for (auto inTransition : inTransitions)
+	{
+		inTransition->SetOutState(nullptr);
+		delete inTransition;
+	}
+	for (auto outTransition : outTransitions)
+	{
+		outTransition->SetInState(nullptr);
+		delete outTransition;
+	}
+
+	inTransitions.clear();
+	outTransitions.clear();
+}
+
 void dregx::statemachine::State::SetStart(bool start_)
 {
 	start = start_;

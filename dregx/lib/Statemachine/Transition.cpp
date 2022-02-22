@@ -13,8 +13,15 @@ dregx::statemachine::Transition::Transition(State* in_, std::vector<Conditional>
 
 dregx::statemachine::Transition::~Transition()
 {
-	in->RemoveOutTransition(this);
-	out->RemoveInTransition(this);
+	if (in != nullptr)
+	{
+		in->RemoveOutTransition(this);
+	}
+
+	if (out != nullptr)
+	{
+		out->RemoveInTransition(this);
+	}
 }
 
 dregx::statemachine::State* dregx::statemachine::Transition::GetInState() const
@@ -41,4 +48,14 @@ bool dregx::statemachine::Transition::operator==(const Transition& rhs) const no
 
 	return rhs.GetInState() == this->in && rhs.GetConditions() == this->condition &&
 		   rhs.GetOutState() == this->out;
+}
+
+void dregx::statemachine::Transition::SetOutState(State* state)
+{
+	out = state;
+}
+
+void dregx::statemachine::Transition::SetInState(State* state)
+{
+	in = state;
 }

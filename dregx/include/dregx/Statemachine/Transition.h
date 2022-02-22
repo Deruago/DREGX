@@ -11,9 +11,9 @@ namespace dregx::statemachine
 	struct Transition
 	{
 	private:
-		State* const in;
+		State* in;
 		const std::vector<Conditional> condition;
-		State* const out;
+		State* out;
 
 	public:
 		Transition(State* in_, std::vector<Conditional> condition_, State* out_);
@@ -25,6 +25,10 @@ namespace dregx::statemachine
 		std::vector<Conditional> GetConditions() const;
 
 		bool operator==(const Transition& rhs) const noexcept;
+
+	public:
+		void SetOutState(State* state);
+		void SetInState(State* state);
 	};
 }
 

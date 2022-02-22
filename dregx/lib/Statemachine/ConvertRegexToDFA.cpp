@@ -98,16 +98,14 @@ std::unique_ptr<dregx::statemachine::Statemachine>
 dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square, bool embed)
 {
 	auto statemachine = std::make_unique<dregx::statemachine::Statemachine>();
-	auto states = std::vector<State*>();
+	auto states = std::vector<std::unique_ptr<State>>();
 	auto transitions = std::vector<Transition*>();
-	auto startState = new State();
+	auto startState = std::make_unique<State>();
 	startState->SetStart(true);
-	states.push_back(startState);
 
 	// Multiple transitions to 1 accept state
-	auto acceptState = new State();
+	auto acceptState = std::make_unique<State>();
 	acceptState->SetAccept(true);
-	states.push_back(acceptState);
 
 	for (auto* capture : square->GetSubGroups())
 	{
@@ -126,27 +124,30 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 				std::string regex;
 				regex += i;
 
-				if (startState->DoesOutTransitionExist({regex}, acceptState))
+				if (startState->DoesOutTransitionExist({regex}, acceptState.get()))
 				{
 					continue;
 				}
-				auto newTransition = new Transition(startState, {regex}, acceptState);
+				auto newTransition = new Transition(startState.get(), {regex}, acceptState.get());
 				transitions.push_back(newTransition);
 			}
 		}
 		else
 		{
-			if (startState->DoesOutTransitionExist({capture->GetFormattedRegex()}, acceptState))
+			if (startState->DoesOutTransitionExist({capture->GetFormattedRegex()},
+												   acceptState.get()))
 			{
 				continue;
 			}
 			auto newTransition =
-				new Transition(startState, {capture->GetFormattedRegex()}, acceptState);
+				new Transition(startState.get(), {capture->GetFormattedRegex()}, acceptState.get());
 			transitions.push_back(newTransition);
 		}
 	}
 
-	statemachine->SetStates(states);
+	states.push_back(std::move(startState));
+	states.push_back(std::move(acceptState));
+	statemachine->SetStates(std::move(states));
 	statemachine->SetTransitions(transitions);
 	statemachine->Extend(square->GetExtension());
 
