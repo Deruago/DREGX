@@ -21,8 +21,10 @@ namespace dregx::statemachine
 		~Statemachine() = default;
 
 	public:
+		void ToDFA();
 		void Or(Statemachine& rhs);
 		void Concatenate(Statemachine& rhs);
+
 		std::unique_ptr<Statemachine> Copy() const;
 
 	public:
@@ -53,19 +55,10 @@ namespace dregx::statemachine
 
 		void OptimizeFinalAcceptStates();
 
-	private:
-		void OrSpecificState(State* state, State* rhsState, Transition* transition,
-							 Statemachine& rhs, std::set<State*>& visitedStates);
-
-		void ConcatenateSpecificState(State* state, State* rhsState, Transition* transition,
-									  Statemachine& rhs, std::size_t depth,
-									  std::tuple<std::size_t, std::vector<State*>>& linkStates,
-									  std::set<State*>& visitedStates);
 		void GetStatesToSource(const std::vector<State*>& states, std::set<State*>& embeddedStates);
 		void GetStatesToSource(const State* state, std::set<State*>& embeddedStates);
-		void MergeInfiniteCycle(State* originalState, State* acceptState, State* startState,
-								Transition* startTransition,
-								std::set<State*> visitedStates);
+
+	private:
 	};
 }
 
