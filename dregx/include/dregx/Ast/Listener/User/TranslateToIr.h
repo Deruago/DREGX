@@ -35,6 +35,18 @@ namespace dregx::ast::listener::user
 		{
 			groupFlavor++;
 			AddCapture(new ir::Group());
+
+			if (node->GetNodes().size() >= 6)
+			{
+				reference::Access_if<::dregx::ast::node::PLUS>(
+					node->GetIndex(5), [&](reference::Access<::dregx::ast::node::PLUS>) {
+						GetCurrentCapture()->SetExtension({1, 0, true});
+					});
+				reference::Access_if<::dregx::ast::node::STAR>(
+					node->GetIndex(5), [&](reference::Access<::dregx::ast::node::STAR>) {
+						GetCurrentCapture()->SetExtension({0, 0, true});
+					});
+			}
 		}
 
 		void ListenExit(const dregx::ast::node::group* node) override

@@ -610,21 +610,6 @@ TEST_F(TestConvertRegexToDFA,
 	EXPECT_TRUE(state_accept->IsAcceptState());
 }
 
-TEST_F(TestConvertRegexToDFA, ConvertToDfa_DLDLv1RegexMatcher_DfaIsCorrectAndMinimal)
-{
-	const auto capture = GetCapture(
-		"(([\\[][^\\]]+[\\]\\s\\\\a-zA-Z_0-9\\}\\{\\&\\#\\@\\%\\$]*[\\]](([\\{][\\s]*[0-9]+[\\s]*[,"
-		"]["
-		"\\s]*[0-9]+[\\s]*[\\}])|([+*]{0,1}))([\\)]*)[|]{0,1})|([\\^]{0,1}[\\(][^\\)]+[\\)\\sa-"
-		"zA-Z_0-9\\[\\]\\}\\{\\&\\#\\@\\%\\$]*[\\)][\\]]{0,1}(([\\{][\\s]*[0-9]+[\\s]*[,][\\s]*[0-"
-		"9]+"
-		"[\\s]*[\\}])|([+*]{0,1}))((([|\\)]*))[+*]{0,1}[$]{0,1}))|([a-zA-Z_0-9]+))+");
-	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get(), true);
-
-	const auto& states = statemachine->GetStates();
-	const auto& transitions = statemachine->GetTransitions();
-}
-
 TEST_F(TestConvertRegexToDFA, ConvertToDfaCycle_SquareMin1Max2_DfaIsCorrectAndMinimal)
 {
 	const auto capture = GetCapture("[a]{1,2}");
@@ -747,4 +732,170 @@ TEST_F(TestConvertRegexToDFA, ConvertToDfaCycle_Group3SquaresORredMin2Max3_DfaIs
 	EXPECT_EQ(21, transitions.size());
 	EXPECT_EQ(4, statemachine->GetAcceptStates().size());
 	EXPECT_FALSE(statemachine->GetStartState()->IsAcceptState());
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfaCycleStar_GroupWith1Square_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("([a])*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(2, states.size());
+	EXPECT_EQ(2, transitions.size());
+	EXPECT_EQ(2, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfaCycleStar_GroupWith2Square_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("([a][b])*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(3, states.size());
+	EXPECT_EQ(3, transitions.size());
+	EXPECT_EQ(2, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+	std::cout << statemachine->Print() << "\n";
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfaCycleStar_GroupWith3Square_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("([a][b][c])*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(4, states.size());
+	EXPECT_EQ(4, transitions.size());
+	EXPECT_EQ(2, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfaCycleStar_GroupWith4Square_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("([a][b][c][d])*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(5, states.size());
+	EXPECT_EQ(5, transitions.size());
+	EXPECT_EQ(2, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+}
+
+TEST_F(TestConvertRegexToDFA,
+	   ConvertToDfaCycleStar_GroupWith2SquaresORredWith1Character_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("(([a])|([b]))*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(3, states.size());
+	EXPECT_EQ(6, transitions.size());
+	EXPECT_EQ(3, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+}
+
+TEST_F(TestConvertRegexToDFA,
+	   ConvertToDfaCycleStar_GroupWith3SquaresORredWith1Character_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("(([a])|([b])|([c]))*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(4, states.size());
+	EXPECT_EQ(12, transitions.size());
+	EXPECT_EQ(4, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+}
+
+TEST_F(TestConvertRegexToDFA,
+	   ConvertToDfaCycleStar_GroupWith4SquaresORredWith1Character_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("(([a])|([b])|([c])|([d]))*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(5, states.size());
+	EXPECT_EQ(20, transitions.size());
+	EXPECT_EQ(5, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+}
+
+TEST_F(TestConvertRegexToDFA,
+	   ConvertToDfaCycleStar_GroupWith2SquaresORredWith3Character_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("(([a][b][c])|([a][b][d]))*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(5, states.size());
+	EXPECT_EQ(6, transitions.size());
+	EXPECT_EQ(3, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+
+	std::cout << statemachine->Print() << "\n";
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfaCycleStar_2A_or_5A_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("((aa)|(aaaaa))*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get(), true);
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(5, states.size());
+	EXPECT_EQ(6, transitions.size());
+	EXPECT_EQ(3, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+
+	std::cout << statemachine->Print() << "\n";
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfaCycleStar_2A_or_7A_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture("((aa)|(aaaaaaa))*");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get(), true);
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(5, states.size());
+	EXPECT_EQ(6, transitions.size());
+	EXPECT_EQ(3, statemachine->GetAcceptStates().size());
+	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
+
+	std::cout << statemachine->Print() << "\n";
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfa_DLDLv1RegexMatcher_DfaIsCorrectAndMinimal)
+{
+	const auto capture = GetCapture(
+		"(([\\[][^\\]]+[\\]\\s\\\\a-zA-Z_0-9\\}\\{\\&\\#\\@\\%\\$]*[\\]](([\\{][\\s]*[0-9]+[\\s]*[,"
+		"]["
+		"\\s]*[0-9]+[\\s]*[\\}])|([+*]{0,1}))([\\)]*)[|]{0,1})|([\\^]{0,1}[\\(][^\\)]+[\\)\\sa-"
+		"zA-Z_0-9\\[\\]\\}\\{\\&\\#\\@\\%\\$]*[\\)][\\]]{0,1}(([\\{][\\s]*[0-9]+[\\s]*[,][\\s]*[0-"
+		"9]+"
+		"[\\s]*[\\}])|([+*]{0,1}))((([|\\)]*))[+*]{0,1}[$]{0,1}))|([a-zA-Z_0-9]+))+");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get(), true);
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
 }

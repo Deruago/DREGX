@@ -26,7 +26,9 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 
 	for (auto* currentTransition : rhs.GetStartState()->GetOutTransitions())
 	{
-		OrSpecificState(this->GetStartState(), rhs.GetStartState(), currentTransition, rhs);
+		std::set<State*> visitedStates;
+		OrSpecificState(this->GetStartState(), rhs.GetStartState(), currentTransition, rhs,
+						visitedStates);
 	}
 	rhs.RemoveState(rhs.GetStartState());
 
@@ -65,9 +67,10 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 	{
 		for (auto* currentTransition : rhs.GetStartState()->GetOutTransitions())
 		{
+			std::set<State*> visitedStates;
 			acceptState->SetAccept(ourAcceptStateStillAccepted);
 			ConcatenateSpecificState(acceptState, rhs.GetStartState(), currentTransition, rhs, 0,
-									 linkedStates);
+									 linkedStates, visitedStates);
 		}
 	}
 
@@ -173,6 +176,8 @@ void dregx::statemachine::Statemachine::SetTransitions(
 	transitions = std::move(transitions_);
 }
 
+#include <iostream>
+
 void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 {
 	// Extending some DFA is trivial
@@ -204,12 +209,49 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 	// Cycle should be embedded
 	if (extension.IsUpperBoundInfinite())
 	{
+		// Start from start transition.
+		// If the transition exists
+		// Continue the path from start transition
+		// Until the transition can be made. In which case the output state
+		// of the transition is linked. If the output state is accepted
+		// The linked state is also accepted.
+		// If the transition comes to some accepted state
+		// and the current state is not yet accepted.
+		// Promote to accepted state.
+		std::size_t currentTransitionCount;
+		std::size_t newTransitionCount;
+		std::size_t currentAcceptedStateCount;
+		std::size_t newAcceptedStateCount;
+		do
+		{
+			currentAcceptedStateCount = GetTransitions().size();
+			currentTransitionCount = GetTransitions().size();
+			for (auto* acceptState : GetAcceptStates())
+			{
+				std::cout << Print() << "\n";
+				if (acceptState == GetStartState())
+				{
+					continue;
+				}
+
+				for (auto* outTransition : GetStartState()->GetOutTransitions())
+				{
+					std::set<State*> visitedStates;
+					MergeInfiniteCycle(acceptState, acceptState, GetStartState(), outTransition,
+									   visitedStates);
+				}
+			}
+			newTransitionCount = GetTransitions().size();
+			newAcceptedStateCount = GetTransitions().size();
+		} while ((currentTransitionCount != newTransitionCount) ||
+				 (currentAcceptedStateCount != newAcceptedStateCount));
+		std::cout << Print() << "\n";
 	}
 }
 
 void dregx::statemachine::Statemachine::RemoveTransition(Transition* transition)
 {
-	for (auto iter = std::cbegin(transitions); iter != std::cend(transitions); iter++)
+	for (auto iter = std::cbegin(transitions); iter != std::cend(transitions); ++iter)
 	{
 		if (iter->get() == transition)
 		{
@@ -221,7 +263,7 @@ void dregx::statemachine::Statemachine::RemoveTransition(Transition* transition)
 
 void dregx::statemachine::Statemachine::RemoveState(State* state)
 {
-	for (auto iter = std::cbegin(states); iter != std::cend(states); iter++)
+	for (auto iter = std::cbegin(states); iter != std::cend(states); ++iter)
 	{
 		if (iter->get() == state)
 		{
@@ -298,20 +340,25 @@ std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetA
 std::string dregx::statemachine::Statemachine::Print() const
 {
 	std::string graph = "digraph DFA {\n";
+	std::map<State*, std::size_t> mapStateWithIndex;
+
+	for (auto& state : GetStates())
+	{
+		mapStateWithIndex.insert({state.get(), mapStateWithIndex.size()});
+	}
 
 	for (auto& transition : GetTransitions())
 	{
-		graph += std::to_string((std::size_t)transition->GetInState());
+		graph += std::to_string(mapStateWithIndex.find(transition->GetInState())->second);
 		graph += " -> ";
-		graph += std::to_string((std::size_t)transition->GetOutState());
+		graph += std::to_string(mapStateWithIndex.find(transition->GetOutState())->second);
 		graph += " [label = \"";
 		graph += transition->GetConditions()[0].GetCharacter();
 		graph += "\"];\n";
 	}
-
 	for (auto& state : GetStates())
 	{
-		graph += std::to_string((std::size_t)state.get());
+		graph += std::to_string(mapStateWithIndex.find(state.get())->second);
 
 		if (state->IsAcceptState())
 		{
@@ -325,7 +372,7 @@ std::string dregx::statemachine::Statemachine::Print() const
 		{
 			graph += " [label = \"Inter State: ";
 		}
-		graph += std::to_string((std::size_t)state.get());
+		graph += std::to_string(mapStateWithIndex.find(state.get())->second);
 		graph += "\"]";
 		graph += ";\n";
 	}
@@ -334,9 +381,19 @@ std::string dregx::statemachine::Statemachine::Print() const
 }
 
 // Follow our transitions for each rhs.transition.
-void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* getStartState,
-														Transition* transition, Statemachine& rhs)
+void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* rhsState,
+														Transition* transition, Statemachine& rhs,
+														std::set<State*>& visitedStates)
 {
+	if (visitedStates.find(rhsState) != visitedStates.end())
+	{
+		return;
+	}
+	else
+	{
+		visitedStates.insert(rhsState);
+	}
+
 	if (state->DoesOutTransitionExistWithSameCondition(transition))
 	{
 		// There exists a route to equal state logic.
@@ -356,7 +413,7 @@ void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* get
 		}
 		for (auto* newTransition : newRhsState->GetOutTransitions())
 		{
-			OrSpecificState(state, newRhsState, newTransition, rhs);
+			OrSpecificState(state, newRhsState, newTransition, rhs, visitedStates);
 		}
 
 		// The state was covered fully
@@ -378,8 +435,17 @@ void dregx::statemachine::Statemachine::OrSpecificState(State* state, State* get
 
 void dregx::statemachine::Statemachine::ConcatenateSpecificState(
 	State* state, State* rhsState, Transition* transition, Statemachine& rhs, std::size_t depth,
-	std::tuple<std::size_t, std::vector<State*>>& linkStates)
+	std::tuple<std::size_t, std::vector<State*>>& linkStates, std::set<State*>& visitedStates)
 {
+	if (visitedStates.find(rhsState) != visitedStates.end())
+	{
+		return;
+	}
+	else
+	{
+		visitedStates.insert(rhsState);
+	}
+
 	if (state->DoesOutTransitionExistWithSameCondition(transition))
 	{
 		// There exists a route to equal state logic.
@@ -390,7 +456,8 @@ void dregx::statemachine::Statemachine::ConcatenateSpecificState(
 
 		for (auto* newTransition : newRhsState->GetOutTransitions())
 		{
-			ConcatenateSpecificState(state, newRhsState, newTransition, rhs, depth + 1, linkStates);
+			ConcatenateSpecificState(state, newRhsState, newTransition, rhs, depth + 1, linkStates,
+									 visitedStates);
 		}
 	}
 	else
@@ -469,5 +536,44 @@ void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 
 			RemoveState(acceptState);
 		}
+	}
+}
+
+void dregx::statemachine::Statemachine::MergeInfiniteCycle(State* originalState, State* acceptState,
+														   State* startState,
+														   Transition* startTransition,
+														   std::set<State*> visitedStates)
+{
+	if (startState->IsAcceptState())
+	{
+		acceptState->SetAccept(true);
+	}
+
+	if (visitedStates.find(acceptState) != visitedStates.end() || startState == originalState)
+	{
+		return;
+	}
+	else
+	{
+		visitedStates.insert(acceptState);
+	}
+
+	if (acceptState->DoesOutTransitionExistWithSameCondition(startTransition))
+	{
+		auto* ourTransition = acceptState->GetOutTransitionWithSameCondition(startTransition);
+		auto* nextState = ourTransition->GetOutState();
+		auto* const nextRhsState = startTransition->GetOutState();
+
+		for (auto outTransition : nextRhsState->GetOutTransitions())
+		{
+			MergeInfiniteCycle(originalState, nextState, nextRhsState, outTransition,
+							   visitedStates);
+		}
+	}
+	else
+	{
+		auto newTransition = std::make_unique<Transition>(
+			acceptState, startTransition->GetConditions(), startTransition->GetOutState());
+		AddTransition(std::move(newTransition));
 	}
 }
