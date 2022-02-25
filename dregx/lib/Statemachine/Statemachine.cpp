@@ -19,7 +19,7 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 	if (IsDFA && rhs.IsDFA)
 	{
 		IsDFA = true;
-		ProductionConstructionOR(rhs);
+		ProductConstructionOR(rhs);
 	}
 	else
 	{
@@ -64,8 +64,124 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 		return;
 	}
 
-	if (IsDFA && !containsCycles && rhs.IsDFA && !rhs.containsCycles && false)
+	if (IsDFA && !containsCycles && rhs.IsDFA && !rhs.containsCycles && !EmbeddedAcceptState &&
+		!rhs.EmbeddedAcceptState)
 	{
+		// This utilizes an optimized algorithm
+		// The algorithm will merge the DFA at every accept state.
+		// The merge will prefer existing transitions and only create new transitions
+		// if no transition exists.
+		std::vector<std::tuple<State*, std::vector<Conditional>, State*>> newTransitions;
+		std::size_t depth = std::numeric_limits<std::size_t>::max();
+		std::tuple<std::size_t, std::set<State*>> deleteTillStates;
+		for (auto& acceptState : GetAcceptStates())
+		{
+			std::size_t localDepth = 1;
+			std::vector<std::tuple<State*, State*>> unconcatenatedStates;
+			acceptState->SetAccept(rhs.GetStartState()->IsAcceptState());
+			unconcatenatedStates.emplace_back(acceptState, rhs.GetStartState());
+			while (!unconcatenatedStates.empty())
+			{
+				localDepth++;
+				auto currentUnconcatenatedState = *unconcatenatedStates.begin();
+				unconcatenatedStates.erase(unconcatenatedStates.begin());
+
+				State* lhsState = std::get<0>(currentUnconcatenatedState);
+				State* rhsState = std::get<1>(currentUnconcatenatedState);
+
+				for (auto transition : rhsState->GetOutTransitions())
+				{
+					if (lhsState->DoesOutTransitionExistWithSameCondition(transition))
+					{
+						// Each overlapping transition must be remapped to a new state.
+						// All transitions of this transition must be
+						// relinked with the new state
+						// recurse...
+						// If not implemented embedded accept states
+						// can not benefit from this optimized algorithm
+
+						auto lhsStateOutTransitionState =
+							lhsState->GetOutTransitionWithSameCondition(transition)->GetOutState();
+						unconcatenatedStates.emplace_back(lhsStateOutTransitionState,
+														  transition->GetOutState());
+					}
+					else
+					{
+						auto newTransition = std::make_unique<Transition>(
+							lhsState, transition->GetConditions(), transition->GetOutState());
+						AddTransition(std::move(newTransition));
+						// newTransitions.emplace_back(lhsState, transition->GetConditions(),
+						// 							transition->GetOutState());
+
+						if (localDepth <= depth)
+						{
+							std::get<0>(deleteTillStates) = localDepth;
+							std::get<1>(deleteTillStates).clear();
+							std::get<1>(deleteTillStates).insert(transition->GetOutState());
+							depth = localDepth;
+						}
+						else if (localDepth == depth)
+						{
+							std::get<1>(deleteTillStates).insert(transition->GetOutState());
+						}
+					}
+				}
+				if (rhsState->GetOutTransitions().empty())
+				{
+					lhsState->SetAccept(true);
+				}
+			}
+		}
+
+		std::set<State*> toBeDeletedStates;
+		std::set<State*> nextDeletionSources;
+		std::set<State*> currentDeleteSourceStates = std::get<1>(deleteTillStates);
+		while (!currentDeleteSourceStates.empty() && depth > 0)
+		{
+			auto* deleteState = *currentDeleteSourceStates.begin();
+			currentDeleteSourceStates.erase(currentDeleteSourceStates.begin());
+
+			// As there are no cycles
+			// Each in transition eventually goes to start state.
+
+			for (auto inTransition : deleteState->GetInTransitions())
+			{
+				toBeDeletedStates.insert(inTransition->GetInState());
+				nextDeletionSources.insert(inTransition->GetInState());
+				rhs.RemoveTransition(inTransition);
+			}
+
+			if (currentDeleteSourceStates.empty())
+			{
+				depth--;
+				currentDeleteSourceStates = nextDeletionSources;
+				nextDeletionSources.clear();
+			}
+		}
+
+		for (auto deleteState : toBeDeletedStates)
+		{
+			rhs.RemoveState(deleteState);
+		}
+
+		for (auto& [lhsState, conditional, rhsState] : newTransitions)
+		{
+			// auto newTransition = std::make_unique<Transition>(lhsState, conditional, rhsState);
+			// AddTransition(std::move(newTransition));
+		}
+
+		for (auto& state : rhs.states)
+		{
+			AddState(std::move(state));
+		}
+
+		for (auto& transition : rhs.transitions)
+		{
+			AddTransition(std::move(transition));
+		}
+
+		rhs.states.clear();
+		rhs.transitions.clear();
 	}
 	else
 	{
@@ -189,6 +305,7 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 		auto copiedStatemachine = Copy();
 		if (i >= extension.GetLowerBound())
 		{
+			EmbeddedAcceptState = true;
 			copiedStatemachine->GetStartState()->SetAccept(true);
 		}
 		copiedStatemachines.push_back(std::move(copiedStatemachine));
@@ -227,6 +344,7 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 
 	if (extension.GetLowerBound() == 0)
 	{
+		EmbeddedAcceptState = true;
 		GetStartState()->SetAccept(true);
 	}
 }
@@ -509,7 +627,7 @@ struct ProductionConstructionState
 	}
 };
 
-void dregx::statemachine::Statemachine::ProductionConstructionOR(Statemachine& rhs)
+void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 {
 	auto& ourStates = GetStates();
 	auto& theirStates = rhs.GetStates();
@@ -546,6 +664,7 @@ void dregx::statemachine::Statemachine::ProductionConstructionOR(Statemachine& r
 
 		productStates.push_back(std::move(newProductConstructionState));
 	}
+
 	for (auto& theirState : theirStates)
 	{
 		auto newProductConstructionState =

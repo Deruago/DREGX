@@ -321,6 +321,41 @@ TEST_F(TestConvertToTransitionTable, OPTIONAL_A_B_InvalidInput_ShouldMatchLangua
 	EXPECT_FALSE(table.Match("dabd"));
 }
 
+TEST_F(TestConvertToTransitionTable, OPTIONAL_AB_OR_CD_ValidInput_ShouldMatchLanguageA)
+{
+	const auto capture = GetCapture("((cd)|([ab]?))");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	auto table = statemachine->ToTransitionTable();
+
+	EXPECT_TRUE(table.Match(""));
+	EXPECT_TRUE(table.Match("cd"));
+	EXPECT_TRUE(table.Match("a"));
+	EXPECT_TRUE(table.Match("b"));
+}
+
+TEST_F(TestConvertToTransitionTable, OPTIONAL_AB_AND_AV_OR_ABC_ValidInput_ShouldMatchLanguageA)
+{
+	const auto capture = GetCapture("((abc)|([ab]?av))");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	auto table = statemachine->ToTransitionTable();
+
+	EXPECT_TRUE(table.Match("av"));
+	EXPECT_TRUE(table.Match("aav"));
+	EXPECT_TRUE(table.Match("bav"));
+	EXPECT_TRUE(table.Match("abc"));
+}
+
+TEST_F(TestConvertToTransitionTable, OPTIONAL_AB_AND_AV_ValidInput_ShouldMatchLanguageA)
+{
+	const auto capture = GetCapture("[ab]?av");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	auto table = statemachine->ToTransitionTable();
+
+	EXPECT_TRUE(table.Match("av"));
+	EXPECT_TRUE(table.Match("aav"));
+	EXPECT_TRUE(table.Match("bav"));
+}
+
 TEST_F(TestConvertToTransitionTable, IPV4_NUMBER_ValidInput_ShouldMatchLanguageA)
 {
 	const auto capture = GetCapture("((25[0-5])|(2[0-4][0-9])|([01]?[0-9][0-9]?))");

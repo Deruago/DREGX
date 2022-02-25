@@ -18,6 +18,7 @@ namespace dregx::statemachine
 		std::vector<std::unique_ptr<Transition>> transitions;
 		bool containsCycles = false;
 		bool IsDFA = true;
+		bool EmbeddedAcceptState = false;
 
 	public:
 		Statemachine() = default;
@@ -64,7 +65,7 @@ namespace dregx::statemachine
 		TransitionTable ToTransitionTable();
 
 	private:
-		void ProductionConstructionOR(Statemachine& rhs);
+		void ProductConstructionOR(Statemachine& rhs);
 	};
 }
 
