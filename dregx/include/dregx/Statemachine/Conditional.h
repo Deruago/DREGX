@@ -8,7 +8,7 @@ namespace dregx::statemachine
 	struct Conditional
 	{
 	private:
-		const std::string character;
+		std::string character;
 
 	public:
 		Conditional(const std::string& character_);
@@ -18,6 +18,9 @@ namespace dregx::statemachine
 		std::string GetCharacter() const;
 
 		bool operator==(const Conditional& rhs) const noexcept;
+		bool operator<(const Conditional& rhs) const noexcept;
+		bool operator>(const Conditional& rhs) const noexcept;
+		Conditional& operator=(const Conditional& rhs);
 	};
 }
 

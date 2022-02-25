@@ -2,6 +2,7 @@
 #define DREGX_STATEMACHINE_STATE_H
 
 #include "dregx/Statemachine/Conditional.h"
+#include <set>
 #include <vector>
 
 namespace dregx::statemachine
@@ -56,8 +57,17 @@ namespace dregx::statemachine
 		Transition* GetInTransitionWithSameCondition(Transition* rhs) const;
 		Transition* GetOutTransitionWithSameCondition(Transition* rhs) const;
 
+		Transition* GetInTransitionWithSameCondition(std::vector<Conditional> condition) const;
+		Transition* GetOutTransitionWithSameCondition(std::vector<Conditional> condition) const;
+
 		bool HasConditions(const std::vector<std::vector<Conditional>>& in,
 						   const std::vector<std::vector<Conditional>>& out);
+
+		std::set<State*> GetConnectedStatesWithConditional(std::vector<Conditional> condition);
+		void
+		GetConnectedStatesWithConditional(std::vector<Conditional> condition,
+										  std::set<dregx::statemachine::State*>& visitedStates,
+										  std::set<dregx::statemachine ::State*>& connectedStates);
 	};
 }
 

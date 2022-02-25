@@ -20,6 +20,7 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 	auto lhsStartState = GetStartState();
 	auto rhsStartState = rhs.GetStartState();
 
+	newStartState->SetStart(true);
 	lhsStartState->SetStart(false);
 	rhsStartState->SetStart(false);
 
@@ -35,16 +36,17 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 	for (auto& rhsState : rhs.states)
 	{
 		AddState(std::move(rhsState));
-		rhs.RemoveState(rhsState.get());
 	}
 
 	for (auto& rhsTransition : rhs.transitions)
 	{
 		AddTransition(std::move(rhsTransition));
-		rhs.RemoveTransition(rhsTransition.get());
 	}
 
-	ToDFA();
+	rhs.states.clear();
+	rhs.transitions.clear();
+
+	// ToDFA();
 }
 
 // Connect all lhs.acceptstates with rhs.startstate using empty transition
@@ -56,26 +58,29 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 	}
 
 	auto rhsStartState = rhs.GetStartState();
+	rhsStartState->SetStart(false);
 	for (auto acceptState : GetAcceptStates())
 	{
 		auto linkWithRhsStartState =
 			std::make_unique<Transition>(acceptState, std::vector<Conditional>{}, rhsStartState);
 		AddTransition(std::move(linkWithRhsStartState));
+		acceptState->SetAccept(false);
 	}
 
 	for (auto& rhsState : rhs.states)
 	{
 		AddState(std::move(rhsState));
-		rhs.RemoveState(rhsState.get());
 	}
 
 	for (auto& rhsTransition : rhs.transitions)
 	{
 		AddTransition(std::move(rhsTransition));
-		rhs.RemoveTransition(rhsTransition.get());
 	}
 
-	ToDFA();
+	rhs.states.clear();
+	rhs.transitions.clear();
+
+	// ToDFA();
 }
 
 std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemachine::Copy() const
@@ -181,11 +186,6 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 		Concatenate(*copiedStatemachine);
 	}
 
-	if (extension.GetLowerBound() == 0)
-	{
-		GetStartState()->SetAccept(true);
-	}
-
 	// If the upper bound is infinite
 	// Cycle should be embedded
 	if (extension.IsUpperBoundInfinite())
@@ -209,7 +209,7 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 		AddTransition(std::move(linkWithOldStartState));
 		AddState(std::move(newStartState));
 
-		ToDFA();
+		// ToDFA();
 	}
 }
 
@@ -227,6 +227,11 @@ void dregx::statemachine::Statemachine::RemoveTransition(Transition* transition)
 
 void dregx::statemachine::Statemachine::RemoveState(State* state)
 {
+	if (state == nullptr)
+	{
+		return;
+	}
+
 	for (auto iter = std::cbegin(states); iter != std::cend(states); ++iter)
 	{
 		if (iter->get() == state)
@@ -319,16 +324,27 @@ std::string dregx::statemachine::Statemachine::Print() const
 		graph += " -> ";
 		graph += std::to_string(mapStateWithIndex.find(transition->GetOutState())->second);
 		graph += " [label = \"";
-		graph += transition->GetConditions()[0].GetCharacter();
+		if (transition->GetConditions().empty())
+		{
+			graph += "";
+		}
+		else
+		{
+			graph += transition->GetConditions()[0].GetCharacter();
+		}
 		graph += "\"];\n";
 	}
 	for (auto& state : GetStates())
 	{
 		graph += std::to_string(mapStateWithIndex.find(state.get())->second);
 
-		if (state->IsAcceptState())
+		if (state->IsAcceptState() && !state->IsStartState())
 		{
 			graph += " [label = \"Accept State: ";
+		}
+		else if (state->IsAcceptState() && state->IsStartState())
+		{
+			graph += " [label = \"Start Accept State: ";
 		}
 		else if (state->IsStartState())
 		{
@@ -401,7 +417,157 @@ void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 	}
 }
 
+struct PowersetState;
+
+struct PowersetTransition
+{
+	PowersetState* in;
+	PowersetState* out;
+	std::vector<dregx::statemachine::Conditional> conditional;
+
+	PowersetTransition(PowersetState* in_, PowersetState* out_,
+					   std::vector<dregx::statemachine::Conditional> conditional_);
+};
+
+struct PowersetState
+{
+	std::set<dregx::statemachine::State*> states;
+	std::map<std::vector<dregx::statemachine::Conditional>, PowersetTransition*> transitions;
+
+	bool startState = false;
+
+	bool IsAccept() const
+	{
+		for (auto state : states)
+		{
+			if (state->IsAcceptState())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+};
+
+PowersetTransition::PowersetTransition(PowersetState* in_, PowersetState* out_,
+									   std::vector<dregx::statemachine::Conditional> conditional_)
+	: in(in_),
+	  out(out_),
+	  conditional(conditional_)
+{
+	std::pair<std::vector<dregx::statemachine::Conditional>, PowersetTransition*> pair_;
+	pair_.first = conditional_;
+	pair_.second = this;
+	in->transitions.insert(pair_);
+	out->transitions.insert(pair_);
+}
+
 void dregx::statemachine::Statemachine::ToDFA()
 {
 	// Using powerset construction convert NFA to DFA
+	std::vector<PowersetState*> unFinishedpowersetStates;
+	std::map<std::set<State*>, std::unique_ptr<PowersetState>> allPowerStates;
+	std::vector<std::unique_ptr<PowersetTransition>> allTransitions;
+
+	auto startState = GetStartState();
+	auto startPowerState = std::make_unique<PowersetState>();
+	startPowerState->startState = true;
+	startPowerState->states = startState->GetConnectedStatesWithConditional({});
+	startPowerState->states.insert(startState);
+	unFinishedpowersetStates.push_back(startPowerState.get());
+
+	std::pair<std::set<State*>, std::unique_ptr<PowersetState>> startPowerState_;
+	startPowerState_.first = {startPowerState->states};
+	startPowerState_.second = std::move(startPowerState);
+	allPowerStates.insert(std::move(startPowerState_));
+
+	while (!unFinishedpowersetStates.empty())
+	{
+		auto currentPowerState = *unFinishedpowersetStates.begin();
+		unFinishedpowersetStates.erase(unFinishedpowersetStates.begin());
+
+		std::set<std::vector<Conditional>> conditionals;
+		for (auto state : currentPowerState->states)
+		{
+			for (auto transition : state->GetOutTransitions())
+			{
+				if (transition->GetConditions().empty())
+				{
+					continue;
+				}
+
+				conditionals.insert(transition->GetConditions());
+			}
+		}
+
+		for (auto conditional : conditionals)
+		{
+			std::set<State*> outStates;
+			for (auto state : currentPowerState->states)
+			{
+				auto outTransition = state->GetOutTransitionWithSameCondition(conditional);
+				if (outTransition == nullptr)
+				{
+					continue;
+				}
+				outStates.insert(outTransition->GetOutState());
+
+				for (auto outStateConnected :
+					 outTransition->GetOutState()->GetConnectedStatesWithConditional({}))
+				{
+					outStates.insert(outStateConnected);
+				}
+			}
+			const auto iter = allPowerStates.find(outStates);
+			PowersetState* outPowerState;
+			if (iter == allPowerStates.end())
+			{
+				auto newPowerState = std::make_unique<PowersetState>();
+				newPowerState->states = outStates;
+				outPowerState = newPowerState.get();
+
+				unFinishedpowersetStates.push_back(newPowerState.get());
+
+				std::pair<std::set<State*>, std::unique_ptr<PowersetState>> newPowerStateSetEntry;
+				newPowerStateSetEntry.first = {newPowerState->states};
+				newPowerStateSetEntry.second = std::move(newPowerState);
+				allPowerStates.insert(std::move(newPowerStateSetEntry));
+			}
+			else
+			{
+				outPowerState = iter->second.get();
+			}
+
+			auto newPowersetTransition =
+				std::make_unique<PowersetTransition>(currentPowerState, outPowerState, conditional);
+
+			allTransitions.push_back(std::move(newPowersetTransition));
+		}
+	}
+
+	std::map<PowersetState*, State*> mapPowerToState;
+	std::vector<std::unique_ptr<State>> newDfaStates;
+	std::vector<std::unique_ptr<Transition>> newDfaTransitions;
+	for (auto& [originalStates, powerState] : allPowerStates)
+	{
+		auto newDfaState = std::make_unique<State>();
+		newDfaState->SetStart(powerState->startState);
+		newDfaState->SetAccept(powerState->IsAccept());
+
+		mapPowerToState.insert({powerState.get(), newDfaState.get()});
+		newDfaStates.push_back(std::move(newDfaState));
+	}
+
+	for (auto& transition : allTransitions)
+	{
+		auto inState = mapPowerToState.find(transition->in)->second;
+		auto outState = mapPowerToState.find(transition->out)->second;
+		auto newTransition =
+			std::make_unique<Transition>(inState, transition->conditional, outState);
+		newDfaTransitions.push_back(std::move(newTransition));
+	}
+
+	this->states = std::move(newDfaStates);
+	this->transitions = std::move(newDfaTransitions);
 }

@@ -1,6 +1,7 @@
 #include "dregx/Statemachine/State.h"
 #include "dregx/Statemachine/Transition.h"
 #include <algorithm>
+#include <set>
 
 dregx::statemachine::State::~State()
 {
@@ -233,6 +234,34 @@ dregx::statemachine::State::GetOutTransitionWithSameCondition(Transition* rhs) c
 	return nullptr;
 }
 
+dregx::statemachine::Transition* dregx::statemachine::State::GetInTransitionWithSameCondition(
+	std::vector<Conditional> condition) const
+{
+	for (auto transition : inTransitions)
+	{
+		if (transition->GetConditions() == condition)
+		{
+			return transition;
+		}
+	}
+
+	return nullptr;
+}
+
+dregx::statemachine::Transition* dregx::statemachine::State::GetOutTransitionWithSameCondition(
+	std::vector<Conditional> condition) const
+{
+	for (auto transition : outTransitions)
+	{
+		if (transition->GetConditions() == condition)
+		{
+			return transition;
+		}
+	}
+
+	return nullptr;
+}
+
 bool dregx::statemachine::State::HasConditions(const std::vector<std::vector<Conditional>>& in,
 											   const std::vector<std::vector<Conditional>>& out)
 {
@@ -273,4 +302,42 @@ bool dregx::statemachine::State::HasConditions(const std::vector<std::vector<Con
 	}
 
 	return true;
+}
+
+std::set<dregx::statemachine::State*>
+dregx::statemachine::State::GetConnectedStatesWithConditional(std::vector<Conditional> condition)
+{
+	std::set<dregx::statemachine::State*> visitedStates;
+	std::set<dregx::statemachine::State*> connectedStates;
+
+	GetConnectedStatesWithConditional(condition, visitedStates, connectedStates);
+
+	return connectedStates;
+}
+
+void dregx::statemachine::State::GetConnectedStatesWithConditional(
+	std::vector<Conditional> condition, std::set<dregx::statemachine::State*>& visitedStates,
+	std::set<dregx::statemachine::State*>& connectedStates)
+{
+	if (visitedStates.find(this) != visitedStates.end())
+	{
+		return;
+	}
+	else
+	{
+		visitedStates.insert(this);
+	}
+
+	for (auto transition : outTransitions)
+	{
+		if (transition->GetConditions() == condition)
+		{
+			connectedStates.insert(transition->GetOutState());
+			if (condition.empty())
+			{
+				transition->GetOutState()->GetConnectedStatesWithConditional(
+					condition, visitedStates, connectedStates);
+			}
+		}
+	}
 }

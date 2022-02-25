@@ -18,3 +18,36 @@ bool dregx::statemachine::Conditional::operator==(const Conditional& rhs) const 
 
 	return rhs.GetCharacter() == this->GetCharacter();
 }
+
+bool dregx::statemachine::Conditional::operator<(const Conditional& rhs) const noexcept
+{
+	if (&rhs == this)
+	{
+		return false;
+	}
+
+	return rhs.GetCharacter() < this->GetCharacter();
+}
+
+bool dregx::statemachine::Conditional::operator>(const Conditional& rhs) const noexcept
+{
+	if (&rhs == this)
+	{
+		return false;
+	}
+
+	return rhs.GetCharacter() > this->GetCharacter();
+}
+
+dregx::statemachine::Conditional&
+dregx::statemachine::Conditional::operator=(const Conditional& rhs)
+{
+	if (&rhs == this)
+	{
+		return *this;
+	}
+
+	this->character = rhs.character;
+
+	return *this;
+}

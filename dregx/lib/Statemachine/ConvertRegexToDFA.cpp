@@ -47,7 +47,8 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Capture* captu
 
 	if (!embed && newStatemachine != nullptr)
 	{
-		newStatemachine->OptimizeFinalAcceptStates();
+		newStatemachine->ToDFA();
+		// newStatemachine->OptimizeFinalAcceptStates();
 	}
 
 	return newStatemachine;
