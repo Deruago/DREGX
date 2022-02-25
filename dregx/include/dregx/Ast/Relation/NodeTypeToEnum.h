@@ -23,6 +23,7 @@ class capture_whitespace;
 class capture_range;
 class capture_letter_range;
 class capture_number_range;
+class capture_number;
 class capture_letter;
 class capture_special_character;
 class extension_modifier;
@@ -35,6 +36,7 @@ class optional_padding;
 class deamerreserved_star__padding__;
 class padding;
 class special_char_any;
+class any_number;
 class any_letter;
 class any_letter_exclude_underscore;
 class any;
@@ -53,6 +55,7 @@ class UNDERSCORE;
 class NOT;
 class PLUS;
 class STAR;
+class OPTIONAL;
 class NUMBER;
 class T_;
 class N_;
@@ -205,6 +208,13 @@ namespace dregx { namespace ast { namespace relation {
 	};
 
 	template<>
+	struct NodeTypeToEnum<::dregx::ast::node::capture_number>
+	{
+		constexpr static auto value = ::dregx::ast::Type::capture_number;
+		using type = ::dregx::ast::node::capture_number;
+	};
+
+	template<>
 	struct NodeTypeToEnum<::dregx::ast::node::capture_letter>
 	{
 		constexpr static auto value = ::dregx::ast::Type::capture_letter;
@@ -286,6 +296,13 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::special_char_any;
 		using type = ::dregx::ast::node::special_char_any;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::dregx::ast::node::any_number>
+	{
+		constexpr static auto value = ::dregx::ast::Type::any_number;
+		using type = ::dregx::ast::node::any_number;
 	};
 
 	template<>
@@ -412,6 +429,13 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::STAR;
 		using type = ::dregx::ast::node::STAR;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::dregx::ast::node::OPTIONAL>
+	{
+		constexpr static auto value = ::dregx::ast::Type::OPTIONAL;
+		using type = ::dregx::ast::node::OPTIONAL;
 	};
 
 	template<>

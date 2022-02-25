@@ -19,6 +19,7 @@
 #include "dregx/Ast/Node/NOT.h"
 #include "dregx/Ast/Node/PLUS.h"
 #include "dregx/Ast/Node/STAR.h"
+#include "dregx/Ast/Node/OPTIONAL.h"
 #include "dregx/Ast/Node/NUMBER.h"
 #include "dregx/Ast/Node/T_.h"
 #include "dregx/Ast/Node/N_.h"
@@ -51,6 +52,7 @@
 #include "dregx/Ast/Node/capture_range.h"
 #include "dregx/Ast/Node/capture_letter_range.h"
 #include "dregx/Ast/Node/capture_number_range.h"
+#include "dregx/Ast/Node/capture_number.h"
 #include "dregx/Ast/Node/capture_letter.h"
 #include "dregx/Ast/Node/capture_special_character.h"
 #include "dregx/Ast/Node/extension_modifier.h"
@@ -63,6 +65,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
 #include "dregx/Ast/Node/padding.h"
 #include "dregx/Ast/Node/special_char_any.h"
+#include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
 #include "dregx/Ast/Node/any.h"
@@ -229,6 +232,15 @@ namespace dregx { namespace ast { namespace listener {
 				EnterAnything(node);
 				EnterTerminal(node);
 				ListenEntry(static_cast<const dregx::ast::node::STAR*>(node));
+				break;
+			}
+
+			case dregx::ast::Type::OPTIONAL:
+			{
+				// Entry terminal
+				EnterAnything(node);
+				EnterTerminal(node);
+				ListenEntry(static_cast<const dregx::ast::node::OPTIONAL*>(node));
 				break;
 			}
 
@@ -505,6 +517,15 @@ namespace dregx { namespace ast { namespace listener {
 				break;
 			}
 
+			case dregx::ast::Type::capture_number:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const dregx::ast::node::capture_number*>(node));
+				break;
+			}
+
 			case dregx::ast::Type::capture_letter:
 			{
 				// Enter nonterminal
@@ -610,6 +631,15 @@ namespace dregx { namespace ast { namespace listener {
 				EnterAnything(node);
 				EnterNonTerminal(node);
 				ListenEntry(static_cast<const dregx::ast::node::special_char_any*>(node));
+				break;
+			}
+
+			case dregx::ast::Type::any_number:
+			{
+				// Enter nonterminal
+				EnterAnything(node);
+				EnterNonTerminal(node);
+				ListenEntry(static_cast<const dregx::ast::node::any_number*>(node));
 				break;
 			}
 
@@ -780,6 +810,15 @@ namespace dregx { namespace ast { namespace listener {
 			{
 				// Exit terminal
 				ListenExit(static_cast<const dregx::ast::node::STAR*>(node));
+				ExitTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
+			case dregx::ast::Type::OPTIONAL:
+			{
+				// Exit terminal
+				ListenExit(static_cast<const dregx::ast::node::OPTIONAL*>(node));
 				ExitTerminal(node);
 				ExitAnything(node);
 				break;
@@ -1058,6 +1097,15 @@ namespace dregx { namespace ast { namespace listener {
 				break;
 			}
 
+			case dregx::ast::Type::capture_number:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const dregx::ast::node::capture_number*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
 			case dregx::ast::Type::capture_letter:
 			{
 				// Exit nonterminal
@@ -1166,6 +1214,15 @@ namespace dregx { namespace ast { namespace listener {
 				break;
 			}
 
+			case dregx::ast::Type::any_number:
+			{
+				// Exit nonterminal
+				ListenExit(static_cast<const dregx::ast::node::any_number*>(node));
+				ExitNonTerminal(node);
+				ExitAnything(node);
+				break;
+			}
+
 			case dregx::ast::Type::any_letter:
 			{
 				// Exit nonterminal
@@ -1254,6 +1311,10 @@ namespace dregx { namespace ast { namespace listener {
 		}
 
 		virtual void ListenEntry(const dregx::ast::node::STAR* node) 
+		{
+		}
+
+		virtual void ListenEntry(const dregx::ast::node::OPTIONAL* node) 
 		{
 		}
 
@@ -1363,6 +1424,10 @@ namespace dregx { namespace ast { namespace listener {
 		}
 
 		virtual void ListenExit(const dregx::ast::node::STAR* node) 
+		{
+		}
+
+		virtual void ListenExit(const dregx::ast::node::OPTIONAL* node) 
 		{
 		}
 
@@ -1488,6 +1553,10 @@ namespace dregx { namespace ast { namespace listener {
 		{
 		}
 
+		virtual void ListenEntry(const dregx::ast::node::capture_number* node) 
+		{
+		}
+
 		virtual void ListenEntry(const dregx::ast::node::capture_letter* node) 
 		{
 		}
@@ -1533,6 +1602,10 @@ namespace dregx { namespace ast { namespace listener {
 		}
 
 		virtual void ListenEntry(const dregx::ast::node::special_char_any* node) 
+		{
+		}
+
+		virtual void ListenEntry(const dregx::ast::node::any_number* node) 
 		{
 		}
 
@@ -1621,6 +1694,10 @@ namespace dregx { namespace ast { namespace listener {
 		{
 		}
 
+		virtual void ListenExit(const dregx::ast::node::capture_number* node) 
+		{
+		}
+
 		virtual void ListenExit(const dregx::ast::node::capture_letter* node) 
 		{
 		}
@@ -1666,6 +1743,10 @@ namespace dregx { namespace ast { namespace listener {
 		}
 
 		virtual void ListenExit(const dregx::ast::node::special_char_any* node) 
+		{
+		}
+
+		virtual void ListenExit(const dregx::ast::node::any_number* node) 
 		{
 		}
 

@@ -100,6 +100,11 @@ namespace dregx { namespace ast { namespace relation {
 	}
 	
 
+	case ::dregx::ast::Type::capture_number: {
+		return "capture_number";
+	}
+	
+
 	case ::dregx::ast::Type::capture_letter: {
 		return "capture_letter";
 	}
@@ -157,6 +162,11 @@ namespace dregx { namespace ast { namespace relation {
 
 	case ::dregx::ast::Type::special_char_any: {
 		return "special_char_any";
+	}
+	
+
+	case ::dregx::ast::Type::any_number: {
+		return "any_number";
 	}
 	
 
@@ -247,6 +257,11 @@ namespace dregx { namespace ast { namespace relation {
 
 	case ::dregx::ast::Type::STAR: {
 		return "STAR";
+	}
+	
+
+	case ::dregx::ast::Type::OPTIONAL: {
+		return "OPTIONAL";
 	}
 	
 

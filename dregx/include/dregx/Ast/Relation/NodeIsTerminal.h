@@ -83,6 +83,11 @@ namespace dregx { namespace ast { namespace relation {
 			return true;
 		}
 
+		if (t == ::dregx::ast::Type::OPTIONAL)
+		{
+			return true;
+		}
+
 		if (t == ::dregx::ast::Type::NUMBER)
 		{
 			return true;

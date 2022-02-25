@@ -21,6 +21,7 @@
 #include "dregx/Ast/Node/capture_range.h"
 #include "dregx/Ast/Node/capture_letter_range.h"
 #include "dregx/Ast/Node/capture_number_range.h"
+#include "dregx/Ast/Node/capture_number.h"
 #include "dregx/Ast/Node/capture_letter.h"
 #include "dregx/Ast/Node/capture_special_character.h"
 #include "dregx/Ast/Node/extension_modifier.h"
@@ -33,6 +34,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
 #include "dregx/Ast/Node/padding.h"
 #include "dregx/Ast/Node/special_char_any.h"
+#include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
 #include "dregx/Ast/Node/any.h"
@@ -51,6 +53,7 @@
 #include "dregx/Ast/Node/NOT.h"
 #include "dregx/Ast/Node/PLUS.h"
 #include "dregx/Ast/Node/STAR.h"
+#include "dregx/Ast/Node/OPTIONAL.h"
 #include "dregx/Ast/Node/NUMBER.h"
 #include "dregx/Ast/Node/T_.h"
 #include "dregx/Ast/Node/N_.h"
@@ -202,6 +205,13 @@ namespace dregx { namespace ast { namespace relation {
 	};
 
 	template<>
+	struct NodeEnumToType<::dregx::ast::Type::capture_number>
+	{
+		constexpr static auto value = ::dregx::ast::Type::capture_number;
+		using type = ::dregx::ast::node::capture_number;
+	};
+
+	template<>
 	struct NodeEnumToType<::dregx::ast::Type::capture_letter>
 	{
 		constexpr static auto value = ::dregx::ast::Type::capture_letter;
@@ -283,6 +293,13 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::special_char_any;
 		using type = ::dregx::ast::node::special_char_any;
+	};
+
+	template<>
+	struct NodeEnumToType<::dregx::ast::Type::any_number>
+	{
+		constexpr static auto value = ::dregx::ast::Type::any_number;
+		using type = ::dregx::ast::node::any_number;
 	};
 
 	template<>
@@ -409,6 +426,13 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::STAR;
 		using type = ::dregx::ast::node::STAR;
+	};
+
+	template<>
+	struct NodeEnumToType<::dregx::ast::Type::OPTIONAL>
+	{
+		constexpr static auto value = ::dregx::ast::Type::OPTIONAL;
+		using type = ::dregx::ast::node::OPTIONAL;
 	};
 
 	template<>

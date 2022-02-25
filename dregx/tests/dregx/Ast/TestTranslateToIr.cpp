@@ -135,11 +135,11 @@ TEST_F(TestTranslateToIr, RegexWithSquare1EscapeCharacterCaptures_ShouldConvertT
 	subGroups = square->GetSubGroups();
 	EXPECT_EQ(ir::CaptureType::square, square->GetCaptureType());
 	EXPECT_EQ(1, subGroups.size());
-	EXPECT_EQ("[\\n]", square->GetFormattedRegex());
+	EXPECT_EQ("[\n]", square->GetFormattedRegex());
 
 	const auto character1 = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::escapecharacter, character1->GetCaptureType());
-	EXPECT_EQ("\\n", character1->GetFormattedRegex());
+	EXPECT_EQ("\n", character1->GetFormattedRegex());
 }
 
 TEST_F(TestTranslateToIr,
@@ -158,11 +158,11 @@ TEST_F(TestTranslateToIr,
 	subGroups = square->GetSubGroups();
 	EXPECT_EQ(ir::CaptureType::square, square->GetCaptureType());
 	EXPECT_EQ(2, subGroups.size());
-	EXPECT_EQ("[\\nb]", square->GetFormattedRegex());
+	EXPECT_EQ("[\nb]", square->GetFormattedRegex());
 
 	const auto character1 = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::escapecharacter, character1->GetCaptureType());
-	EXPECT_EQ("\\n", character1->GetFormattedRegex());
+	EXPECT_EQ("\n", character1->GetFormattedRegex());
 
 	const auto character2 = subGroups.at(1);
 	EXPECT_EQ(ir::CaptureType::character, character2->GetCaptureType());
@@ -185,11 +185,11 @@ TEST_F(TestTranslateToIr,
 	subGroups = square->GetSubGroups();
 	EXPECT_EQ(ir::CaptureType::square, square->GetCaptureType());
 	EXPECT_EQ(2, subGroups.size());
-	EXPECT_EQ("[\\n ]", square->GetFormattedRegex());
+	EXPECT_EQ("[\n ]", square->GetFormattedRegex());
 
 	const auto character1 = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::escapecharacter, character1->GetCaptureType());
-	EXPECT_EQ("\\n", character1->GetFormattedRegex());
+	EXPECT_EQ("\n", character1->GetFormattedRegex());
 
 	const auto character2 = subGroups.at(1);
 	EXPECT_EQ(ir::CaptureType::character, character2->GetCaptureType());
@@ -211,11 +211,11 @@ TEST_F(TestTranslateToIr, RegexWithSquare1EscapeCharacter1TabCaptures_ShouldConv
 	subGroups = square->GetSubGroups();
 	EXPECT_EQ(ir::CaptureType::square, square->GetCaptureType());
 	EXPECT_EQ(2, subGroups.size());
-	EXPECT_EQ("[\\n\t]", square->GetFormattedRegex());
+	EXPECT_EQ("[\n\t]", square->GetFormattedRegex());
 
 	const auto character1 = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::escapecharacter, character1->GetCaptureType());
-	EXPECT_EQ("\\n", character1->GetFormattedRegex());
+	EXPECT_EQ("\n", character1->GetFormattedRegex());
 
 	const auto character2 = subGroups.at(1);
 	EXPECT_EQ(ir::CaptureType::character, character2->GetCaptureType());
@@ -238,11 +238,11 @@ TEST_F(TestTranslateToIr,
 	subGroups = square->GetSubGroups();
 	EXPECT_EQ(ir::CaptureType::square, square->GetCaptureType());
 	EXPECT_EQ(3, subGroups.size());
-	EXPECT_EQ("[\\n\t\t]", square->GetFormattedRegex());
+	EXPECT_EQ("[\n\t\t]", square->GetFormattedRegex());
 
 	const auto character1 = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::escapecharacter, character1->GetCaptureType());
-	EXPECT_EQ("\\n", character1->GetFormattedRegex());
+	EXPECT_EQ("\n", character1->GetFormattedRegex());
 
 	const auto character2 = subGroups.at(1);
 	EXPECT_EQ(ir::CaptureType::character, character2->GetCaptureType());
@@ -269,11 +269,11 @@ TEST_F(TestTranslateToIr,
 	subGroups = square->GetSubGroups();
 	EXPECT_EQ(ir::CaptureType::square, square->GetCaptureType());
 	EXPECT_EQ(3, subGroups.size());
-	EXPECT_EQ("[\\n \t]", square->GetFormattedRegex());
+	EXPECT_EQ("[\n \t]", square->GetFormattedRegex());
 
 	const auto character1 = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::escapecharacter, character1->GetCaptureType());
-	EXPECT_EQ("\\n", character1->GetFormattedRegex());
+	EXPECT_EQ("\n", character1->GetFormattedRegex());
 
 	const auto character2 = subGroups.at(1);
 	EXPECT_EQ(ir::CaptureType::character, character2->GetCaptureType());

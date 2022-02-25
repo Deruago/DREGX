@@ -16,6 +16,7 @@ Terminal: UNDERSCORE              [_]
 Terminal: NOT                     [\^]
 Terminal: PLUS                    [+]
 Terminal: STAR                    [*]
+Terminal: OPTIONAL                [?]
 
 Terminal: NUMBER    [0-9]
 Terminal: T_        [t]

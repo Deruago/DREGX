@@ -40,11 +40,15 @@ namespace dregx::ast::listener::user
 			{
 				reference::Access_if<::dregx::ast::node::PLUS>(
 					node->GetIndex(5), [&](reference::Access<::dregx::ast::node::PLUS>) {
-						GetCurrentCapture()->SetExtension({1, 0, true});
+						GetCurrentCapture()->SetExtension({1, 1, true});
 					});
 				reference::Access_if<::dregx::ast::node::STAR>(
 					node->GetIndex(5), [&](reference::Access<::dregx::ast::node::STAR>) {
 						GetCurrentCapture()->SetExtension({0, 0, true});
+					});
+				reference::Access_if<::dregx::ast::node::OPTIONAL>(
+					node->GetIndex(5), [&](reference::Access<::dregx::ast::node::OPTIONAL>) {
+						GetCurrentCapture()->SetExtension({0, 1, false});
 					});
 			}
 		}
@@ -76,11 +80,15 @@ namespace dregx::ast::listener::user
 			{
 				reference::Access_if<::dregx::ast::node::PLUS>(
 					node->GetIndex(1), [&](reference::Access<::dregx::ast::node::PLUS>) {
-						GetCurrentCapture()->SetExtension({1, 0, true});
+						GetCurrentCapture()->SetExtension({1, 1, true});
 					});
 				reference::Access_if<::dregx::ast::node::STAR>(
 					node->GetIndex(1), [&](reference::Access<::dregx::ast::node::STAR>) {
 						GetCurrentCapture()->SetExtension({0, 0, true});
+					});
+				reference::Access_if<::dregx::ast::node::OPTIONAL>(
+					node->GetIndex(1), [&](reference::Access<::dregx::ast::node::OPTIONAL>) {
+						GetCurrentCapture()->SetExtension({0, 1, false});
 					});
 			}
 		}
@@ -105,6 +113,10 @@ namespace dregx::ast::listener::user
 			reference::Access<::dregx::ast::node::standalone>(node).any_letter().for_all(
 				[&](reference::Access<::dregx::ast::node::any_letter> letter) {
 					word += letter.GetContent()[0]->GetText();
+				});
+			reference::Access<::dregx::ast::node::standalone>(node).any_number().for_all(
+				[&](reference::Access<::dregx::ast::node::any_number> number) {
+					word += number.GetContent()[0]->GetText();
 				});
 			newWord->SetWord(padding + word);
 		}
@@ -149,6 +161,12 @@ namespace dregx::ast::listener::user
 			AddCapture(newCharacterCapture);
 		}
 
+		void ListenEntry(const dregx::ast::node::capture_number* node) override
+		{
+			auto* newCharacterCapture = new ir::Character(node->GetText());
+			AddCapture(newCharacterCapture);
+		}
+
 		void ListenEntry(const dregx::ast::node::capture_whitespace* node) override
 		{
 			auto* newCharacterCapture = new ir::Character(node->GetText());
@@ -170,6 +188,10 @@ namespace dregx::ast::listener::user
 			PopCapture();
 		}
 		void ListenExit(const dregx::ast::node::capture_letter* node) override
+		{
+			PopCapture();
+		}
+		void ListenExit(const dregx::ast::node::capture_number* node) override
 		{
 			PopCapture();
 		}

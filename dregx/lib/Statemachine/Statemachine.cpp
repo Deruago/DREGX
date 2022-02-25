@@ -16,37 +16,44 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 		return;
 	}
 
-	auto newStartState = std::make_unique<State>();
-	auto lhsStartState = GetStartState();
-	auto rhsStartState = rhs.GetStartState();
-
-	newStartState->SetStart(true);
-	lhsStartState->SetStart(false);
-	rhsStartState->SetStart(false);
-
-	auto linkWithLhsStartState = std::make_unique<Transition>(
-		newStartState.get(), std::vector<Conditional>{}, lhsStartState);
-	auto linkWithRhsStartState = std::make_unique<Transition>(
-		newStartState.get(), std::vector<Conditional>{}, rhsStartState);
-
-	AddState(std::move(newStartState));
-	AddTransition(std::move(linkWithLhsStartState));
-	AddTransition(std::move(linkWithRhsStartState));
-
-	for (auto& rhsState : rhs.states)
+	if (IsDFA && rhs.IsDFA)
 	{
-		AddState(std::move(rhsState));
+		IsDFA = true;
+		ProductionConstructionOR(rhs);
 	}
-
-	for (auto& rhsTransition : rhs.transitions)
+	else
 	{
-		AddTransition(std::move(rhsTransition));
+		IsDFA = false;
+		auto newStartState = std::make_unique<State>();
+		auto lhsStartState = GetStartState();
+		auto rhsStartState = rhs.GetStartState();
+
+		newStartState->SetStart(true);
+		lhsStartState->SetStart(false);
+		rhsStartState->SetStart(false);
+
+		auto linkWithLhsStartState = std::make_unique<Transition>(
+			newStartState.get(), std::vector<Conditional>{}, lhsStartState);
+		auto linkWithRhsStartState = std::make_unique<Transition>(
+			newStartState.get(), std::vector<Conditional>{}, rhsStartState);
+
+		AddState(std::move(newStartState));
+		AddTransition(std::move(linkWithLhsStartState));
+		AddTransition(std::move(linkWithRhsStartState));
+
+		for (auto& rhsState : rhs.states)
+		{
+			AddState(std::move(rhsState));
+		}
+
+		for (auto& rhsTransition : rhs.transitions)
+		{
+			AddTransition(std::move(rhsTransition));
+		}
 	}
 
 	rhs.states.clear();
 	rhs.transitions.clear();
-
-	// ToDFA();
 }
 
 // Connect all lhs.acceptstates with rhs.startstate using empty transition
@@ -57,30 +64,36 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 		return;
 	}
 
-	auto rhsStartState = rhs.GetStartState();
-	rhsStartState->SetStart(false);
-	for (auto acceptState : GetAcceptStates())
+	if (IsDFA && !containsCycles && rhs.IsDFA && !rhs.containsCycles && false)
 	{
-		auto linkWithRhsStartState =
-			std::make_unique<Transition>(acceptState, std::vector<Conditional>{}, rhsStartState);
-		AddTransition(std::move(linkWithRhsStartState));
-		acceptState->SetAccept(false);
 	}
-
-	for (auto& rhsState : rhs.states)
+	else
 	{
-		AddState(std::move(rhsState));
+		auto rhsStartState = rhs.GetStartState();
+		rhsStartState->SetStart(false);
+		for (auto acceptState : GetAcceptStates())
+		{
+			auto linkWithRhsStartState = std::make_unique<Transition>(
+				acceptState, std::vector<Conditional>{}, rhsStartState);
+			AddTransition(std::move(linkWithRhsStartState));
+			acceptState->SetAccept(false);
+		}
+
+		for (auto& rhsState : rhs.states)
+		{
+			AddState(std::move(rhsState));
+		}
+
+		for (auto& rhsTransition : rhs.transitions)
+		{
+			AddTransition(std::move(rhsTransition));
+		}
+
+		rhs.states.clear();
+		rhs.transitions.clear();
+
+		IsDFA = false;
 	}
-
-	for (auto& rhsTransition : rhs.transitions)
-	{
-		AddTransition(std::move(rhsTransition));
-	}
-
-	rhs.states.clear();
-	rhs.transitions.clear();
-
-	// ToDFA();
 }
 
 std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemachine::Copy() const
@@ -195,7 +208,6 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 
 		auto newStartState = std::make_unique<State>();
 		newStartState->SetStart(true);
-		newStartState->SetAccept(true);
 		auto oldStartState = GetStartState();
 		oldStartState->SetStart(false);
 		auto linkWithOldStartState = std::make_unique<Transition>(
@@ -209,7 +221,13 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 		AddTransition(std::move(linkWithOldStartState));
 		AddState(std::move(newStartState));
 
-		// ToDFA();
+		containsCycles = true;
+		IsDFA = false;
+	}
+
+	if (extension.GetLowerBound() == 0)
+	{
+		GetStartState()->SetAccept(true);
 	}
 }
 
@@ -391,6 +409,198 @@ void dregx::statemachine::Statemachine::GetStatesToSource(const State* state,
 	}
 }
 
+dregx::statemachine::TransitionTable dregx::statemachine::Statemachine::ToTransitionTable()
+{
+	TransitionTable table;
+	std::map<State*, std::size_t> mapStateWithIndex;
+
+	std::vector<State*> unCategorizedStates = {GetStartState()};
+	while (!unCategorizedStates.empty())
+	{
+		auto currentUncategorizedState = *unCategorizedStates.begin();
+		unCategorizedStates.erase(unCategorizedStates.begin());
+
+		if (mapStateWithIndex.find(currentUncategorizedState) == mapStateWithIndex.end())
+		{
+			mapStateWithIndex.insert({currentUncategorizedState, mapStateWithIndex.size()});
+		}
+		table.table.emplace_back();
+		table.acceptingState.emplace_back();
+
+		for (auto outTransition : currentUncategorizedState->GetOutTransitions())
+		{
+			if (mapStateWithIndex.find(outTransition->GetOutState()) == mapStateWithIndex.end())
+			{
+				mapStateWithIndex.insert({outTransition->GetOutState(), mapStateWithIndex.size()});
+				unCategorizedStates.push_back(outTransition->GetOutState());
+			}
+		}
+	}
+
+	for (auto& [state, index] : mapStateWithIndex)
+	{
+		table.acceptingState[index] = state->IsAcceptState();
+
+		for (auto* outTransition : state->GetOutTransitions())
+		{
+			table.table[index].insert(
+				{outTransition->GetConditions()[0].GetCharacter(),
+				 mapStateWithIndex.find(outTransition->GetOutState())->second});
+		}
+	}
+
+	return table;
+}
+
+struct ProductionConstructionState
+{
+	dregx::statemachine::State* our;
+	dregx::statemachine::State* their;
+
+	ProductionConstructionState(dregx::statemachine::State* our_,
+								dregx::statemachine::State* their_)
+		: our(our_),
+		  their(their_)
+	{
+	}
+
+	bool IsStart = false;
+
+	bool IsAccept()
+	{
+		return (our != nullptr && our->IsAcceptState()) ||
+			   (their != nullptr && their->IsAcceptState());
+	}
+
+	std::map<std::vector<dregx::statemachine::Conditional>,
+			 std::tuple<dregx::statemachine::Transition*, dregx::statemachine::Transition*>>
+	Or()
+	{
+		std::map<std::vector<dregx::statemachine::Conditional>,
+				 std::tuple<dregx::statemachine::Transition*, dregx::statemachine::Transition*>>
+			mapConditionalWithTuple;
+
+		if (our != nullptr)
+		{
+			for (auto transition : our->GetOutTransitions())
+			{
+				mapConditionalWithTuple.insert(
+					{transition->GetConditions(), {transition, nullptr}});
+			}
+		}
+		if (their != nullptr)
+		{
+			for (auto transition : their->GetOutTransitions())
+			{
+				auto iter = mapConditionalWithTuple.find(transition->GetConditions());
+				if (iter == mapConditionalWithTuple.end())
+				{
+					mapConditionalWithTuple.insert(
+						{transition->GetConditions(), {nullptr, transition}});
+				}
+				else
+				{
+					std::get<1>(iter->second) = transition;
+				}
+			}
+		}
+
+		return mapConditionalWithTuple;
+	}
+};
+
+void dregx::statemachine::Statemachine::ProductionConstructionOR(Statemachine& rhs)
+{
+	auto& ourStates = GetStates();
+	auto& theirStates = rhs.GetStates();
+
+	std::vector<std::unique_ptr<ProductionConstructionState>> productStates;
+	std::map<std::tuple<State*, State*>, ProductionConstructionState*>
+		mapStatesWithProductConstructionState;
+	bool first = true;
+	for (auto& ourState : ourStates)
+	{
+		for (auto& theirState : theirStates)
+		{
+			auto newProductConstructionState =
+				std::make_unique<ProductionConstructionState>(ourState.get(), theirState.get());
+			mapStatesWithProductConstructionState.insert(
+				{{ourState.get(), theirState.get()}, newProductConstructionState.get()});
+
+			if (first)
+			{
+				newProductConstructionState->IsStart = true;
+				first = false;
+			}
+
+			productStates.push_back(std::move(newProductConstructionState));
+		}
+	}
+
+	for (auto& ourState : ourStates)
+	{
+		auto newProductConstructionState =
+			std::make_unique<ProductionConstructionState>(ourState.get(), nullptr);
+		mapStatesWithProductConstructionState.insert(
+			{{ourState.get(), nullptr}, newProductConstructionState.get()});
+
+		productStates.push_back(std::move(newProductConstructionState));
+	}
+	for (auto& theirState : theirStates)
+	{
+		auto newProductConstructionState =
+			std::make_unique<ProductionConstructionState>(nullptr, theirState.get());
+		mapStatesWithProductConstructionState.insert(
+			{{nullptr, theirState.get()}, newProductConstructionState.get()});
+
+		productStates.push_back(std::move(newProductConstructionState));
+	}
+
+	std::map<ProductionConstructionState*, State*> mapPCSwithStates;
+	std::vector<std::unique_ptr<State>> newStates;
+	std::vector<std::unique_ptr<Transition>> newTransitions;
+	for (auto& productState : productStates)
+	{
+		auto newState = std::make_unique<State>();
+		newState->SetStart(productState->IsStart);
+		newState->SetAccept(productState->IsAccept());
+
+		mapPCSwithStates.insert({productState.get(), newState.get()});
+
+		newStates.push_back(std::move(newState));
+	}
+
+	for (auto& productionState : productStates)
+	{
+		auto thisState = mapPCSwithStates.find(productionState.get())->second;
+		auto conditionalMap = productionState->Or();
+		for (auto& [conditional, transitions] : conditionalMap)
+		{
+			auto firstTransition = std::get<0>(transitions);
+			auto secondTransition = std::get<1>(transitions);
+			State* firstState = nullptr;
+			State* secondState = nullptr;
+			if (firstTransition != nullptr)
+			{
+				firstState = firstTransition->GetOutState();
+			}
+			if (secondTransition != nullptr)
+			{
+				secondState = secondTransition->GetOutState();
+			}
+			auto otherProductState =
+				mapStatesWithProductConstructionState.find({firstState, secondState})->second;
+			auto otherState = mapPCSwithStates.find(otherProductState)->second;
+			auto newTransition = std::make_unique<Transition>(thisState, conditional, otherState);
+
+			newTransitions.push_back(std::move(newTransition));
+		}
+	}
+
+	this->states = std::move(newStates);
+	this->transitions = std::move(newTransitions);
+}
+
 void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 {
 	State* sharedAcceptState = nullptr;
@@ -570,4 +780,6 @@ void dregx::statemachine::Statemachine::ToDFA()
 
 	this->states = std::move(newDfaStates);
 	this->transitions = std::move(newDfaTransitions);
+
+	IsDFA = true;
 }

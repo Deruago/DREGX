@@ -19,6 +19,7 @@
 #include "dregx/Ast/Node/NOT.h"
 #include "dregx/Ast/Node/PLUS.h"
 #include "dregx/Ast/Node/STAR.h"
+#include "dregx/Ast/Node/OPTIONAL.h"
 #include "dregx/Ast/Node/NUMBER.h"
 #include "dregx/Ast/Node/T_.h"
 #include "dregx/Ast/Node/N_.h"
@@ -50,6 +51,7 @@
 #include "dregx/Ast/Node/capture_range.h"
 #include "dregx/Ast/Node/capture_letter_range.h"
 #include "dregx/Ast/Node/capture_number_range.h"
+#include "dregx/Ast/Node/capture_number.h"
 #include "dregx/Ast/Node/capture_letter.h"
 #include "dregx/Ast/Node/capture_special_character.h"
 #include "dregx/Ast/Node/extension_modifier.h"
@@ -62,6 +64,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
 #include "dregx/Ast/Node/padding.h"
 #include "dregx/Ast/Node/special_char_any.h"
+#include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
 #include "dregx/Ast/Node/any.h"
@@ -153,6 +156,11 @@ namespace dregx { namespace ast { namespace Visitor {
 			case dregx::ast::Type::STAR:
 			{
 				Visit(static_cast<const dregx::ast::node::STAR*>(node));
+				break;
+			}
+			case dregx::ast::Type::OPTIONAL:
+			{
+				Visit(static_cast<const dregx::ast::node::OPTIONAL*>(node));
 				break;
 			}
 			case dregx::ast::Type::NUMBER:
@@ -306,6 +314,11 @@ namespace dregx { namespace ast { namespace Visitor {
 				Visit(static_cast<const dregx::ast::node::capture_number_range*>(node));
 				break;
 			}
+			case dregx::ast::Type::capture_number:
+			{
+				Visit(static_cast<const dregx::ast::node::capture_number*>(node));
+				break;
+			}
 			case dregx::ast::Type::capture_letter:
 			{
 				Visit(static_cast<const dregx::ast::node::capture_letter*>(node));
@@ -364,6 +377,11 @@ namespace dregx { namespace ast { namespace Visitor {
 			case dregx::ast::Type::special_char_any:
 			{
 				Visit(static_cast<const dregx::ast::node::special_char_any*>(node));
+				break;
+			}
+			case dregx::ast::Type::any_number:
+			{
+				Visit(static_cast<const dregx::ast::node::any_number*>(node));
 				break;
 			}
 			case dregx::ast::Type::any_letter:
@@ -426,6 +444,9 @@ namespace dregx { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const dregx::ast::node::STAR* node)
+		{
+		}
+		virtual void Visit(const dregx::ast::node::OPTIONAL* node)
 		{
 		}
 		virtual void Visit(const dregx::ast::node::NUMBER* node)
@@ -519,6 +540,9 @@ namespace dregx { namespace ast { namespace Visitor {
 		virtual void Visit(const dregx::ast::node::capture_number_range* node)
 		{
 		}
+		virtual void Visit(const dregx::ast::node::capture_number* node)
+		{
+		}
 		virtual void Visit(const dregx::ast::node::capture_letter* node)
 		{
 		}
@@ -553,6 +577,9 @@ namespace dregx { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const dregx::ast::node::special_char_any* node)
+		{
+		}
+		virtual void Visit(const dregx::ast::node::any_number* node)
 		{
 		}
 		virtual void Visit(const dregx::ast::node::any_letter* node)

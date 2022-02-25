@@ -206,6 +206,16 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"capture_number_range\"];\n";
 		}
 
+		void ListenEntry(const ::dregx::ast::node::capture_number* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"capture_number\"];\n";
+		}
+
 		void ListenEntry(const ::dregx::ast::node::capture_letter* node) override
 		{
 			for (const auto* child : node->GetNodes())
@@ -324,6 +334,16 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 			}
 
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"special_char_any\"];\n";
+		}
+
+		void ListenEntry(const ::dregx::ast::node::any_number* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"any_number\"];\n";
 		}
 
 		void ListenEntry(const ::dregx::ast::node::any_letter* node) override
@@ -504,6 +524,16 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 			}
 
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"STAR\"];\n";
+		}
+
+		void ListenEntry(const ::dregx::ast::node::OPTIONAL* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"OPTIONAL\"];\n";
 		}
 
 		void ListenEntry(const ::dregx::ast::node::NUMBER* node) override
@@ -699,6 +729,10 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 		{
 		}
 
+		void ListenExit(const ::dregx::ast::node::capture_number* node) override
+		{
+		}
+
 		void ListenExit(const ::dregx::ast::node::capture_letter* node) override
 		{
 		}
@@ -744,6 +778,10 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 		}
 
 		void ListenExit(const ::dregx::ast::node::special_char_any* node) override
+		{
+		}
+
+		void ListenExit(const ::dregx::ast::node::any_number* node) override
 		{
 		}
 

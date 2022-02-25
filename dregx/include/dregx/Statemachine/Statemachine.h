@@ -4,6 +4,7 @@
 #include "dregx/Ir/Extension.h"
 #include "dregx/Statemachine/State.h"
 #include "dregx/Statemachine/Transition.h"
+#include "dregx/Statemachine/TransitionTable.h"
 #include <memory>
 #include <set>
 #include <vector>
@@ -15,6 +16,8 @@ namespace dregx::statemachine
 	private:
 		std::vector<std::unique_ptr<State>> states;
 		std::vector<std::unique_ptr<Transition>> transitions;
+		bool containsCycles = false;
+		bool IsDFA = true;
 
 	public:
 		Statemachine() = default;
@@ -58,7 +61,10 @@ namespace dregx::statemachine
 		void GetStatesToSource(const std::vector<State*>& states, std::set<State*>& embeddedStates);
 		void GetStatesToSource(const State* state, std::set<State*>& embeddedStates);
 
+		TransitionTable ToTransitionTable();
+
 	private:
+		void ProductionConstructionOR(Statemachine& rhs);
 	};
 }
 

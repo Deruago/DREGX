@@ -27,6 +27,7 @@
 #include "dregx/Ast/Node/NOT.h"
 #include "dregx/Ast/Node/PLUS.h"
 #include "dregx/Ast/Node/STAR.h"
+#include "dregx/Ast/Node/OPTIONAL.h"
 #include "dregx/Ast/Node/NUMBER.h"
 #include "dregx/Ast/Node/T_.h"
 #include "dregx/Ast/Node/N_.h"
@@ -58,6 +59,7 @@
 #include "dregx/Ast/Node/capture_range.h"
 #include "dregx/Ast/Node/capture_letter_range.h"
 #include "dregx/Ast/Node/capture_number_range.h"
+#include "dregx/Ast/Node/capture_number.h"
 #include "dregx/Ast/Node/capture_letter.h"
 #include "dregx/Ast/Node/capture_special_character.h"
 #include "dregx/Ast/Node/extension_modifier.h"
@@ -70,6 +72,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
 #include "dregx/Ast/Node/padding.h"
 #include "dregx/Ast/Node/special_char_any.h"
+#include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
 #include "dregx/Ast/Node/any.h"
@@ -102,6 +105,7 @@ UNDERSCORE	([_])
 NOT	([\^])
 PLUS	([+])
 STAR	([*])
+OPTIONAL	([?])
 NUMBER	([0-9])
 T_	([t])
 N_	([n])
@@ -132,17 +136,18 @@ DELETE_ESCAPE_CHARS	([\n\r\b\v\a])
 {NOT}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(13)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(13));;handleColumn(yyval);if (!local_store) return (NOT);;}
 {PLUS}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(14)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(14));;handleColumn(yyval);if (!local_store) return (PLUS);;}
 {STAR}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(15)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(15));;handleColumn(yyval);if (!local_store) return (STAR);;}
-{NUMBER}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(16)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(16));;handleColumn(yyval);if (!local_store) return (NUMBER);;}
-{T_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(17)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(17));;handleColumn(yyval);if (!local_store) return (T_);;}
-{N_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(18)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(18));;handleColumn(yyval);if (!local_store) return (N_);;}
-{R_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(19)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(19));;handleColumn(yyval);if (!local_store) return (R_);;}
-{B_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(20)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(20));;handleColumn(yyval);if (!local_store) return (B_);;}
-{V_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(21)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(21));;handleColumn(yyval);if (!local_store) return (V_);;}
-{A_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(22)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(22));;handleColumn(yyval);if (!local_store) return (A_);;}
-{LETTER}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(23)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(23));;handleColumn(yyval);if (!local_store) return (LETTER);;}
-{SPACE}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(24)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(24));;handleColumn(yyval);if (!local_store) return (SPACE);;}
-{TAB}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(25)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(25));;handleColumn(yyval);if (!local_store) return (TAB);;}
-{OTHER}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(26)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(26));;handleColumn(yyval);if (!local_store) return (OTHER);;}
+{OPTIONAL}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(16)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(16));;handleColumn(yyval);if (!local_store) return (OPTIONAL);;}
+{NUMBER}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(17)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(17));;handleColumn(yyval);if (!local_store) return (NUMBER);;}
+{T_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(18)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(18));;handleColumn(yyval);if (!local_store) return (T_);;}
+{N_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(19)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(19));;handleColumn(yyval);if (!local_store) return (N_);;}
+{R_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(20)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(20));;handleColumn(yyval);if (!local_store) return (R_);;}
+{B_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(21)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(21));;handleColumn(yyval);if (!local_store) return (B_);;}
+{V_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(22)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(22));;handleColumn(yyval);if (!local_store) return (V_);;}
+{A_}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(23)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(23));;handleColumn(yyval);if (!local_store) return (A_);;}
+{LETTER}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(24)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(24));;handleColumn(yyval);if (!local_store) return (LETTER);;}
+{SPACE}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(25)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(25));;handleColumn(yyval);if (!local_store) return (SPACE);;}
+{TAB}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(26)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(26));;handleColumn(yyval);if (!local_store) return (TAB);;}
+{OTHER}	{if (local_store) store(new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(27)));else dregxlval.Terminal = new deamer::external::cpp::lexer::TerminalObject(yyval, yylineno, column, std::size_t(27));;handleColumn(yyval);if (!local_store) return (OTHER);;}
 {DELETE_ESCAPE_CHARS}	{handleColumn(yyval);if (!local_store) ;}
 
 %%

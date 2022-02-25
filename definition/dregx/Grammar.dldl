@@ -17,8 +17,8 @@ word
 	standalone
 
 group
-	opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
-	opt_pad LEFT_CURLY_BRACKET word+ opt_pad RIGHT_CURLY_BRACKET [(STAR|PLUS|extension_modifier)]
+	opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET [(OPTIONAL|STAR|PLUS|extension_modifier)]
+	opt_pad LEFT_CURLY_BRACKET word+ opt_pad RIGHT_CURLY_BRACKET [(OPTIONAL|STAR|PLUS|extension_modifier)]
 
 or_concat
 	word opt_pad OR word -> (opt_pad OR word)
@@ -27,6 +27,7 @@ square
 	capture extension_modifier
 	capture PLUS
 	capture STAR
+	capture OPTIONAL
 	capture
 
 capture
@@ -37,6 +38,7 @@ capture_logic
 	capture_range
 	capture_special_character
 	capture_letter
+	capture_number
 	capture_whitespace
 	capture_symbols
 
@@ -46,6 +48,7 @@ capture_symbols
 	STAR
 	COMMA
 	OR
+	OPTIONAL
 	
 
 capture_whitespace
@@ -61,6 +64,9 @@ capture_letter_range
 
 capture_number_range
 	NUMBER MIN NUMBER
+
+capture_number
+	any_number
 
 capture_letter
 	any_letter
@@ -78,7 +84,7 @@ max_repition
 	opt_pad NUMBER+
 
 standalone
-	opt_pad any_letter
+	opt_pad (any_letter|any_number)
 
 opt_pad
 	optional_padding
@@ -92,6 +98,9 @@ padding
 
 special_char_any
 	SLASH any
+
+any_number
+	NUMBER
 
 any_letter
 	any_letter_exclude_underscore
@@ -116,6 +125,7 @@ any
 	COMMA
 	OR
 	MIN
+	OPTIONAL
 	UNDERSCORE
 	NOT
 	NUMBER

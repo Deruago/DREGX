@@ -45,6 +45,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture_range;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture_letter_range;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture_number_range;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture_number;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture_letter;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture_special_character;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> extension_modifier;
@@ -57,6 +58,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__padding__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> padding;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> special_char_any;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any_number;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any_letter;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any_letter_exclude_underscore;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any;
@@ -70,12 +72,14 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> word_group;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> word_square;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> word_standalone;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_or_concat_opt_pad_RIGHT_CURLY_BRACKET_OPTIONAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_or_concat_opt_pad_RIGHT_CURLY_BRACKET_STAR;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_or_concat_opt_pad_RIGHT_CURLY_BRACKET_PLUS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_or_concat_opt_pad_RIGHT_CURLY_BRACKET_extension_modifier;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_or_concat_opt_pad_RIGHT_CURLY_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_plus__word___word;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_plus__word___word_deamerreserved_plus__word__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_deamerreserved_plus__word___opt_pad_RIGHT_CURLY_BRACKET_OPTIONAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_deamerreserved_plus__word___opt_pad_RIGHT_CURLY_BRACKET_STAR;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_deamerreserved_plus__word___opt_pad_RIGHT_CURLY_BRACKET_PLUS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_deamerreserved_plus__word___opt_pad_RIGHT_CURLY_BRACKET_extension_modifier;
@@ -87,6 +91,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture_extension_modifier;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture_PLUS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture_STAR;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture_OPTIONAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_plus__capture_logic___capture_logic;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_plus__capture_logic___capture_logic_deamerreserved_plus__capture_logic__;
@@ -95,6 +100,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_range;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_special_character;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_letter;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_number;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_whitespace;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_symbols;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_OTHER;
@@ -102,12 +108,14 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_STAR;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_COMMA;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_OR;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_OPTIONAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_whitespace_SPACE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_whitespace_TAB;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_range_capture_letter_range;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_range_capture_number_range;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_letter_range_any_letter_exclude_underscore_MIN_any_letter_exclude_underscore;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_number_range_NUMBER_MIN_NUMBER;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_number_any_number;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_letter_any_letter;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_special_character_special_char_any;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> extension_modifier_opt_pad_LEFT_BRACKET_min_repition_opt_pad_COMMA_max_repition_opt_pad_RIGHT_BRACKET;
@@ -116,6 +124,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> min_repition_opt_pad_deamerreserved_plus__NUMBER__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> max_repition_opt_pad_deamerreserved_plus__NUMBER__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> standalone_opt_pad_any_letter;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> standalone_opt_pad_any_number;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> opt_pad_optional_padding;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__padding___padding_deamerreserved_star__padding__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__padding___EMPTY;
@@ -123,6 +132,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> padding_SPACE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> padding_TAB;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> special_char_any_SLASH_any;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_number_NUMBER;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_letter_any_letter_exclude_underscore;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_letter_UNDERSCORE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_letter_exclude_underscore_T_;
@@ -141,6 +151,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_COMMA;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_OR;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_MIN;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_OPTIONAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_UNDERSCORE;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_NOT;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_NUMBER;

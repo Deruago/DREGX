@@ -26,5 +26,5 @@ std::string dregx::ir::EscapeCharacter::GetEscapedCharacter() const
 
 std::string dregx::ir::EscapeCharacter::GetFormattedRegex()
 {
-	return "\\" + letter;
+	return GetEscapedCharacter();
 }

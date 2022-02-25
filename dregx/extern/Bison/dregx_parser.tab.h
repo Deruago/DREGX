@@ -64,18 +64,19 @@ extern int dregxdebug;
     NOT = 270,                     /* NOT  */
     PLUS = 271,                    /* PLUS  */
     STAR = 272,                    /* STAR  */
-    NUMBER = 273,                  /* NUMBER  */
-    T_ = 274,                      /* T_  */
-    N_ = 275,                      /* N_  */
-    R_ = 276,                      /* R_  */
-    B_ = 277,                      /* B_  */
-    V_ = 278,                      /* V_  */
-    A_ = 279,                      /* A_  */
-    LETTER = 280,                  /* LETTER  */
-    SPACE = 281,                   /* SPACE  */
-    TAB = 282,                     /* TAB  */
-    OTHER = 283,                   /* OTHER  */
-    DELETE_ESCAPE_CHARS = 284      /* DELETE_ESCAPE_CHARS  */
+    OPTIONAL = 273,                /* OPTIONAL  */
+    NUMBER = 274,                  /* NUMBER  */
+    T_ = 275,                      /* T_  */
+    N_ = 276,                      /* N_  */
+    R_ = 277,                      /* R_  */
+    B_ = 278,                      /* B_  */
+    V_ = 279,                      /* V_  */
+    A_ = 280,                      /* A_  */
+    LETTER = 281,                  /* LETTER  */
+    SPACE = 282,                   /* SPACE  */
+    TAB = 283,                     /* TAB  */
+    OTHER = 284,                   /* OTHER  */
+    DELETE_ESCAPE_CHARS = 285      /* DELETE_ESCAPE_CHARS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -84,7 +85,7 @@ extern int dregxdebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 157 "./dregx_parser.y"
+#line 163 "./dregx_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::dregx::ast::node::LEFT_CURLY_BRACKET* dregx_LEFT_CURLY_BRACKET;
@@ -102,6 +103,7 @@ union YYSTYPE
 	::dregx::ast::node::NOT* dregx_NOT;
 	::dregx::ast::node::PLUS* dregx_PLUS;
 	::dregx::ast::node::STAR* dregx_STAR;
+	::dregx::ast::node::OPTIONAL* dregx_OPTIONAL;
 	::dregx::ast::node::NUMBER* dregx_NUMBER;
 	::dregx::ast::node::T_* dregx_T_;
 	::dregx::ast::node::N_* dregx_N_;
@@ -132,6 +134,7 @@ union YYSTYPE
 	::dregx::ast::node::capture_range* dregx_capture_range;
 	::dregx::ast::node::capture_letter_range* dregx_capture_letter_range;
 	::dregx::ast::node::capture_number_range* dregx_capture_number_range;
+	::dregx::ast::node::capture_number* dregx_capture_number;
 	::dregx::ast::node::capture_letter* dregx_capture_letter;
 	::dregx::ast::node::capture_special_character* dregx_capture_special_character;
 	::dregx::ast::node::extension_modifier* dregx_extension_modifier;
@@ -144,12 +147,13 @@ union YYSTYPE
 	::dregx::ast::node::deamerreserved_star__padding__* dregx_deamerreserved_star__padding__;
 	::dregx::ast::node::padding* dregx_padding;
 	::dregx::ast::node::special_char_any* dregx_special_char_any;
+	::dregx::ast::node::any_number* dregx_any_number;
 	::dregx::ast::node::any_letter* dregx_any_letter;
 	::dregx::ast::node::any_letter_exclude_underscore* dregx_any_letter_exclude_underscore;
 	::dregx::ast::node::any* dregx_any;
 
 
-#line 153 "dregx_parser.tab.h"
+#line 157 "dregx_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

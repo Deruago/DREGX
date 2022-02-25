@@ -89,6 +89,7 @@
 #include "dregx/Ast/Node/NOT.h"
 #include "dregx/Ast/Node/PLUS.h"
 #include "dregx/Ast/Node/STAR.h"
+#include "dregx/Ast/Node/OPTIONAL.h"
 #include "dregx/Ast/Node/NUMBER.h"
 #include "dregx/Ast/Node/T_.h"
 #include "dregx/Ast/Node/N_.h"
@@ -121,6 +122,7 @@
 #include "dregx/Ast/Node/capture_range.h"
 #include "dregx/Ast/Node/capture_letter_range.h"
 #include "dregx/Ast/Node/capture_number_range.h"
+#include "dregx/Ast/Node/capture_number.h"
 #include "dregx/Ast/Node/capture_letter.h"
 #include "dregx/Ast/Node/capture_special_character.h"
 #include "dregx/Ast/Node/extension_modifier.h"
@@ -133,6 +135,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
 #include "dregx/Ast/Node/padding.h"
 #include "dregx/Ast/Node/special_char_any.h"
+#include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
 #include "dregx/Ast/Node/any.h"
@@ -150,7 +153,7 @@ void dregxerror(const char* s);
 int dregxlex();
 static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 
-#line 154 "dregx_parser.tab.c"
+#line 157 "dregx_parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -197,52 +200,55 @@ enum yysymbol_kind_t
   YYSYMBOL_NOT = 15,                       /* NOT  */
   YYSYMBOL_PLUS = 16,                      /* PLUS  */
   YYSYMBOL_STAR = 17,                      /* STAR  */
-  YYSYMBOL_NUMBER = 18,                    /* NUMBER  */
-  YYSYMBOL_T_ = 19,                        /* T_  */
-  YYSYMBOL_N_ = 20,                        /* N_  */
-  YYSYMBOL_R_ = 21,                        /* R_  */
-  YYSYMBOL_B_ = 22,                        /* B_  */
-  YYSYMBOL_V_ = 23,                        /* V_  */
-  YYSYMBOL_A_ = 24,                        /* A_  */
-  YYSYMBOL_LETTER = 25,                    /* LETTER  */
-  YYSYMBOL_SPACE = 26,                     /* SPACE  */
-  YYSYMBOL_TAB = 27,                       /* TAB  */
-  YYSYMBOL_OTHER = 28,                     /* OTHER  */
-  YYSYMBOL_DELETE_ESCAPE_CHARS = 29,       /* DELETE_ESCAPE_CHARS  */
-  YYSYMBOL_YYACCEPT = 30,                  /* $accept  */
-  YYSYMBOL_program = 31,                   /* program  */
-  YYSYMBOL_deamerreserved_star__stmt__ = 32, /* deamerreserved_star__stmt__  */
-  YYSYMBOL_stmt = 33,                      /* stmt  */
-  YYSYMBOL_word = 34,                      /* word  */
-  YYSYMBOL_group = 35,                     /* group  */
-  YYSYMBOL_deamerreserved_plus__word__ = 36, /* deamerreserved_plus__word__  */
-  YYSYMBOL_or_concat = 37,                 /* or_concat  */
-  YYSYMBOL_deamerreserved_arrow__word__ = 38, /* deamerreserved_arrow__word__  */
-  YYSYMBOL_deamerreserved_star__opt_pad__OR__word__ = 39, /* deamerreserved_star__opt_pad__OR__word__  */
-  YYSYMBOL_square = 40,                    /* square  */
-  YYSYMBOL_capture = 41,                   /* capture  */
-  YYSYMBOL_deamerreserved_plus__capture_logic__ = 42, /* deamerreserved_plus__capture_logic__  */
-  YYSYMBOL_capture_logic = 43,             /* capture_logic  */
-  YYSYMBOL_capture_symbols = 44,           /* capture_symbols  */
-  YYSYMBOL_capture_whitespace = 45,        /* capture_whitespace  */
-  YYSYMBOL_capture_range = 46,             /* capture_range  */
-  YYSYMBOL_capture_letter_range = 47,      /* capture_letter_range  */
-  YYSYMBOL_capture_number_range = 48,      /* capture_number_range  */
-  YYSYMBOL_capture_letter = 49,            /* capture_letter  */
-  YYSYMBOL_capture_special_character = 50, /* capture_special_character  */
-  YYSYMBOL_extension_modifier = 51,        /* extension_modifier  */
-  YYSYMBOL_min_repition = 52,              /* min_repition  */
-  YYSYMBOL_deamerreserved_plus__NUMBER__ = 53, /* deamerreserved_plus__NUMBER__  */
-  YYSYMBOL_max_repition = 54,              /* max_repition  */
-  YYSYMBOL_standalone = 55,                /* standalone  */
-  YYSYMBOL_opt_pad = 56,                   /* opt_pad  */
-  YYSYMBOL_optional_padding = 57,          /* optional_padding  */
-  YYSYMBOL_deamerreserved_star__padding__ = 58, /* deamerreserved_star__padding__  */
-  YYSYMBOL_padding = 59,                   /* padding  */
-  YYSYMBOL_special_char_any = 60,          /* special_char_any  */
-  YYSYMBOL_any_letter = 61,                /* any_letter  */
-  YYSYMBOL_any_letter_exclude_underscore = 62, /* any_letter_exclude_underscore  */
-  YYSYMBOL_any = 63                        /* any  */
+  YYSYMBOL_OPTIONAL = 18,                  /* OPTIONAL  */
+  YYSYMBOL_NUMBER = 19,                    /* NUMBER  */
+  YYSYMBOL_T_ = 20,                        /* T_  */
+  YYSYMBOL_N_ = 21,                        /* N_  */
+  YYSYMBOL_R_ = 22,                        /* R_  */
+  YYSYMBOL_B_ = 23,                        /* B_  */
+  YYSYMBOL_V_ = 24,                        /* V_  */
+  YYSYMBOL_A_ = 25,                        /* A_  */
+  YYSYMBOL_LETTER = 26,                    /* LETTER  */
+  YYSYMBOL_SPACE = 27,                     /* SPACE  */
+  YYSYMBOL_TAB = 28,                       /* TAB  */
+  YYSYMBOL_OTHER = 29,                     /* OTHER  */
+  YYSYMBOL_DELETE_ESCAPE_CHARS = 30,       /* DELETE_ESCAPE_CHARS  */
+  YYSYMBOL_YYACCEPT = 31,                  /* $accept  */
+  YYSYMBOL_program = 32,                   /* program  */
+  YYSYMBOL_deamerreserved_star__stmt__ = 33, /* deamerreserved_star__stmt__  */
+  YYSYMBOL_stmt = 34,                      /* stmt  */
+  YYSYMBOL_word = 35,                      /* word  */
+  YYSYMBOL_group = 36,                     /* group  */
+  YYSYMBOL_deamerreserved_plus__word__ = 37, /* deamerreserved_plus__word__  */
+  YYSYMBOL_or_concat = 38,                 /* or_concat  */
+  YYSYMBOL_deamerreserved_arrow__word__ = 39, /* deamerreserved_arrow__word__  */
+  YYSYMBOL_deamerreserved_star__opt_pad__OR__word__ = 40, /* deamerreserved_star__opt_pad__OR__word__  */
+  YYSYMBOL_square = 41,                    /* square  */
+  YYSYMBOL_capture = 42,                   /* capture  */
+  YYSYMBOL_deamerreserved_plus__capture_logic__ = 43, /* deamerreserved_plus__capture_logic__  */
+  YYSYMBOL_capture_logic = 44,             /* capture_logic  */
+  YYSYMBOL_capture_symbols = 45,           /* capture_symbols  */
+  YYSYMBOL_capture_whitespace = 46,        /* capture_whitespace  */
+  YYSYMBOL_capture_range = 47,             /* capture_range  */
+  YYSYMBOL_capture_letter_range = 48,      /* capture_letter_range  */
+  YYSYMBOL_capture_number_range = 49,      /* capture_number_range  */
+  YYSYMBOL_capture_number = 50,            /* capture_number  */
+  YYSYMBOL_capture_letter = 51,            /* capture_letter  */
+  YYSYMBOL_capture_special_character = 52, /* capture_special_character  */
+  YYSYMBOL_extension_modifier = 53,        /* extension_modifier  */
+  YYSYMBOL_min_repition = 54,              /* min_repition  */
+  YYSYMBOL_deamerreserved_plus__NUMBER__ = 55, /* deamerreserved_plus__NUMBER__  */
+  YYSYMBOL_max_repition = 56,              /* max_repition  */
+  YYSYMBOL_standalone = 57,                /* standalone  */
+  YYSYMBOL_opt_pad = 58,                   /* opt_pad  */
+  YYSYMBOL_optional_padding = 59,          /* optional_padding  */
+  YYSYMBOL_deamerreserved_star__padding__ = 60, /* deamerreserved_star__padding__  */
+  YYSYMBOL_padding = 61,                   /* padding  */
+  YYSYMBOL_special_char_any = 62,          /* special_char_any  */
+  YYSYMBOL_any_number = 63,                /* any_number  */
+  YYSYMBOL_any_letter = 64,                /* any_letter  */
+  YYSYMBOL_any_letter_exclude_underscore = 65, /* any_letter_exclude_underscore  */
+  YYSYMBOL_any = 66                        /* any  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -505,16 +511,16 @@ typedef int yytype_uint16;
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  15
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   184
+#define YYLAST   196
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  30
+#define YYNTOKENS  31
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  34
+#define YYNNTS  36
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  95
+#define YYNRULES  104
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  128
+#define YYNSTATES  137
 /* YYMAXRHS -- Maximum number of symbols on right-hand side of rule.  */
 #define YYMAXRHS 8
 /* YYMAXLEFT -- Maximum number of symbols to the left of a handle
@@ -522,7 +528,7 @@ typedef int yytype_uint16;
 #define YYMAXLEFT 0
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   284
+#define YYMAXUTOK   285
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
    as returned by yylex, with out-of-bounds checking.  */
@@ -563,46 +569,48 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29
+      25,    26,    27,    28,    29,    30
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   226,   226,   237,   243,   253,   263,   269,   275,   285,
-     291,   297,   303,   309,   315,   321,   327,   337,   343,   353,
-     363,   373,   379,   389,   395,   401,   407,   417,   423,   433,
-     439,   449,   455,   461,   467,   473,   483,   489,   495,   501,
-     507,   517,   523,   533,   539,   549,   559,   569,   579,   589,
-     599,   609,   615,   625,   635,   645,   655,   665,   671,   681,
-     687,   697,   707,   713,   723,   729,   735,   741,   747,   753,
-     759,   769,   775,   781,   787,   793,   799,   805,   811,   817,
-     823,   829,   835,   841,   847,   853,   859,   865,   871,   877,
-     883,   889,   895,   901,   907,   913
+       0,   235,   235,   246,   252,   262,   272,   278,   284,   294,
+     300,   306,   312,   318,   324,   330,   336,   342,   348,   358,
+     364,   374,   384,   394,   400,   410,   416,   422,   428,   434,
+     444,   450,   460,   466,   476,   482,   488,   494,   500,   506,
+     516,   522,   528,   534,   540,   546,   556,   562,   572,   578,
+     588,   598,   608,   618,   628,   638,   648,   658,   664,   674,
+     684,   690,   700,   710,   720,   726,   736,   742,   752,   762,
+     772,   778,   788,   794,   800,   806,   812,   818,   824,   834,
+     840,   846,   852,   858,   864,   870,   876,   882,   888,   894,
+     900,   906,   912,   918,   924,   930,   936,   942,   948,   954,
+     960,   966,   972,   978,   984
 };
 #endif
 
-#define YYPACT_NINF (-94)
-#define YYTABLE_NINF (-59)
+#define YYPACT_NINF (-100)
+#define YYTABLE_NINF (-66)
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       3,   -94,   -94,     9,    22,    10,   -94,   -94,   -94,    -2,
-     -94,    71,   -94,   -94,    22,   -94,   -94,   -94,   -94,   -94,
-     -94,    12,    22,   156,   156,   -94,   -94,   -94,   -94,   -94,
-     -94,   -94,   -94,   -94,   -94,   -94,    22,    13,    22,    22,
-     -94,   117,   -94,   -94,   -94,     5,   -94,   -94,   -94,     4,
-     156,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-      18,    16,    22,    27,    15,   -94,    41,    50,    52,   -94,
-     -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-     -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-     -94,   -94,   -94,   -94,   -94,    34,   -94,   -94,    48,   -94,
-      65,    27,   -94,    22,    91,   138,   -94,   -94,    22,   -94,
-      -5,   -94,   -94,   -94,   -94,   -94,   -94,   -94,    22,    27,
-     -94,    66,    70,   -94,    22,   -94,     1,   -94
+      12,  -100,  -100,    11,    -6,    14,  -100,  -100,  -100,     0,
+    -100,    77,  -100,  -100,    -6,  -100,  -100,  -100,  -100,  -100,
+    -100,  -100,     5,    -6,   167,   167,  -100,  -100,  -100,  -100,
+    -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,    -6,
+       3,    -6,    -6,  -100,   126,  -100,  -100,  -100,  -100,     2,
+    -100,  -100,  -100,    13,   167,  -100,  -100,  -100,  -100,  -100,
+    -100,  -100,  -100,  -100,  -100,  -100,    32,    18,    -6,     7,
+       6,  -100,    49,    40,    42,  -100,  -100,  -100,  -100,  -100,
+    -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,
+    -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,  -100,
+    -100,  -100,    28,  -100,  -100,   137,  -100,    38,     7,  -100,
+      -6,    98,   148,  -100,  -100,    -6,  -100,    31,  -100,  -100,
+    -100,  -100,  -100,  -100,  -100,  -100,  -100,    -6,     7,  -100,
+      39,    41,  -100,    -6,  -100,    65,  -100
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -610,135 +618,141 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-      58,    59,    60,     0,    58,    58,     5,     6,     7,    26,
-       8,     0,    55,    56,    58,     1,     2,     3,    24,    25,
-      23,     0,    58,     0,     0,    63,    64,    66,    65,    67,
-      68,    69,    70,    54,    62,    57,    58,    58,    58,    58,
-      39,     0,    40,    37,    38,     0,    41,    42,    36,     0,
-      29,    35,    34,    31,    43,    44,    33,    32,    48,    47,
-      62,     0,    58,     0,    58,    18,     0,     0,     0,    71,
-      72,    73,    74,    75,    76,    77,    95,    78,    79,    80,
-      81,    92,    93,    82,    83,    84,    85,    86,    87,    88,
-      89,    90,    91,    94,    61,     0,    27,    30,     0,    28,
-       0,    51,    50,    58,    16,    12,    46,    45,    58,    52,
-      22,    19,    14,    13,    15,    10,     9,    11,    58,     0,
-      20,     0,     0,    53,    58,    49,    22,    21
+      65,    66,    67,     0,    65,    65,     5,     6,     7,    29,
+       8,     0,    62,    63,    65,     1,     2,     3,    26,    27,
+      28,    25,     0,    65,     0,     0,    71,    69,    72,    74,
+      73,    75,    76,    77,    78,    61,    60,    70,    64,    65,
+      65,    65,    65,    43,     0,    44,    41,    42,    45,    69,
+      46,    47,    40,     0,    32,    39,    38,    34,    48,    49,
+      37,    36,    35,    54,    52,    53,    70,     0,    65,     0,
+      65,    20,     0,     0,     0,    79,    80,    81,    82,    83,
+      84,    85,   104,    86,    87,    89,    90,   101,   102,    88,
+      91,    92,    93,    94,    95,    96,    97,    98,    99,   100,
+     103,    68,     0,    30,    33,     0,    31,     0,    57,    56,
+      65,    18,    13,    51,    50,    65,    58,    24,    21,    16,
+      15,    14,    17,    11,    10,     9,    12,    65,     0,    22,
+       0,     0,    59,    65,    55,    24,    23
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -94,   -94,    75,   -94,   -21,   -94,    59,   -94,   -94,   -43,
-     -94,   -94,   -12,   -94,   -94,   -94,   -94,   -94,   -94,   -94,
-     -94,   -54,   -94,   -93,   -94,   -94,    -4,   -94,    72,   -94,
-     -94,    -7,    -9,   -94
+    -100,  -100,    48,  -100,   -21,  -100,    33,  -100,  -100,   -78,
+    -100,  -100,   -22,  -100,  -100,  -100,  -100,  -100,  -100,  -100,
+    -100,  -100,   -88,  -100,   -99,  -100,  -100,    -4,  -100,    46,
+    -100,  -100,    -7,    -5,   -10,  -100
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_int8 yydefgoto[] =
+static const yytype_uint8 yydefgoto[] =
 {
-       0,     3,     4,     5,     6,     7,    65,    39,   111,   120,
-       8,     9,    49,    50,    51,    52,    53,    54,    55,    56,
-      57,    20,    62,   102,   118,    10,    11,    12,    13,    14,
-      58,    59,    60,    94
+       0,     3,     4,     5,     6,     7,    71,    42,   118,   129,
+       8,     9,    53,    54,    55,    56,    57,    58,    59,    60,
+      61,    62,    21,    68,   109,   127,    10,    11,    12,    13,
+      14,    63,    64,    65,    66,   101
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      16,    37,    34,    -4,    33,    21,   -58,   -58,   109,    15,
-      -4,    96,    61,   -58,    18,    19,    64,   -17,    95,   -17,
-      36,     1,     2,    99,     1,     2,   123,     1,     2,     1,
-       2,    98,    63,    66,    67,    68,     1,     2,    97,     1,
-       2,     1,     2,    64,    22,   101,    23,    24,     1,     2,
-     114,   117,   106,   103,   104,    25,   105,    34,   100,    33,
-      26,    27,    28,    29,    30,    31,    32,    26,    27,    28,
-      29,    30,    31,    32,    22,   108,    23,    24,   124,   125,
-      17,    38,   110,   127,     0,    25,    35,     0,     0,   107,
-      26,    27,    28,    29,    30,    31,    32,     0,     0,   -58,
-      21,    21,     0,   126,   119,     0,   121,   112,   113,     0,
-       0,     0,     0,     0,   122,     0,     0,     1,     2,     0,
-      69,    70,   121,    71,    72,    73,    74,    75,    76,    77,
-      78,    79,    80,    81,    82,    83,    84,    85,    86,    87,
-      88,    89,    90,    91,    92,    93,   -58,     0,     0,     0,
-       0,     0,     0,     0,   115,   116,     0,     0,     0,     0,
-       0,     0,     0,     0,     1,     2,    40,    41,    42,     0,
-      25,     0,    43,    44,    45,    26,    27,    28,    29,    30,
-      31,    32,    46,    47,    48
+      16,    37,    40,    67,    35,    22,    36,   -19,   -65,   116,
+     -19,    15,    -4,    39,    -4,   102,    18,    19,    20,    70,
+     103,     1,     2,   122,   126,   106,   108,     1,     2,   132,
+       1,     2,   104,     1,     2,    69,    72,    73,    74,     1,
+       2,     1,     2,   -65,   111,   105,   112,   113,   115,    70,
+     134,   133,    23,    17,    24,    25,    41,   136,     1,     2,
+      38,   110,    37,    26,   107,    35,     0,    36,    27,    28,
+      29,    30,    31,    32,    33,    34,     0,   -65,     0,     0,
+      23,     0,    24,    25,     0,     0,     0,     0,     0,   117,
+       0,    26,     1,     2,     0,   114,    27,    28,    29,    30,
+      31,    32,    33,    34,     0,     0,   -65,    22,    22,     0,
+       0,   128,   135,   130,   119,   120,   121,     0,     0,     0,
+       0,     0,     0,   131,     0,     1,     2,     0,     0,    75,
+      76,   130,    77,    78,    79,    80,    81,    82,    83,    84,
+      85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
+      95,    96,    97,    98,    99,   100,   -65,    28,    29,    30,
+      31,    32,    33,    34,   123,   124,   125,     0,     0,     0,
+       0,     0,     0,     0,     0,     1,     2,    43,    44,    45,
+       0,    26,     0,    46,    47,    48,    49,    28,    29,    30,
+      31,    32,    33,    34,    50,    51,    52
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-       4,    22,    11,     0,    11,     9,     8,    12,   101,     0,
-       0,     7,    24,    12,    16,    17,    37,     4,    13,     4,
-       8,    26,    27,     7,    26,    27,   119,    26,    27,    26,
-      27,    13,    36,    37,    38,    39,    26,    27,    50,    26,
-      27,    26,    27,    64,     3,    18,     5,     6,    26,    27,
-     104,   105,    18,    12,     4,    14,     4,    66,    62,    66,
-      19,    20,    21,    22,    23,    24,    25,    19,    20,    21,
-      22,    23,    24,    25,     3,    10,     5,     6,    12,     9,
-       5,    22,   103,   126,    -1,    14,    14,    -1,    -1,    98,
-      19,    20,    21,    22,    23,    24,    25,    -1,    -1,     8,
-     104,   105,    -1,   124,   108,    -1,   110,    16,    17,    -1,
-      -1,    -1,    -1,    -1,   118,    -1,    -1,    26,    27,    -1,
-       3,     4,   126,     6,     7,     8,     9,    10,    11,    12,
-      13,    14,    15,    16,    17,    18,    19,    20,    21,    22,
-      23,    24,    25,    26,    27,    28,     8,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    16,    17,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    26,    27,    10,    11,    12,    -1,
-      14,    -1,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28
+       4,    11,    23,    25,    11,     9,    11,     4,     8,   108,
+       4,     0,     0,     8,     0,    13,    16,    17,    18,    40,
+       7,    27,    28,   111,   112,     7,    19,    27,    28,   128,
+      27,    28,    54,    27,    28,    39,    40,    41,    42,    27,
+      28,    27,    28,    12,     4,    13,     4,    19,    10,    70,
+       9,    12,     3,     5,     5,     6,    23,   135,    27,    28,
+      14,    12,    72,    14,    68,    72,    -1,    72,    19,    20,
+      21,    22,    23,    24,    25,    26,    -1,    12,    -1,    -1,
+       3,    -1,     5,     6,    -1,    -1,    -1,    -1,    -1,   110,
+      -1,    14,    27,    28,    -1,   105,    19,    20,    21,    22,
+      23,    24,    25,    26,    -1,    -1,     8,   111,   112,    -1,
+      -1,   115,   133,   117,    16,    17,    18,    -1,    -1,    -1,
+      -1,    -1,    -1,   127,    -1,    27,    28,    -1,    -1,     3,
+       4,   135,     6,     7,     8,     9,    10,    11,    12,    13,
+      14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,     8,    20,    21,    22,
+      23,    24,    25,    26,    16,    17,    18,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    27,    28,    10,    11,    12,
+      -1,    14,    -1,    16,    17,    18,    19,    20,    21,    22,
+      23,    24,    25,    26,    27,    28,    29
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    26,    27,    31,    32,    33,    34,    35,    40,    41,
-      55,    56,    57,    58,    59,     0,    56,    32,    16,    17,
-      51,    56,     3,     5,     6,    14,    19,    20,    21,    22,
-      23,    24,    25,    61,    62,    58,     8,    34,    36,    37,
-      10,    11,    12,    16,    17,    18,    26,    27,    28,    42,
-      43,    44,    45,    46,    47,    48,    49,    50,    60,    61,
-      62,    42,    52,    56,    34,    36,    56,    56,    56,     3,
-       4,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    63,    13,     7,    42,    13,     7,
-      56,    18,    53,    12,     4,     4,    18,    62,    10,    53,
-      34,    38,    16,    17,    51,    16,    17,    51,    54,    56,
-      39,    56,    56,    53,    12,     9,    34,    39
+       0,    27,    28,    32,    33,    34,    35,    36,    41,    42,
+      57,    58,    59,    60,    61,     0,    58,    33,    16,    17,
+      18,    53,    58,     3,     5,     6,    14,    19,    20,    21,
+      22,    23,    24,    25,    26,    63,    64,    65,    60,     8,
+      35,    37,    38,    10,    11,    12,    16,    17,    18,    19,
+      27,    28,    29,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    62,    63,    64,    65,    43,    54,    58,
+      35,    37,    58,    58,    58,     3,     4,     6,     7,     8,
+       9,    10,    11,    12,    13,    14,    15,    16,    17,    18,
+      19,    20,    21,    22,    23,    24,    25,    26,    27,    28,
+      29,    66,    13,     7,    43,    13,     7,    58,    19,    55,
+      12,     4,     4,    19,    65,    10,    55,    35,    39,    16,
+      17,    18,    53,    16,    17,    18,    53,    56,    58,    40,
+      58,    58,    55,    12,     9,    35,    40
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    30,    31,    32,    32,    33,    34,    34,    34,    35,
-      35,    35,    35,    35,    35,    35,    35,    36,    36,    37,
-      38,    39,    39,    40,    40,    40,    40,    41,    41,    42,
-      42,    43,    43,    43,    43,    43,    44,    44,    44,    44,
-      44,    45,    45,    46,    46,    47,    48,    49,    50,    51,
-      52,    53,    53,    54,    55,    56,    57,    58,    58,    59,
-      59,    60,    61,    61,    62,    62,    62,    62,    62,    62,
-      62,    63,    63,    63,    63,    63,    63,    63,    63,    63,
-      63,    63,    63,    63,    63,    63,    63,    63,    63,    63,
-      63,    63,    63,    63,    63,    63
+       0,    31,    32,    33,    33,    34,    35,    35,    35,    36,
+      36,    36,    36,    36,    36,    36,    36,    36,    36,    37,
+      37,    38,    39,    40,    40,    41,    41,    41,    41,    41,
+      42,    42,    43,    43,    44,    44,    44,    44,    44,    44,
+      45,    45,    45,    45,    45,    45,    46,    46,    47,    47,
+      48,    49,    50,    51,    52,    53,    54,    55,    55,    56,
+      57,    57,    58,    59,    60,    60,    61,    61,    62,    63,
+      64,    64,    65,    65,    65,    65,    65,    65,    65,    66,
+      66,    66,    66,    66,    66,    66,    66,    66,    66,    66,
+      66,    66,    66,    66,    66,    66,    66,    66,    66,    66,
+      66,    66,    66,    66,    66
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     2,     2,     0,     1,     1,     1,     1,     6,
-       6,     6,     5,     6,     6,     6,     5,     1,     2,     4,
-       2,     4,     0,     2,     2,     2,     1,     4,     4,     1,
-       2,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     3,     3,     1,     1,     8,
-       2,     1,     2,     2,     2,     1,     1,     2,     0,     1,
-       1,     2,     1,     1,     1,     1,     1,     1,     1,     1,
+       6,     6,     6,     5,     6,     6,     6,     6,     5,     1,
+       2,     4,     2,     4,     0,     2,     2,     2,     2,     1,
+       4,     4,     1,     2,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       3,     3,     1,     1,     1,     8,     2,     1,     2,     2,
+       2,     2,     1,     1,     2,     0,     1,     1,     2,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1
 };
 
 
@@ -754,7 +768,8 @@ static const yytype_int8 yydprec[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0
 };
 
 /* YYMERGER[RULE-NUM] -- Index of merging function for rule #RULE-NUM.  */
@@ -769,7 +784,8 @@ static const yytype_int8 yymerger[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0
 };
 
 /* YYIMMEDIATE[RULE-NUM] -- True iff rule #RULE-NUM is not to be deferred, as
@@ -785,7 +801,8 @@ static const yybool yyimmediate[] =
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0
 };
 
 /* YYCONFLP[YYPACT[STATE-NUM]] -- Pointer into YYCONFL of start of
@@ -796,33 +813,34 @@ static const yytype_int8 yyconflp[] =
 {
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    29,    31,     0,     9,    11,     0,    33,    35,     1,
-       3,     0,     0,     0,     0,     0,     5,     7,     0,    13,
-      15,    17,    19,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     9,    11,     0,
+      13,    15,     0,    17,    19,     0,     0,     0,     0,     1,
+       3,     5,     7,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    29,    31,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    33,    35,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    21,    23,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    25,    27,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    21,    23,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,    25,    27,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0
+       0,     0,     0,     0,     0,     0,     0
 };
 
 /* YYCONFL[I] -- lists of conflicting rule numbers, each terminated by
    0, pointed into by YYCONFLP.  */
 static const short yyconfl[] =
 {
-       0,     4,     0,     4,     0,     4,     0,     4,     0,    26,
-       0,    26,     0,    17,     0,    17,     0,    17,     0,    17,
-       0,    16,     0,    16,     0,    12,     0,    12,     0,    22,
-       0,    22,     0,    22,     0,    22,     0
+       0,     4,     0,     4,     0,     4,     0,     4,     0,    29,
+       0,    29,     0,    19,     0,    19,     0,    19,     0,    19,
+       0,    18,     0,    18,     0,    13,     0,    13,     0,    24,
+       0,    24,     0,    24,     0,    24,     0
 };
 
 
@@ -1007,20 +1025,21 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "LEFT_CURLY_BRACKET",
   "RIGHT_CURLY_BRACKET", "LEFT_SQUARE_BRACKET_NOT", "LEFT_SQUARE_BRACKET",
   "RIGHT_SQUARE_BRACKET", "LEFT_BRACKET", "RIGHT_BRACKET", "COMMA",
-  "SLASH", "OR", "MIN", "UNDERSCORE", "NOT", "PLUS", "STAR", "NUMBER",
-  "T_", "N_", "R_", "B_", "V_", "A_", "LETTER", "SPACE", "TAB", "OTHER",
-  "DELETE_ESCAPE_CHARS", "$accept", "program",
+  "SLASH", "OR", "MIN", "UNDERSCORE", "NOT", "PLUS", "STAR", "OPTIONAL",
+  "NUMBER", "T_", "N_", "R_", "B_", "V_", "A_", "LETTER", "SPACE", "TAB",
+  "OTHER", "DELETE_ESCAPE_CHARS", "$accept", "program",
   "deamerreserved_star__stmt__", "stmt", "word", "group",
   "deamerreserved_plus__word__", "or_concat",
   "deamerreserved_arrow__word__",
   "deamerreserved_star__opt_pad__OR__word__", "square", "capture",
   "deamerreserved_plus__capture_logic__", "capture_logic",
   "capture_symbols", "capture_whitespace", "capture_range",
-  "capture_letter_range", "capture_number_range", "capture_letter",
-  "capture_special_character", "extension_modifier", "min_repition",
-  "deamerreserved_plus__NUMBER__", "max_repition", "standalone", "opt_pad",
-  "optional_padding", "deamerreserved_star__padding__", "padding",
-  "special_char_any", "any_letter", "any_letter_exclude_underscore", "any", YY_NULLPTR
+  "capture_letter_range", "capture_number_range", "capture_number",
+  "capture_letter", "capture_special_character", "extension_modifier",
+  "min_repition", "deamerreserved_plus__NUMBER__", "max_repition",
+  "standalone", "opt_pad", "optional_padding",
+  "deamerreserved_star__padding__", "padding", "special_char_any",
+  "any_number", "any_letter", "any_letter_exclude_underscore", "any", YY_NULLPTR
 };
 
 static const char *
@@ -1325,7 +1344,7 @@ yyuserAction (yyRuleNum yyrule, int yyrhslen, yyGLRStackItem* yyvsp,
   switch (yyrule)
     {
   case 2: /* program: deamerreserved_star__stmt__ opt_pad  */
-#line 226 "./dregx_parser.y"
+#line 235 "./dregx_parser.y"
                                              {
 		auto* const newNode = new dregx::ast::node::program({::dregx::ast::Type::program, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_deamerreserved_star__stmt__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_opt_pad) });
 		((*yyvalp).dregx_program) = newNode;
@@ -1333,1034 +1352,1133 @@ yyuserAction (yyRuleNum yyrule, int yyrhslen, yyGLRStackItem* yyvsp,
 		// Ignored, Deleted, tokens are deleted
 		outputTree = new ::deamer::external::cpp::ast::Tree(newNode);
 	}
-#line 1337 "dregx_parser.tab.c"
+#line 1356 "dregx_parser.tab.c"
     break;
 
   case 3: /* deamerreserved_star__stmt__: stmt deamerreserved_star__stmt__  */
-#line 237 "./dregx_parser.y"
+#line 246 "./dregx_parser.y"
                                           {
 		auto* const newNode = new dregx::ast::node::deamerreserved_star__stmt__({::dregx::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_stmt), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__stmt__) });
 		((*yyvalp).dregx_deamerreserved_star__stmt__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1348 "dregx_parser.tab.c"
+#line 1367 "dregx_parser.tab.c"
     break;
 
   case 4: /* deamerreserved_star__stmt__: %empty  */
-#line 243 "./dregx_parser.y"
+#line 252 "./dregx_parser.y"
            {
 		auto* const newNode = new dregx::ast::node::deamerreserved_star__stmt__({::dregx::ast::Type::deamerreserved_star__stmt__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
 		((*yyvalp).dregx_deamerreserved_star__stmt__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1359 "dregx_parser.tab.c"
+#line 1378 "dregx_parser.tab.c"
     break;
 
   case 5: /* stmt: word  */
-#line 253 "./dregx_parser.y"
+#line 262 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::stmt({::dregx::ast::Type::stmt, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_word) });
 		((*yyvalp).dregx_stmt) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1370 "dregx_parser.tab.c"
+#line 1389 "dregx_parser.tab.c"
     break;
 
   case 6: /* word: group  */
-#line 263 "./dregx_parser.y"
+#line 272 "./dregx_parser.y"
                {
 		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_group) });
 		((*yyvalp).dregx_word) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1381 "dregx_parser.tab.c"
+#line 1400 "dregx_parser.tab.c"
     break;
 
   case 7: /* word: square  */
-#line 269 "./dregx_parser.y"
+#line 278 "./dregx_parser.y"
                   {
 		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_square) });
 		((*yyvalp).dregx_word) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1392 "dregx_parser.tab.c"
+#line 1411 "dregx_parser.tab.c"
     break;
 
   case 8: /* word: standalone  */
-#line 275 "./dregx_parser.y"
+#line 284 "./dregx_parser.y"
                       {
 		auto* const newNode = new dregx::ast::node::word({::dregx::ast::Type::word, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_standalone) });
 		((*yyvalp).dregx_word) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1403 "dregx_parser.tab.c"
+#line 1422 "dregx_parser.tab.c"
     break;
 
-  case 9: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET STAR  */
-#line 285 "./dregx_parser.y"
-                                                                               {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+  case 9: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET OPTIONAL  */
+#line 294 "./dregx_parser.y"
+                                                                                   {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::OPTIONAL({::dregx::ast::Type::OPTIONAL, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1414 "dregx_parser.tab.c"
+#line 1433 "dregx_parser.tab.c"
     break;
 
-  case 10: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET PLUS  */
-#line 291 "./dregx_parser.y"
+  case 10: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET STAR  */
+#line 300 "./dregx_parser.y"
                                                                                  {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1425 "dregx_parser.tab.c"
+#line 1444 "dregx_parser.tab.c"
     break;
 
-  case 11: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
-#line 297 "./dregx_parser.y"
+  case 11: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET PLUS  */
+#line 306 "./dregx_parser.y"
+                                                                                 {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1455 "dregx_parser.tab.c"
+    break;
+
+  case 12: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
+#line 312 "./dregx_parser.y"
                                                                                                {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1436 "dregx_parser.tab.c"
+#line 1466 "dregx_parser.tab.c"
     break;
 
-  case 12: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET  */
-#line 303 "./dregx_parser.y"
+  case 13: /* group: opt_pad LEFT_CURLY_BRACKET or_concat opt_pad RIGHT_CURLY_BRACKET  */
+#line 318 "./dregx_parser.y"
                                                                             {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_or_concat), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1447 "dregx_parser.tab.c"
+#line 1477 "dregx_parser.tab.c"
     break;
 
-  case 13: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET STAR  */
-#line 309 "./dregx_parser.y"
+  case 14: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET OPTIONAL  */
+#line 324 "./dregx_parser.y"
+                                                                                                       {
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::OPTIONAL({::dregx::ast::Type::OPTIONAL, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_group) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1488 "dregx_parser.tab.c"
+    break;
+
+  case 15: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET STAR  */
+#line 330 "./dregx_parser.y"
                                                                                                    {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1458 "dregx_parser.tab.c"
+#line 1499 "dregx_parser.tab.c"
     break;
 
-  case 14: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET PLUS  */
-#line 315 "./dregx_parser.y"
+  case 16: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET PLUS  */
+#line 336 "./dregx_parser.y"
                                                                                                    {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1469 "dregx_parser.tab.c"
+#line 1510 "dregx_parser.tab.c"
     break;
 
-  case 15: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
-#line 321 "./dregx_parser.y"
+  case 17: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET extension_modifier  */
+#line 342 "./dregx_parser.y"
                                                                                                                  {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 8, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1480 "dregx_parser.tab.c"
+#line 1521 "dregx_parser.tab.c"
     break;
 
-  case 16: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET  */
-#line 327 "./dregx_parser.y"
+  case 18: /* group: opt_pad LEFT_CURLY_BRACKET deamerreserved_plus__word__ opt_pad RIGHT_CURLY_BRACKET  */
+#line 348 "./dregx_parser.y"
                                                                                               {
-		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::group({::dregx::ast::Type::group, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 9, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_group) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1491 "dregx_parser.tab.c"
+#line 1532 "dregx_parser.tab.c"
     break;
 
-  case 17: /* deamerreserved_plus__word__: word  */
-#line 337 "./dregx_parser.y"
+  case 19: /* deamerreserved_plus__word__: word  */
+#line 358 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::deamerreserved_plus__word__({::dregx::ast::Type::deamerreserved_plus__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_word) });
 		((*yyvalp).dregx_deamerreserved_plus__word__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1502 "dregx_parser.tab.c"
+#line 1543 "dregx_parser.tab.c"
     break;
 
-  case 18: /* deamerreserved_plus__word__: word deamerreserved_plus__word__  */
-#line 343 "./dregx_parser.y"
+  case 20: /* deamerreserved_plus__word__: word deamerreserved_plus__word__  */
+#line 364 "./dregx_parser.y"
                                             {
 		auto* const newNode = new dregx::ast::node::deamerreserved_plus__word__({::dregx::ast::Type::deamerreserved_plus__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__word__) });
 		((*yyvalp).dregx_deamerreserved_plus__word__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1513 "dregx_parser.tab.c"
+#line 1554 "dregx_parser.tab.c"
     break;
 
-  case 19: /* or_concat: word opt_pad OR deamerreserved_arrow__word__  */
-#line 353 "./dregx_parser.y"
+  case 21: /* or_concat: word opt_pad OR deamerreserved_arrow__word__  */
+#line 374 "./dregx_parser.y"
                                                       {
 		auto* const newNode = new dregx::ast::node::or_concat({::dregx::ast::Type::or_concat, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_arrow__word__) });
 		((*yyvalp).dregx_or_concat) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1524 "dregx_parser.tab.c"
+#line 1565 "dregx_parser.tab.c"
     break;
 
-  case 20: /* deamerreserved_arrow__word__: word deamerreserved_star__opt_pad__OR__word__  */
-#line 363 "./dregx_parser.y"
+  case 22: /* deamerreserved_arrow__word__: word deamerreserved_star__opt_pad__OR__word__  */
+#line 384 "./dregx_parser.y"
                                                        {
 		auto* const newNode = new dregx::ast::node::deamerreserved_arrow__word__({::dregx::ast::Type::deamerreserved_arrow__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__opt_pad__OR__word__) });
 		((*yyvalp).dregx_deamerreserved_arrow__word__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1535 "dregx_parser.tab.c"
+#line 1576 "dregx_parser.tab.c"
     break;
 
-  case 21: /* deamerreserved_star__opt_pad__OR__word__: opt_pad OR word deamerreserved_star__opt_pad__OR__word__  */
-#line 373 "./dregx_parser.y"
+  case 23: /* deamerreserved_star__opt_pad__OR__word__: opt_pad OR word deamerreserved_star__opt_pad__OR__word__  */
+#line 394 "./dregx_parser.y"
                                                                   {
 		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_word), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__opt_pad__OR__word__) });
 		((*yyvalp).dregx_deamerreserved_star__opt_pad__OR__word__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1546 "dregx_parser.tab.c"
+#line 1587 "dregx_parser.tab.c"
     break;
 
-  case 22: /* deamerreserved_star__opt_pad__OR__word__: %empty  */
-#line 379 "./dregx_parser.y"
+  case 24: /* deamerreserved_star__opt_pad__OR__word__: %empty  */
+#line 400 "./dregx_parser.y"
            {
 		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
 		((*yyvalp).dregx_deamerreserved_star__opt_pad__OR__word__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1557 "dregx_parser.tab.c"
+#line 1598 "dregx_parser.tab.c"
     break;
 
-  case 23: /* square: capture extension_modifier  */
-#line 389 "./dregx_parser.y"
+  case 25: /* square: capture extension_modifier  */
+#line 410 "./dregx_parser.y"
                                     {
 		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_extension_modifier) });
 		((*yyvalp).dregx_square) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1568 "dregx_parser.tab.c"
+#line 1609 "dregx_parser.tab.c"
     break;
 
-  case 24: /* square: capture PLUS  */
-#line 395 "./dregx_parser.y"
+  case 26: /* square: capture PLUS  */
+#line 416 "./dregx_parser.y"
                         {
 		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture), new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_square) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1579 "dregx_parser.tab.c"
+#line 1620 "dregx_parser.tab.c"
     break;
 
-  case 25: /* square: capture STAR  */
-#line 401 "./dregx_parser.y"
+  case 27: /* square: capture STAR  */
+#line 422 "./dregx_parser.y"
                         {
 		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture), new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_square) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1590 "dregx_parser.tab.c"
+#line 1631 "dregx_parser.tab.c"
     break;
 
-  case 26: /* square: capture  */
-#line 407 "./dregx_parser.y"
-                   {
-		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture) });
+  case 28: /* square: capture OPTIONAL  */
+#line 428 "./dregx_parser.y"
+                            {
+		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture), new dregx::ast::node::OPTIONAL({::dregx::ast::Type::OPTIONAL, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_square) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1601 "dregx_parser.tab.c"
+#line 1642 "dregx_parser.tab.c"
     break;
 
-  case 27: /* capture: opt_pad LEFT_SQUARE_BRACKET_NOT deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
-#line 417 "./dregx_parser.y"
+  case 29: /* square: capture  */
+#line 434 "./dregx_parser.y"
+                   {
+		auto* const newNode = new dregx::ast::node::square({::dregx::ast::Type::square, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture) });
+		((*yyvalp).dregx_square) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1653 "dregx_parser.tab.c"
+    break;
+
+  case 30: /* capture: opt_pad LEFT_SQUARE_BRACKET_NOT deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
+#line 444 "./dregx_parser.y"
                                                                                                    {
 		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_SQUARE_BRACKET_NOT({::dregx::ast::Type::LEFT_SQUARE_BRACKET_NOT, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__capture_logic__), new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1612 "dregx_parser.tab.c"
+#line 1664 "dregx_parser.tab.c"
     break;
 
-  case 28: /* capture: opt_pad LEFT_SQUARE_BRACKET deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
-#line 423 "./dregx_parser.y"
+  case 31: /* capture: opt_pad LEFT_SQUARE_BRACKET deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  */
+#line 450 "./dregx_parser.y"
                                                                                                  {
 		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__capture_logic__), new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1623 "dregx_parser.tab.c"
+#line 1675 "dregx_parser.tab.c"
     break;
 
-  case 29: /* deamerreserved_plus__capture_logic__: capture_logic  */
-#line 433 "./dregx_parser.y"
+  case 32: /* deamerreserved_plus__capture_logic__: capture_logic  */
+#line 460 "./dregx_parser.y"
                        {
 		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_logic) });
 		((*yyvalp).dregx_deamerreserved_plus__capture_logic__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1634 "dregx_parser.tab.c"
+#line 1686 "dregx_parser.tab.c"
     break;
 
-  case 30: /* deamerreserved_plus__capture_logic__: capture_logic deamerreserved_plus__capture_logic__  */
-#line 439 "./dregx_parser.y"
+  case 33: /* deamerreserved_plus__capture_logic__: capture_logic deamerreserved_plus__capture_logic__  */
+#line 466 "./dregx_parser.y"
                                                               {
 		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_capture_logic), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__capture_logic__) });
 		((*yyvalp).dregx_deamerreserved_plus__capture_logic__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1645 "dregx_parser.tab.c"
+#line 1697 "dregx_parser.tab.c"
     break;
 
-  case 31: /* capture_logic: capture_range  */
-#line 449 "./dregx_parser.y"
+  case 34: /* capture_logic: capture_range  */
+#line 476 "./dregx_parser.y"
                        {
 		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_range) });
 		((*yyvalp).dregx_capture_logic) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1656 "dregx_parser.tab.c"
+#line 1708 "dregx_parser.tab.c"
     break;
 
-  case 32: /* capture_logic: capture_special_character  */
-#line 455 "./dregx_parser.y"
+  case 35: /* capture_logic: capture_special_character  */
+#line 482 "./dregx_parser.y"
                                      {
 		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_special_character) });
 		((*yyvalp).dregx_capture_logic) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1667 "dregx_parser.tab.c"
+#line 1719 "dregx_parser.tab.c"
     break;
 
-  case 33: /* capture_logic: capture_letter  */
-#line 461 "./dregx_parser.y"
+  case 36: /* capture_logic: capture_letter  */
+#line 488 "./dregx_parser.y"
                           {
 		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_letter) });
 		((*yyvalp).dregx_capture_logic) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1678 "dregx_parser.tab.c"
+#line 1730 "dregx_parser.tab.c"
     break;
 
-  case 34: /* capture_logic: capture_whitespace  */
-#line 467 "./dregx_parser.y"
+  case 37: /* capture_logic: capture_number  */
+#line 494 "./dregx_parser.y"
+                          {
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_number) });
+		((*yyvalp).dregx_capture_logic) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1741 "dregx_parser.tab.c"
+    break;
+
+  case 38: /* capture_logic: capture_whitespace  */
+#line 500 "./dregx_parser.y"
                               {
-		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_whitespace) });
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_whitespace) });
 		((*yyvalp).dregx_capture_logic) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1689 "dregx_parser.tab.c"
+#line 1752 "dregx_parser.tab.c"
     break;
 
-  case 35: /* capture_logic: capture_symbols  */
-#line 473 "./dregx_parser.y"
+  case 39: /* capture_logic: capture_symbols  */
+#line 506 "./dregx_parser.y"
                            {
-		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_symbols) });
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_symbols) });
 		((*yyvalp).dregx_capture_logic) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1700 "dregx_parser.tab.c"
+#line 1763 "dregx_parser.tab.c"
     break;
 
-  case 36: /* capture_symbols: OTHER  */
-#line 483 "./dregx_parser.y"
+  case 40: /* capture_symbols: OTHER  */
+#line 516 "./dregx_parser.y"
                {
 		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OTHER({::dregx::ast::Type::OTHER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_symbols) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1711 "dregx_parser.tab.c"
+#line 1774 "dregx_parser.tab.c"
     break;
 
-  case 37: /* capture_symbols: PLUS  */
-#line 489 "./dregx_parser.y"
+  case 41: /* capture_symbols: PLUS  */
+#line 522 "./dregx_parser.y"
                 {
 		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_symbols) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1722 "dregx_parser.tab.c"
+#line 1785 "dregx_parser.tab.c"
     break;
 
-  case 38: /* capture_symbols: STAR  */
-#line 495 "./dregx_parser.y"
+  case 42: /* capture_symbols: STAR  */
+#line 528 "./dregx_parser.y"
                 {
 		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_symbols) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1733 "dregx_parser.tab.c"
+#line 1796 "dregx_parser.tab.c"
     break;
 
-  case 39: /* capture_symbols: COMMA  */
-#line 501 "./dregx_parser.y"
+  case 43: /* capture_symbols: COMMA  */
+#line 534 "./dregx_parser.y"
                  {
 		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_symbols) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1744 "dregx_parser.tab.c"
+#line 1807 "dregx_parser.tab.c"
     break;
 
-  case 40: /* capture_symbols: OR  */
-#line 507 "./dregx_parser.y"
+  case 44: /* capture_symbols: OR  */
+#line 540 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_symbols) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1755 "dregx_parser.tab.c"
+#line 1818 "dregx_parser.tab.c"
     break;
 
-  case 41: /* capture_whitespace: SPACE  */
-#line 517 "./dregx_parser.y"
+  case 45: /* capture_symbols: OPTIONAL  */
+#line 546 "./dregx_parser.y"
+                    {
+		auto* const newNode = new dregx::ast::node::capture_symbols({::dregx::ast::Type::capture_symbols, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OPTIONAL({::dregx::ast::Type::OPTIONAL, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_capture_symbols) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1829 "dregx_parser.tab.c"
+    break;
+
+  case 46: /* capture_whitespace: SPACE  */
+#line 556 "./dregx_parser.y"
                {
 		auto* const newNode = new dregx::ast::node::capture_whitespace({::dregx::ast::Type::capture_whitespace, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_whitespace) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1766 "dregx_parser.tab.c"
+#line 1840 "dregx_parser.tab.c"
     break;
 
-  case 42: /* capture_whitespace: TAB  */
-#line 523 "./dregx_parser.y"
+  case 47: /* capture_whitespace: TAB  */
+#line 562 "./dregx_parser.y"
                {
 		auto* const newNode = new dregx::ast::node::capture_whitespace({::dregx::ast::Type::capture_whitespace, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_whitespace) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1777 "dregx_parser.tab.c"
+#line 1851 "dregx_parser.tab.c"
     break;
 
-  case 43: /* capture_range: capture_letter_range  */
-#line 533 "./dregx_parser.y"
+  case 48: /* capture_range: capture_letter_range  */
+#line 572 "./dregx_parser.y"
                               {
 		auto* const newNode = new dregx::ast::node::capture_range({::dregx::ast::Type::capture_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_letter_range) });
 		((*yyvalp).dregx_capture_range) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1788 "dregx_parser.tab.c"
+#line 1862 "dregx_parser.tab.c"
     break;
 
-  case 44: /* capture_range: capture_number_range  */
-#line 539 "./dregx_parser.y"
+  case 49: /* capture_range: capture_number_range  */
+#line 578 "./dregx_parser.y"
                                 {
 		auto* const newNode = new dregx::ast::node::capture_range({::dregx::ast::Type::capture_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_capture_number_range) });
 		((*yyvalp).dregx_capture_range) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1799 "dregx_parser.tab.c"
+#line 1873 "dregx_parser.tab.c"
     break;
 
-  case 45: /* capture_letter_range: any_letter_exclude_underscore MIN any_letter_exclude_underscore  */
-#line 549 "./dregx_parser.y"
+  case 50: /* capture_letter_range: any_letter_exclude_underscore MIN any_letter_exclude_underscore  */
+#line 588 "./dregx_parser.y"
                                                                          {
 		auto* const newNode = new dregx::ast::node::capture_letter_range({::dregx::ast::Type::capture_letter_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_any_letter_exclude_underscore), new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter_exclude_underscore) });
 		((*yyvalp).dregx_capture_letter_range) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1810 "dregx_parser.tab.c"
+#line 1884 "dregx_parser.tab.c"
     break;
 
-  case 46: /* capture_number_range: NUMBER MIN NUMBER  */
-#line 559 "./dregx_parser.y"
+  case 51: /* capture_number_range: NUMBER MIN NUMBER  */
+#line 598 "./dregx_parser.y"
                            {
 		auto* const newNode = new dregx::ast::node::capture_number_range({::dregx::ast::Type::capture_number_range, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_capture_number_range) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1821 "dregx_parser.tab.c"
+#line 1895 "dregx_parser.tab.c"
     break;
 
-  case 47: /* capture_letter: any_letter  */
-#line 569 "./dregx_parser.y"
+  case 52: /* capture_number: any_number  */
+#line 608 "./dregx_parser.y"
+                    {
+		auto* const newNode = new dregx::ast::node::capture_number({::dregx::ast::Type::capture_number, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_number) });
+		((*yyvalp).dregx_capture_number) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 1906 "dregx_parser.tab.c"
+    break;
+
+  case 53: /* capture_letter: any_letter  */
+#line 618 "./dregx_parser.y"
                     {
 		auto* const newNode = new dregx::ast::node::capture_letter({::dregx::ast::Type::capture_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter) });
 		((*yyvalp).dregx_capture_letter) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1832 "dregx_parser.tab.c"
+#line 1917 "dregx_parser.tab.c"
     break;
 
-  case 48: /* capture_special_character: special_char_any  */
-#line 579 "./dregx_parser.y"
+  case 54: /* capture_special_character: special_char_any  */
+#line 628 "./dregx_parser.y"
                           {
 		auto* const newNode = new dregx::ast::node::capture_special_character({::dregx::ast::Type::capture_special_character, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_special_char_any) });
 		((*yyvalp).dregx_capture_special_character) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1843 "dregx_parser.tab.c"
+#line 1928 "dregx_parser.tab.c"
     break;
 
-  case 49: /* extension_modifier: opt_pad LEFT_BRACKET min_repition opt_pad COMMA max_repition opt_pad RIGHT_BRACKET  */
-#line 589 "./dregx_parser.y"
+  case 55: /* extension_modifier: opt_pad LEFT_BRACKET min_repition opt_pad COMMA max_repition opt_pad RIGHT_BRACKET  */
+#line 638 "./dregx_parser.y"
                                                                                             {
 		auto* const newNode = new dregx::ast::node::extension_modifier({::dregx::ast::Type::extension_modifier, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-7)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::LEFT_BRACKET({::dregx::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-6)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-5)].yystate.yysemantics.yyval.dregx_min_repition), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-4)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-3)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-2)].yystate.yysemantics.yyval.dregx_max_repition), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), new dregx::ast::node::RIGHT_BRACKET({::dregx::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_extension_modifier) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1854 "dregx_parser.tab.c"
+#line 1939 "dregx_parser.tab.c"
     break;
 
-  case 50: /* min_repition: opt_pad deamerreserved_plus__NUMBER__  */
-#line 599 "./dregx_parser.y"
+  case 56: /* min_repition: opt_pad deamerreserved_plus__NUMBER__  */
+#line 648 "./dregx_parser.y"
                                                {
 		auto* const newNode = new dregx::ast::node::min_repition({::dregx::ast::Type::min_repition, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__NUMBER__) });
 		((*yyvalp).dregx_min_repition) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1865 "dregx_parser.tab.c"
+#line 1950 "dregx_parser.tab.c"
     break;
 
-  case 51: /* deamerreserved_plus__NUMBER__: NUMBER  */
-#line 609 "./dregx_parser.y"
+  case 57: /* deamerreserved_plus__NUMBER__: NUMBER  */
+#line 658 "./dregx_parser.y"
                 {
 		auto* const newNode = new dregx::ast::node::deamerreserved_plus__NUMBER__({::dregx::ast::Type::deamerreserved_plus__NUMBER__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_deamerreserved_plus__NUMBER__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1876 "dregx_parser.tab.c"
+#line 1961 "dregx_parser.tab.c"
     break;
 
-  case 52: /* deamerreserved_plus__NUMBER__: NUMBER deamerreserved_plus__NUMBER__  */
-#line 615 "./dregx_parser.y"
+  case 58: /* deamerreserved_plus__NUMBER__: NUMBER deamerreserved_plus__NUMBER__  */
+#line 664 "./dregx_parser.y"
                                                 {
 		auto* const newNode = new dregx::ast::node::deamerreserved_plus__NUMBER__({::dregx::ast::Type::deamerreserved_plus__NUMBER__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__NUMBER__) });
 		((*yyvalp).dregx_deamerreserved_plus__NUMBER__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1887 "dregx_parser.tab.c"
+#line 1972 "dregx_parser.tab.c"
     break;
 
-  case 53: /* max_repition: opt_pad deamerreserved_plus__NUMBER__  */
-#line 625 "./dregx_parser.y"
+  case 59: /* max_repition: opt_pad deamerreserved_plus__NUMBER__  */
+#line 674 "./dregx_parser.y"
                                                {
 		auto* const newNode = new dregx::ast::node::max_repition({::dregx::ast::Type::max_repition, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_plus__NUMBER__) });
 		((*yyvalp).dregx_max_repition) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1898 "dregx_parser.tab.c"
+#line 1983 "dregx_parser.tab.c"
     break;
 
-  case 54: /* standalone: opt_pad any_letter  */
-#line 635 "./dregx_parser.y"
+  case 60: /* standalone: opt_pad any_letter  */
+#line 684 "./dregx_parser.y"
                             {
 		auto* const newNode = new dregx::ast::node::standalone({::dregx::ast::Type::standalone, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter) });
 		((*yyvalp).dregx_standalone) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1909 "dregx_parser.tab.c"
+#line 1994 "dregx_parser.tab.c"
     break;
 
-  case 55: /* opt_pad: optional_padding  */
-#line 645 "./dregx_parser.y"
+  case 61: /* standalone: opt_pad any_number  */
+#line 690 "./dregx_parser.y"
+                              {
+		auto* const newNode = new dregx::ast::node::standalone({::dregx::ast::Type::standalone, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_opt_pad), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_number) });
+		((*yyvalp).dregx_standalone) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2005 "dregx_parser.tab.c"
+    break;
+
+  case 62: /* opt_pad: optional_padding  */
+#line 700 "./dregx_parser.y"
                           {
 		auto* const newNode = new dregx::ast::node::opt_pad({::dregx::ast::Type::opt_pad, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_optional_padding) });
 		((*yyvalp).dregx_opt_pad) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1920 "dregx_parser.tab.c"
+#line 2016 "dregx_parser.tab.c"
     break;
 
-  case 56: /* optional_padding: deamerreserved_star__padding__  */
-#line 655 "./dregx_parser.y"
+  case 63: /* optional_padding: deamerreserved_star__padding__  */
+#line 710 "./dregx_parser.y"
                                         {
 		auto* const newNode = new dregx::ast::node::optional_padding({::dregx::ast::Type::optional_padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__padding__) });
 		((*yyvalp).dregx_optional_padding) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1931 "dregx_parser.tab.c"
+#line 2027 "dregx_parser.tab.c"
     break;
 
-  case 57: /* deamerreserved_star__padding__: padding deamerreserved_star__padding__  */
-#line 665 "./dregx_parser.y"
+  case 64: /* deamerreserved_star__padding__: padding deamerreserved_star__padding__  */
+#line 720 "./dregx_parser.y"
                                                 {
 		auto* const newNode = new dregx::ast::node::deamerreserved_star__padding__({::dregx::ast::Type::deamerreserved_star__padding__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.dregx_padding), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_deamerreserved_star__padding__) });
 		((*yyvalp).dregx_deamerreserved_star__padding__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1942 "dregx_parser.tab.c"
+#line 2038 "dregx_parser.tab.c"
     break;
 
-  case 58: /* deamerreserved_star__padding__: %empty  */
-#line 671 "./dregx_parser.y"
+  case 65: /* deamerreserved_star__padding__: %empty  */
+#line 726 "./dregx_parser.y"
            {
 		auto* const newNode = new dregx::ast::node::deamerreserved_star__padding__({::dregx::ast::Type::deamerreserved_star__padding__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
 		((*yyvalp).dregx_deamerreserved_star__padding__) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1953 "dregx_parser.tab.c"
+#line 2049 "dregx_parser.tab.c"
     break;
 
-  case 59: /* padding: SPACE  */
-#line 681 "./dregx_parser.y"
+  case 66: /* padding: SPACE  */
+#line 736 "./dregx_parser.y"
                {
 		auto* const newNode = new dregx::ast::node::padding({::dregx::ast::Type::padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_padding) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1964 "dregx_parser.tab.c"
+#line 2060 "dregx_parser.tab.c"
     break;
 
-  case 60: /* padding: TAB  */
-#line 687 "./dregx_parser.y"
+  case 67: /* padding: TAB  */
+#line 742 "./dregx_parser.y"
                {
 		auto* const newNode = new dregx::ast::node::padding({::dregx::ast::Type::padding, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_padding) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1975 "dregx_parser.tab.c"
+#line 2071 "dregx_parser.tab.c"
     break;
 
-  case 61: /* special_char_any: SLASH any  */
-#line 697 "./dregx_parser.y"
+  case 68: /* special_char_any: SLASH any  */
+#line 752 "./dregx_parser.y"
                    {
 		auto* const newNode = new dregx::ast::node::special_char_any({::dregx::ast::Type::special_char_any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SLASH({::dregx::ast::Type::SLASH, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (-1)].yystate.yysemantics.yyval.Terminal) }), (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any) });
 		((*yyvalp).dregx_special_char_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1986 "dregx_parser.tab.c"
+#line 2082 "dregx_parser.tab.c"
     break;
 
-  case 62: /* any_letter: any_letter_exclude_underscore  */
-#line 707 "./dregx_parser.y"
+  case 69: /* any_number: NUMBER  */
+#line 762 "./dregx_parser.y"
+                {
+		auto* const newNode = new dregx::ast::node::any_number({::dregx::ast::Type::any_number, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any_number) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2093 "dregx_parser.tab.c"
+    break;
+
+  case 70: /* any_letter: any_letter_exclude_underscore  */
+#line 772 "./dregx_parser.y"
                                        {
 		auto* const newNode = new dregx::ast::node::any_letter({::dregx::ast::Type::any_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.dregx_any_letter_exclude_underscore) });
 		((*yyvalp).dregx_any_letter) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 1997 "dregx_parser.tab.c"
+#line 2104 "dregx_parser.tab.c"
     break;
 
-  case 63: /* any_letter: UNDERSCORE  */
-#line 713 "./dregx_parser.y"
+  case 71: /* any_letter: UNDERSCORE  */
+#line 778 "./dregx_parser.y"
                       {
 		auto* const newNode = new dregx::ast::node::any_letter({::dregx::ast::Type::any_letter, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::UNDERSCORE({::dregx::ast::Type::UNDERSCORE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2008 "dregx_parser.tab.c"
+#line 2115 "dregx_parser.tab.c"
     break;
 
-  case 64: /* any_letter_exclude_underscore: T_  */
-#line 723 "./dregx_parser.y"
+  case 72: /* any_letter_exclude_underscore: T_  */
+#line 788 "./dregx_parser.y"
             {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::T_({::dregx::ast::Type::T_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2019 "dregx_parser.tab.c"
+#line 2126 "dregx_parser.tab.c"
     break;
 
-  case 65: /* any_letter_exclude_underscore: R_  */
-#line 729 "./dregx_parser.y"
+  case 73: /* any_letter_exclude_underscore: R_  */
+#line 794 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::R_({::dregx::ast::Type::R_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2030 "dregx_parser.tab.c"
+#line 2137 "dregx_parser.tab.c"
     break;
 
-  case 66: /* any_letter_exclude_underscore: N_  */
-#line 735 "./dregx_parser.y"
+  case 74: /* any_letter_exclude_underscore: N_  */
+#line 800 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::N_({::dregx::ast::Type::N_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2041 "dregx_parser.tab.c"
+#line 2148 "dregx_parser.tab.c"
     break;
 
-  case 67: /* any_letter_exclude_underscore: B_  */
-#line 741 "./dregx_parser.y"
+  case 75: /* any_letter_exclude_underscore: B_  */
+#line 806 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::B_({::dregx::ast::Type::B_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2052 "dregx_parser.tab.c"
+#line 2159 "dregx_parser.tab.c"
     break;
 
-  case 68: /* any_letter_exclude_underscore: V_  */
-#line 747 "./dregx_parser.y"
+  case 76: /* any_letter_exclude_underscore: V_  */
+#line 812 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::V_({::dregx::ast::Type::V_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2063 "dregx_parser.tab.c"
+#line 2170 "dregx_parser.tab.c"
     break;
 
-  case 69: /* any_letter_exclude_underscore: A_  */
-#line 753 "./dregx_parser.y"
+  case 77: /* any_letter_exclude_underscore: A_  */
+#line 818 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::A_({::dregx::ast::Type::A_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2074 "dregx_parser.tab.c"
+#line 2181 "dregx_parser.tab.c"
     break;
 
-  case 70: /* any_letter_exclude_underscore: LETTER  */
-#line 759 "./dregx_parser.y"
+  case 78: /* any_letter_exclude_underscore: LETTER  */
+#line 824 "./dregx_parser.y"
                   {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any_letter_exclude_underscore) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2085 "dregx_parser.tab.c"
+#line 2192 "dregx_parser.tab.c"
     break;
 
-  case 71: /* any: LEFT_CURLY_BRACKET  */
-#line 769 "./dregx_parser.y"
+  case 79: /* any: LEFT_CURLY_BRACKET  */
+#line 834 "./dregx_parser.y"
                             {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2096 "dregx_parser.tab.c"
+#line 2203 "dregx_parser.tab.c"
     break;
 
-  case 72: /* any: RIGHT_CURLY_BRACKET  */
-#line 775 "./dregx_parser.y"
+  case 80: /* any: RIGHT_CURLY_BRACKET  */
+#line 840 "./dregx_parser.y"
                                {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2107 "dregx_parser.tab.c"
+#line 2214 "dregx_parser.tab.c"
     break;
 
-  case 73: /* any: LEFT_SQUARE_BRACKET  */
-#line 781 "./dregx_parser.y"
+  case 81: /* any: LEFT_SQUARE_BRACKET  */
+#line 846 "./dregx_parser.y"
                                {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2118 "dregx_parser.tab.c"
+#line 2225 "dregx_parser.tab.c"
     break;
 
-  case 74: /* any: RIGHT_SQUARE_BRACKET  */
-#line 787 "./dregx_parser.y"
+  case 82: /* any: RIGHT_SQUARE_BRACKET  */
+#line 852 "./dregx_parser.y"
                                 {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2129 "dregx_parser.tab.c"
+#line 2236 "dregx_parser.tab.c"
     break;
 
-  case 75: /* any: LEFT_BRACKET  */
-#line 793 "./dregx_parser.y"
+  case 83: /* any: LEFT_BRACKET  */
+#line 858 "./dregx_parser.y"
                         {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_BRACKET({::dregx::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2140 "dregx_parser.tab.c"
+#line 2247 "dregx_parser.tab.c"
     break;
 
-  case 76: /* any: RIGHT_BRACKET  */
-#line 799 "./dregx_parser.y"
+  case 84: /* any: RIGHT_BRACKET  */
+#line 864 "./dregx_parser.y"
                          {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_BRACKET({::dregx::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2151 "dregx_parser.tab.c"
+#line 2258 "dregx_parser.tab.c"
     break;
 
-  case 77: /* any: COMMA  */
-#line 805 "./dregx_parser.y"
+  case 85: /* any: COMMA  */
+#line 870 "./dregx_parser.y"
                  {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::COMMA({::dregx::ast::Type::COMMA, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2162 "dregx_parser.tab.c"
+#line 2269 "dregx_parser.tab.c"
     break;
 
-  case 78: /* any: OR  */
-#line 811 "./dregx_parser.y"
+  case 86: /* any: OR  */
+#line 876 "./dregx_parser.y"
               {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 7, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2173 "dregx_parser.tab.c"
+#line 2280 "dregx_parser.tab.c"
     break;
 
-  case 79: /* any: MIN  */
-#line 817 "./dregx_parser.y"
+  case 87: /* any: MIN  */
+#line 882 "./dregx_parser.y"
                {
 		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 8, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::MIN({::dregx::ast::Type::MIN, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2184 "dregx_parser.tab.c"
+#line 2291 "dregx_parser.tab.c"
     break;
 
-  case 80: /* any: UNDERSCORE  */
-#line 823 "./dregx_parser.y"
+  case 88: /* any: OPTIONAL  */
+#line 888 "./dregx_parser.y"
+                    {
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 9, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OPTIONAL({::dregx::ast::Type::OPTIONAL, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		((*yyvalp).dregx_any) = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+#line 2302 "dregx_parser.tab.c"
+    break;
+
+  case 89: /* any: UNDERSCORE  */
+#line 894 "./dregx_parser.y"
                       {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 9, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::UNDERSCORE({::dregx::ast::Type::UNDERSCORE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 10, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::UNDERSCORE({::dregx::ast::Type::UNDERSCORE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2195 "dregx_parser.tab.c"
+#line 2313 "dregx_parser.tab.c"
     break;
 
-  case 81: /* any: NOT  */
-#line 829 "./dregx_parser.y"
+  case 90: /* any: NOT  */
+#line 900 "./dregx_parser.y"
                {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 10, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NOT({::dregx::ast::Type::NOT, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 11, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NOT({::dregx::ast::Type::NOT, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2206 "dregx_parser.tab.c"
+#line 2324 "dregx_parser.tab.c"
     break;
 
-  case 82: /* any: NUMBER  */
-#line 835 "./dregx_parser.y"
+  case 91: /* any: NUMBER  */
+#line 906 "./dregx_parser.y"
                   {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 11, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 12, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::NUMBER({::dregx::ast::Type::NUMBER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2217 "dregx_parser.tab.c"
+#line 2335 "dregx_parser.tab.c"
     break;
 
-  case 83: /* any: T_  */
-#line 841 "./dregx_parser.y"
+  case 92: /* any: T_  */
+#line 912 "./dregx_parser.y"
               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 12, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::T_({::dregx::ast::Type::T_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 13, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::T_({::dregx::ast::Type::T_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2228 "dregx_parser.tab.c"
+#line 2346 "dregx_parser.tab.c"
     break;
 
-  case 84: /* any: N_  */
-#line 847 "./dregx_parser.y"
+  case 93: /* any: N_  */
+#line 918 "./dregx_parser.y"
               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 13, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::N_({::dregx::ast::Type::N_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 14, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::N_({::dregx::ast::Type::N_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2239 "dregx_parser.tab.c"
+#line 2357 "dregx_parser.tab.c"
     break;
 
-  case 85: /* any: R_  */
-#line 853 "./dregx_parser.y"
+  case 94: /* any: R_  */
+#line 924 "./dregx_parser.y"
               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 14, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::R_({::dregx::ast::Type::R_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 15, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::R_({::dregx::ast::Type::R_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2250 "dregx_parser.tab.c"
+#line 2368 "dregx_parser.tab.c"
     break;
 
-  case 86: /* any: B_  */
-#line 859 "./dregx_parser.y"
+  case 95: /* any: B_  */
+#line 930 "./dregx_parser.y"
               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 15, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::B_({::dregx::ast::Type::B_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 16, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::B_({::dregx::ast::Type::B_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2261 "dregx_parser.tab.c"
+#line 2379 "dregx_parser.tab.c"
     break;
 
-  case 87: /* any: V_  */
-#line 865 "./dregx_parser.y"
+  case 96: /* any: V_  */
+#line 936 "./dregx_parser.y"
               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 16, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::V_({::dregx::ast::Type::V_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 17, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::V_({::dregx::ast::Type::V_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2272 "dregx_parser.tab.c"
+#line 2390 "dregx_parser.tab.c"
     break;
 
-  case 88: /* any: A_  */
-#line 871 "./dregx_parser.y"
+  case 97: /* any: A_  */
+#line 942 "./dregx_parser.y"
               {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 17, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::A_({::dregx::ast::Type::A_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 18, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::A_({::dregx::ast::Type::A_, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2283 "dregx_parser.tab.c"
+#line 2401 "dregx_parser.tab.c"
     break;
 
-  case 89: /* any: LETTER  */
-#line 877 "./dregx_parser.y"
+  case 98: /* any: LETTER  */
+#line 948 "./dregx_parser.y"
                   {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 18, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 19, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2294 "dregx_parser.tab.c"
+#line 2412 "dregx_parser.tab.c"
     break;
 
-  case 90: /* any: SPACE  */
-#line 883 "./dregx_parser.y"
+  case 99: /* any: SPACE  */
+#line 954 "./dregx_parser.y"
                  {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 19, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 20, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SPACE({::dregx::ast::Type::SPACE, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2305 "dregx_parser.tab.c"
+#line 2423 "dregx_parser.tab.c"
     break;
 
-  case 91: /* any: TAB  */
-#line 889 "./dregx_parser.y"
+  case 100: /* any: TAB  */
+#line 960 "./dregx_parser.y"
                {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 20, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 21, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::TAB({::dregx::ast::Type::TAB, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2316 "dregx_parser.tab.c"
+#line 2434 "dregx_parser.tab.c"
     break;
 
-  case 92: /* any: PLUS  */
-#line 895 "./dregx_parser.y"
+  case 101: /* any: PLUS  */
+#line 966 "./dregx_parser.y"
                 {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 21, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 22, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::PLUS({::dregx::ast::Type::PLUS, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2327 "dregx_parser.tab.c"
+#line 2445 "dregx_parser.tab.c"
     break;
 
-  case 93: /* any: STAR  */
-#line 901 "./dregx_parser.y"
+  case 102: /* any: STAR  */
+#line 972 "./dregx_parser.y"
                 {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 22, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 23, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::STAR({::dregx::ast::Type::STAR, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2338 "dregx_parser.tab.c"
+#line 2456 "dregx_parser.tab.c"
     break;
 
-  case 94: /* any: OTHER  */
-#line 907 "./dregx_parser.y"
+  case 103: /* any: OTHER  */
+#line 978 "./dregx_parser.y"
                  {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 23, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OTHER({::dregx::ast::Type::OTHER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 24, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::OTHER({::dregx::ast::Type::OTHER, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2349 "dregx_parser.tab.c"
+#line 2467 "dregx_parser.tab.c"
     break;
 
-  case 95: /* any: SLASH  */
-#line 913 "./dregx_parser.y"
+  case 104: /* any: SLASH  */
+#line 984 "./dregx_parser.y"
                  {
-		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 24, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SLASH({::dregx::ast::Type::SLASH, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
+		auto* const newNode = new dregx::ast::node::any({::dregx::ast::Type::any, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 25, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::SLASH({::dregx::ast::Type::SLASH, ::deamer::external::cpp::ast::NodeValue::terminal, (YY_CAST (yyGLRStackItem const *, yyvsp)[YYFILL (0)].yystate.yysemantics.yyval.Terminal) }) });
 		((*yyvalp).dregx_any) = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-#line 2360 "dregx_parser.tab.c"
+#line 2478 "dregx_parser.tab.c"
     break;
 
 
-#line 2364 "dregx_parser.tab.c"
+#line 2482 "dregx_parser.tab.c"
 
       default: break;
     }
@@ -4049,7 +4167,7 @@ yypdumpstack (yyGLRStack* yystackp)
 #define yynerrs dregxnerrs
 
 
-#line 923 "./dregx_parser.y"
+#line 994 "./dregx_parser.y"
 
 
 void dregxerror(const char* s)

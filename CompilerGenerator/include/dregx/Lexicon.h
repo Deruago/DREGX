@@ -35,6 +35,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> NOT;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> PLUS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> STAR;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> OPTIONAL;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> NUMBER;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> T_;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::Terminal> N_;
@@ -74,6 +75,7 @@ UNDERSCORE.Set(deamer::language::type::definition::object::main::Terminal("UNDER
 NOT.Set(deamer::language::type::definition::object::main::Terminal("NOT", "[\\^]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 PLUS.Set(deamer::language::type::definition::object::main::Terminal("PLUS", "[+]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 STAR.Set(deamer::language::type::definition::object::main::Terminal("STAR", "[*]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
+OPTIONAL.Set(deamer::language::type::definition::object::main::Terminal("OPTIONAL", "[?]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 NUMBER.Set(deamer::language::type::definition::object::main::Terminal("NUMBER", "[0-9]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 T_.Set(deamer::language::type::definition::object::main::Terminal("T_", "[t]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
 N_.Set(deamer::language::type::definition::object::main::Terminal("N_", "[n]", ::deamer::language::type::definition::object::main::SpecialType::Standard));
@@ -105,6 +107,7 @@ AddObject(UNDERSCORE);
 AddObject(NOT);
 AddObject(PLUS);
 AddObject(STAR);
+AddObject(OPTIONAL);
 AddObject(NUMBER);
 AddObject(T_);
 AddObject(N_);

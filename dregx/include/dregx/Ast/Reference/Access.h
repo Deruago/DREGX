@@ -24,6 +24,7 @@
 #include "dregx/Ast/Node/capture_range.h"
 #include "dregx/Ast/Node/capture_letter_range.h"
 #include "dregx/Ast/Node/capture_number_range.h"
+#include "dregx/Ast/Node/capture_number.h"
 #include "dregx/Ast/Node/capture_letter.h"
 #include "dregx/Ast/Node/capture_special_character.h"
 #include "dregx/Ast/Node/extension_modifier.h"
@@ -36,6 +37,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__padding__.h"
 #include "dregx/Ast/Node/padding.h"
 #include "dregx/Ast/Node/special_char_any.h"
+#include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
 #include "dregx/Ast/Node/any.h"
@@ -54,6 +56,7 @@
 #include "dregx/Ast/Node/NOT.h"
 #include "dregx/Ast/Node/PLUS.h"
 #include "dregx/Ast/Node/STAR.h"
+#include "dregx/Ast/Node/OPTIONAL.h"
 #include "dregx/Ast/Node/NUMBER.h"
 #include "dregx/Ast/Node/T_.h"
 #include "dregx/Ast/Node/N_.h"
@@ -194,6 +197,8 @@ namespace dregx { namespace ast { namespace reference {
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::capture_number_range>;
 	template<>
+	struct AccessTemplateBase<::dregx::ast::node::capture_number>;
+	template<>
 	struct AccessTemplateBase<::dregx::ast::node::capture_letter>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::capture_special_character>;
@@ -217,6 +222,8 @@ namespace dregx { namespace ast { namespace reference {
 	struct AccessTemplateBase<::dregx::ast::node::padding>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::special_char_any>;
+	template<>
+	struct AccessTemplateBase<::dregx::ast::node::any_number>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::any_letter>;
 	template<>
@@ -253,6 +260,8 @@ namespace dregx { namespace ast { namespace reference {
 	struct AccessTemplateBase<::dregx::ast::node::PLUS>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::STAR>;
+	template<>
+	struct AccessTemplateBase<::dregx::ast::node::OPTIONAL>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::NUMBER>;
 	template<>
@@ -794,6 +803,7 @@ AccessTemplateBase<::dregx::ast::node::LEFT_CURLY_BRACKET> LEFT_CURLY_BRACKET();
 AccessTemplateBase<::dregx::ast::node::RIGHT_CURLY_BRACKET> RIGHT_CURLY_BRACKET();
 AccessTemplateBase<::dregx::ast::node::PLUS> PLUS();
 AccessTemplateBase<::dregx::ast::node::STAR> STAR();
+AccessTemplateBase<::dregx::ast::node::OPTIONAL> OPTIONAL();
 
 
 		template<typename FunctionType>
@@ -1343,6 +1353,7 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 AccessTemplateBase<::dregx::ast::node::extension_modifier> extension_modifier();
 AccessTemplateBase<::dregx::ast::node::PLUS> PLUS();
 AccessTemplateBase<::dregx::ast::node::STAR> STAR();
+AccessTemplateBase<::dregx::ast::node::OPTIONAL> OPTIONAL();
 
 
 		template<typename FunctionType>
@@ -1672,6 +1683,7 @@ AccessTemplateBase<::dregx::ast::node::capture_logic> capture_logic();
 		AccessTemplateBase<::dregx::ast::node::capture_symbols> capture_symbols();
 AccessTemplateBase<::dregx::ast::node::capture_whitespace> capture_whitespace();
 AccessTemplateBase<::dregx::ast::node::capture_range> capture_range();
+AccessTemplateBase<::dregx::ast::node::capture_number> capture_number();
 AccessTemplateBase<::dregx::ast::node::capture_letter> capture_letter();
 AccessTemplateBase<::dregx::ast::node::capture_special_character> capture_special_character();
 
@@ -1784,6 +1796,7 @@ AccessTemplateBase<::dregx::ast::node::capture_special_character> capture_specia
 AccessTemplateBase<::dregx::ast::node::OR> OR();
 AccessTemplateBase<::dregx::ast::node::PLUS> PLUS();
 AccessTemplateBase<::dregx::ast::node::STAR> STAR();
+AccessTemplateBase<::dregx::ast::node::OPTIONAL> OPTIONAL();
 AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 
 
@@ -2221,6 +2234,113 @@ AccessTemplateBase<::dregx::ast::node::NUMBER> NUMBER();
 
 		template<typename FunctionType>
 		AccessTemplateBase<::dregx::ast::node::capture_number_range>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::dregx::ast::node::capture_number> : public AccessBase
+	{
+	protected:
+		std::vector<const ::dregx::ast::node::capture_number*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::capture_number*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::capture_number& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::capture_number* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::capture_number>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::dregx::ast::node::capture_number>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::dregx::ast::node::capture_number*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::dregx::ast::node::capture_number*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::any_number> any_number();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::dregx::ast::node::capture_number>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -2976,6 +3096,7 @@ AccessTemplateBase<::dregx::ast::node::NUMBER> NUMBER();
 
 	public:
 		AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
+AccessTemplateBase<::dregx::ast::node::any_number> any_number();
 AccessTemplateBase<::dregx::ast::node::any_letter> any_letter();
 
 
@@ -3551,6 +3672,113 @@ AccessTemplateBase<::dregx::ast::node::SLASH> SLASH();
 	};
 
 	template<>
+	struct AccessTemplateBase<::dregx::ast::node::any_number> : public AccessBase
+	{
+	protected:
+		std::vector<const ::dregx::ast::node::any_number*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::any_number*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::any_number& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::any_number* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::any_number>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::dregx::ast::node::any_number>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::dregx::ast::node::any_number*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::dregx::ast::node::any_number*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::NUMBER> NUMBER();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::dregx::ast::node::any_number>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
 	struct AccessTemplateBase<::dregx::ast::node::any_letter> : public AccessBase
 	{
 	protected:
@@ -3857,6 +4085,7 @@ AccessTemplateBase<::dregx::ast::node::UNDERSCORE> UNDERSCORE();
 AccessTemplateBase<::dregx::ast::node::NOT> NOT();
 AccessTemplateBase<::dregx::ast::node::PLUS> PLUS();
 AccessTemplateBase<::dregx::ast::node::STAR> STAR();
+AccessTemplateBase<::dregx::ast::node::OPTIONAL> OPTIONAL();
 AccessTemplateBase<::dregx::ast::node::NUMBER> NUMBER();
 AccessTemplateBase<::dregx::ast::node::T_> T_();
 AccessTemplateBase<::dregx::ast::node::N_> N_();
@@ -5493,6 +5722,112 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 	};
 
 	template<>
+	struct AccessTemplateBase<::dregx::ast::node::OPTIONAL> : public AccessBase
+	{
+	protected:
+		std::vector<const ::dregx::ast::node::OPTIONAL*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::OPTIONAL*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::OPTIONAL& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::OPTIONAL* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::OPTIONAL>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::dregx::ast::node::OPTIONAL>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::dregx::ast::node::OPTIONAL*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::dregx::ast::node::OPTIONAL*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		
+
+		template<typename FunctionType>
+		AccessTemplateBase<::dregx::ast::node::OPTIONAL>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
 	struct AccessTemplateBase<::dregx::ast::node::NUMBER> : public AccessBase
 	{
 	protected:
@@ -6910,6 +7245,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::STAR>(Get<::dregx::ast::Type::STAR>(ts));
 		}
 
+		inline AccessTemplateBase<::dregx::ast::node::OPTIONAL> AccessTemplateBase<::dregx::ast::node::group>::OPTIONAL()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::OPTIONAL>(Get<::dregx::ast::Type::OPTIONAL>(ts));
+		}
+
 		inline AccessTemplateBase<::dregx::ast::node::word> AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__word__>::word()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -7062,6 +7405,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::STAR>(Get<::dregx::ast::Type::STAR>(ts));
 		}
 
+		inline AccessTemplateBase<::dregx::ast::node::OPTIONAL> AccessTemplateBase<::dregx::ast::node::square>::OPTIONAL()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::OPTIONAL>(Get<::dregx::ast::Type::OPTIONAL>(ts));
+		}
+
 		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__> AccessTemplateBase<::dregx::ast::node::capture>::deamerreserved_plus__capture_logic__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -7150,6 +7501,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::capture_range>(Get<::dregx::ast::Type::capture_range>(ts));
 		}
 
+		inline AccessTemplateBase<::dregx::ast::node::capture_number> AccessTemplateBase<::dregx::ast::node::capture_logic>::capture_number()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::capture_number>(Get<::dregx::ast::Type::capture_number>(ts));
+		}
+
 		inline AccessTemplateBase<::dregx::ast::node::capture_letter> AccessTemplateBase<::dregx::ast::node::capture_logic>::capture_letter()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -7196,6 +7555,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 
 			// Unoptimized search
 			return AccessTemplateBase<::dregx::ast::node::STAR>(Get<::dregx::ast::Type::STAR>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::OPTIONAL> AccessTemplateBase<::dregx::ast::node::capture_symbols>::OPTIONAL()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::OPTIONAL>(Get<::dregx::ast::Type::OPTIONAL>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::OTHER> AccessTemplateBase<::dregx::ast::node::capture_symbols>::OTHER()
@@ -7268,6 +7635,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 
 			// Unoptimized search
 			return AccessTemplateBase<::dregx::ast::node::NUMBER>(Get<::dregx::ast::Type::NUMBER>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::any_number> AccessTemplateBase<::dregx::ast::node::capture_number>::any_number()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::any_number>(Get<::dregx::ast::Type::any_number>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::any_letter> AccessTemplateBase<::dregx::ast::node::capture_letter>::any_letter()
@@ -7406,6 +7781,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::opt_pad>(Get<::dregx::ast::Type::opt_pad>(ts));
 		}
 
+		inline AccessTemplateBase<::dregx::ast::node::any_number> AccessTemplateBase<::dregx::ast::node::standalone>::any_number()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::any_number>(Get<::dregx::ast::Type::any_number>(ts));
+		}
+
 		inline AccessTemplateBase<::dregx::ast::node::any_letter> AccessTemplateBase<::dregx::ast::node::standalone>::any_letter()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
@@ -7484,6 +7867,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 
 			// Unoptimized search
 			return AccessTemplateBase<::dregx::ast::node::SLASH>(Get<::dregx::ast::Type::SLASH>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::NUMBER> AccessTemplateBase<::dregx::ast::node::any_number>::NUMBER()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::NUMBER>(Get<::dregx::ast::Type::NUMBER>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::any_letter_exclude_underscore> AccessTemplateBase<::dregx::ast::node::any_letter>::any_letter_exclude_underscore()
@@ -7668,6 +8059,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 
 			// Unoptimized search
 			return AccessTemplateBase<::dregx::ast::node::STAR>(Get<::dregx::ast::Type::STAR>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::OPTIONAL> AccessTemplateBase<::dregx::ast::node::any>::OPTIONAL()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::OPTIONAL>(Get<::dregx::ast::Type::OPTIONAL>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::NUMBER> AccessTemplateBase<::dregx::ast::node::any>::NUMBER()

@@ -120,7 +120,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 			}
 
 			for (char i = captureRange->GetLowerBoundCharacter().c_str()[0];
-				 i < captureRange->GetUpperBoundCharacter().c_str()[0]; i++)
+				 i <= captureRange->GetUpperBoundCharacter().c_str()[0]; i++)
 			{
 				std::string regex;
 				regex += i;

@@ -98,6 +98,11 @@ namespace dregx { namespace ast { namespace relation {
 			return true;
 		}
 
+		if (t == ::dregx::ast::Type::capture_number)
+		{
+			return true;
+		}
+
 		if (t == ::dregx::ast::Type::capture_letter)
 		{
 			return true;
@@ -154,6 +159,11 @@ namespace dregx { namespace ast { namespace relation {
 		}
 
 		if (t == ::dregx::ast::Type::special_char_any)
+		{
+			return true;
+		}
+
+		if (t == ::dregx::ast::Type::any_number)
 		{
 			return true;
 		}

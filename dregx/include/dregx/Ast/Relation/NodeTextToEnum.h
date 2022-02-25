@@ -66,6 +66,9 @@ namespace dregx { namespace ast { namespace relation {
 		{ "capture_number_range", ::dregx::ast::Type::capture_number_range },
 	
 
+		{ "capture_number", ::dregx::ast::Type::capture_number },
+	
+
 		{ "capture_letter", ::dregx::ast::Type::capture_letter },
 	
 
@@ -100,6 +103,9 @@ namespace dregx { namespace ast { namespace relation {
 	
 
 		{ "special_char_any", ::dregx::ast::Type::special_char_any },
+	
+
+		{ "any_number", ::dregx::ast::Type::any_number },
 	
 
 		{ "any_letter", ::dregx::ast::Type::any_letter },
@@ -154,6 +160,9 @@ namespace dregx { namespace ast { namespace relation {
 	
 
 		{ "STAR", ::dregx::ast::Type::STAR },
+	
+
+		{ "OPTIONAL", ::dregx::ast::Type::OPTIONAL },
 	
 
 		{ "NUMBER", ::dregx::ast::Type::NUMBER },
