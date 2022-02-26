@@ -16,7 +16,7 @@ class deamerreserved_arrow__word__;
 class deamerreserved_star__opt_pad__OR__word__;
 class square;
 class capture;
-class deamerreserved_plus__capture_logic__;
+class deamerreserved_star__capture_logic__;
 class capture_logic;
 class capture_symbols;
 class capture_whitespace;
@@ -159,10 +159,10 @@ namespace dregx { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_plus__capture_logic__>
+	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_star__capture_logic__>
 	{
-		constexpr static auto value = ::dregx::ast::Type::deamerreserved_plus__capture_logic__;
-		using type = ::dregx::ast::node::deamerreserved_plus__capture_logic__;
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__capture_logic__;
+		using type = ::dregx::ast::node::deamerreserved_star__capture_logic__;
 	};
 
 	template<>

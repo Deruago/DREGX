@@ -53,7 +53,7 @@ namespace dregx { namespace ast {
 		deamerreserved_star__opt_pad__OR__word__,
 		square,
 		capture,
-		deamerreserved_plus__capture_logic__,
+		deamerreserved_star__capture_logic__,
 		capture_logic,
 		capture_symbols,
 		capture_whitespace,

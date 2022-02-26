@@ -63,7 +63,7 @@ namespace dregx { namespace ast { namespace relation {
 			return true;
 		}
 
-		if (t == ::dregx::ast::Type::deamerreserved_plus__capture_logic__)
+		if (t == ::dregx::ast::Type::deamerreserved_star__capture_logic__)
 		{
 			return true;
 		}

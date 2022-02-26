@@ -45,7 +45,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
-#include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
+#include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
 #include "dregx/Ast/Node/capture_logic.h"
 #include "dregx/Ast/Node/capture_symbols.h"
 #include "dregx/Ast/Node/capture_whitespace.h"
@@ -454,12 +454,12 @@ namespace dregx { namespace ast { namespace listener {
 				break;
 			}
 
-			case dregx::ast::Type::deamerreserved_plus__capture_logic__:
+			case dregx::ast::Type::deamerreserved_star__capture_logic__:
 			{
 				// Enter nonterminal
 				EnterAnything(node);
 				EnterNonTerminal(node);
-				ListenEntry(static_cast<const dregx::ast::node::deamerreserved_plus__capture_logic__*>(node));
+				ListenEntry(static_cast<const dregx::ast::node::deamerreserved_star__capture_logic__*>(node));
 				break;
 			}
 
@@ -1034,10 +1034,10 @@ namespace dregx { namespace ast { namespace listener {
 				break;
 			}
 
-			case dregx::ast::Type::deamerreserved_plus__capture_logic__:
+			case dregx::ast::Type::deamerreserved_star__capture_logic__:
 			{
 				// Exit nonterminal
-				ListenExit(static_cast<const dregx::ast::node::deamerreserved_plus__capture_logic__*>(node));
+				ListenExit(static_cast<const dregx::ast::node::deamerreserved_star__capture_logic__*>(node));
 				ExitNonTerminal(node);
 				ExitAnything(node);
 				break;
@@ -1525,7 +1525,7 @@ namespace dregx { namespace ast { namespace listener {
 		{
 		}
 
-		virtual void ListenEntry(const dregx::ast::node::deamerreserved_plus__capture_logic__* node) 
+		virtual void ListenEntry(const dregx::ast::node::deamerreserved_star__capture_logic__* node) 
 		{
 		}
 
@@ -1666,7 +1666,7 @@ namespace dregx { namespace ast { namespace listener {
 		{
 		}
 
-		virtual void ListenExit(const dregx::ast::node::deamerreserved_plus__capture_logic__* node) 
+		virtual void ListenExit(const dregx::ast::node::deamerreserved_star__capture_logic__* node) 
 		{
 		}
 

@@ -14,7 +14,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
-#include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
+#include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
 #include "dregx/Ast/Node/capture_logic.h"
 #include "dregx/Ast/Node/capture_symbols.h"
 #include "dregx/Ast/Node/capture_whitespace.h"
@@ -156,10 +156,10 @@ namespace dregx { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_plus__capture_logic__>
+	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_star__capture_logic__>
 	{
-		constexpr static auto value = ::dregx::ast::Type::deamerreserved_plus__capture_logic__;
-		using type = ::dregx::ast::node::deamerreserved_plus__capture_logic__;
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__capture_logic__;
+		using type = ::dregx::ast::node::deamerreserved_star__capture_logic__;
 	};
 
 	template<>

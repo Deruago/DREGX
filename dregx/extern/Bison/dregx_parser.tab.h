@@ -127,7 +127,7 @@ union YYSTYPE
 	::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* dregx_deamerreserved_star__opt_pad__OR__word__;
 	::dregx::ast::node::square* dregx_square;
 	::dregx::ast::node::capture* dregx_capture;
-	::dregx::ast::node::deamerreserved_plus__capture_logic__* dregx_deamerreserved_plus__capture_logic__;
+	::dregx::ast::node::deamerreserved_star__capture_logic__* dregx_deamerreserved_star__capture_logic__;
 	::dregx::ast::node::capture_logic* dregx_capture_logic;
 	::dregx::ast::node::capture_symbols* dregx_capture_symbols;
 	::dregx::ast::node::capture_whitespace* dregx_capture_whitespace;

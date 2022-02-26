@@ -65,8 +65,8 @@ namespace dregx { namespace ast { namespace relation {
 	}
 	
 
-	case ::dregx::ast::Type::deamerreserved_plus__capture_logic__: {
-		return "deamerreserved_plus__capture_logic__";
+	case ::dregx::ast::Type::deamerreserved_star__capture_logic__: {
+		return "deamerreserved_star__capture_logic__";
 	}
 	
 

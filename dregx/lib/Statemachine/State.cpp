@@ -23,6 +23,11 @@ void dregx::statemachine::State::SetStart(bool start_)
 	start = start_;
 }
 
+void dregx::statemachine::State::SetSink(bool sink_)
+{
+	sink = sink_;
+}
+
 void dregx::statemachine::State::SetAccept(bool accept_)
 {
 	accept = accept_;
@@ -83,6 +88,11 @@ void dregx::statemachine::State::AddInTransition(Transition* transition)
 bool dregx::statemachine::State::IsStartState() const
 {
 	return start;
+}
+
+bool dregx::statemachine::State::IsSinkState() const
+{
+	return sink;
 }
 
 bool dregx::statemachine::State::IsAcceptState() const
@@ -198,6 +208,34 @@ bool dregx::statemachine::State::DoesOutTransitionExistWithSameCondition(Transit
 	for (auto transition : outTransitions)
 	{
 		if (transition->GetConditions() == rhs->GetConditions())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool dregx::statemachine::State::DoesInTransitionExistWithSameCondition(
+	std::vector<Conditional> condition) const
+{
+	for (auto transition : inTransitions)
+	{
+		if (transition->GetConditions() == condition)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool dregx::statemachine::State::DoesOutTransitionExistWithSameCondition(
+	std::vector<Conditional> condition) const
+{
+	for (auto transition : outTransitions)
+	{
+		if (transition->GetConditions() == condition)
 		{
 			return true;
 		}

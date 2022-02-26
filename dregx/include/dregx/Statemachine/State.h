@@ -14,6 +14,7 @@ namespace dregx::statemachine
 	private:
 		bool start = false;
 		bool accept = false;
+		bool sink = false;
 
 		std::vector<Transition*> inTransitions;
 		std::vector<Transition*> outTransitions;
@@ -24,6 +25,7 @@ namespace dregx::statemachine
 
 	public:
 		void SetStart(bool start_);
+		void SetSink(bool sink_);
 		void SetAccept(bool accept_);
 
 		void SetInTransitions(std::vector<Transition*> inTransitions_);
@@ -37,6 +39,7 @@ namespace dregx::statemachine
 
 	public:
 		bool IsStartState() const;
+		bool IsSinkState() const;
 		bool IsAcceptState() const;
 
 		std::vector<Transition*> GetInTransitions() const;
@@ -53,6 +56,9 @@ namespace dregx::statemachine
 
 		bool DoesInTransitionExistWithSameCondition(Transition* rhs) const;
 		bool DoesOutTransitionExistWithSameCondition(Transition* rhs) const;
+
+		bool DoesInTransitionExistWithSameCondition(std::vector<Conditional> condition) const;
+		bool DoesOutTransitionExistWithSameCondition(std::vector<Conditional> condition) const;
 
 		Transition* GetInTransitionWithSameCondition(Transition* rhs) const;
 		Transition* GetOutTransitionWithSameCondition(Transition* rhs) const;

@@ -63,8 +63,8 @@ TEST_F(TestConvertRegexToDFA, ConvertSquareWith1CharacterToDfa_DfaIsCorrectAndMi
 	EXPECT_EQ(2, states.size());
 	EXPECT_EQ(1, transitions.size());
 
-	auto& startState = states.at(0);
-	auto& acceptState = states.at(1);
+	auto startState = statemachine->GetStates({}, {{statemachine::Conditional("a")}}).at(0);
+	auto acceptState = statemachine->GetStates({{statemachine::Conditional("a")}}, {}).at(0);
 
 	EXPECT_TRUE(startState->IsStartState());
 	EXPECT_FALSE(startState->IsAcceptState());
@@ -80,8 +80,8 @@ TEST_F(TestConvertRegexToDFA, ConvertSquareWith1CharacterToDfa_DfaIsCorrectAndMi
 	EXPECT_EQ(transitions.at(0).get(), acceptState->GetInTransitions().at(0));
 	EXPECT_EQ(0, acceptState->GetOutTransitions().size());
 
-	EXPECT_EQ(startState.get(), transitions.at(0)->GetInState());
-	EXPECT_EQ(acceptState.get(), transitions.at(0)->GetOutState());
+	EXPECT_EQ(startState, transitions.at(0)->GetInState());
+	EXPECT_EQ(acceptState, transitions.at(0)->GetOutState());
 }
 
 TEST_F(TestConvertRegexToDFA, ConvertSquareWith2CharactersToDfa_DfaIsCorrectAndMinimal)

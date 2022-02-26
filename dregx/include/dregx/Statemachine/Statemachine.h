@@ -14,11 +14,13 @@ namespace dregx::statemachine
 	class Statemachine
 	{
 	private:
+		State* sinkState = nullptr;
 		std::vector<std::unique_ptr<State>> states;
 		std::vector<std::unique_ptr<Transition>> transitions;
 		bool containsCycles = false;
 		bool IsDFA = true;
 		bool EmbeddedAcceptState = false;
+		bool AllTransitionDeterminized = false;
 
 	public:
 		Statemachine() = default;
@@ -26,14 +28,19 @@ namespace dregx::statemachine
 
 	public:
 		void ToDFA();
+		void Minimize();
+		void DeterminizeAllTransitions();
 		void Or(Statemachine& rhs);
 		void Concatenate(Statemachine& rhs);
+		bool Equal(const Statemachine& rhs) const;
 
 		std::unique_ptr<Statemachine> Copy() const;
 
 	public:
 		Statemachine& operator|(Statemachine& rhs);
 		Statemachine& operator&(Statemachine& rhs);
+		bool operator==(Statemachine& rhs);
+		bool operator==(const Statemachine& rhs) const;
 
 	public:
 		void AddState(std::unique_ptr<State> value);
@@ -53,6 +60,7 @@ namespace dregx::statemachine
 		const std::vector<std::unique_ptr<Transition>>& GetTransitions() const;
 		State* GetStartState() const;
 		std::vector<State*> GetAcceptStates() const;
+		std::set<std::vector<dregx::statemachine::Conditional>> GetAlphabet();
 
 	public:
 		std::string Print() const;

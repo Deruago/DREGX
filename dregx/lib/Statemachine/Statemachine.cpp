@@ -1,5 +1,6 @@
 #include "dregx/Statemachine/Statemachine.h"
 #include <algorithm>
+#include <iostream>
 #include <limits>
 #include <map>
 #include <memory>
@@ -71,7 +72,6 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 		// The algorithm will merge the DFA at every accept state.
 		// The merge will prefer existing transitions and only create new transitions
 		// if no transition exists.
-		std::vector<std::tuple<State*, std::vector<Conditional>, State*>> newTransitions;
 		std::size_t depth = std::numeric_limits<std::size_t>::max();
 		std::tuple<std::size_t, std::set<State*>> deleteTillStates;
 		for (auto& acceptState : GetAcceptStates())
@@ -110,8 +110,6 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 						auto newTransition = std::make_unique<Transition>(
 							lhsState, transition->GetConditions(), transition->GetOutState());
 						AddTransition(std::move(newTransition));
-						// newTransitions.emplace_back(lhsState, transition->GetConditions(),
-						// 							transition->GetOutState());
 
 						if (localDepth <= depth)
 						{
@@ -164,12 +162,6 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 			rhs.RemoveState(deleteState);
 		}
 
-		for (auto& [lhsState, conditional, rhsState] : newTransitions)
-		{
-			// auto newTransition = std::make_unique<Transition>(lhsState, conditional, rhsState);
-			// AddTransition(std::move(newTransition));
-		}
-
 		for (auto& state : rhs.states)
 		{
 			AddState(std::move(state));
@@ -210,6 +202,59 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 
 		IsDFA = false;
 	}
+}
+
+bool dregx::statemachine::Statemachine::Equal(const Statemachine& rhs) const
+{
+	// Simple DFS search which compares transitions between lhs and rhs.
+	std::set<State*> ourVisitedStates = {
+		this->GetStartState()}; // If we know the depth of each state we can compare depth instead
+	std::set<State*> theirVisitedStates = {rhs.GetStartState()};
+	std::vector<State*> ourStates = {this->GetStartState()};
+	std::vector<State*> theirStates = {rhs.GetStartState()};
+
+	while (!ourStates.empty() && !theirStates.empty())
+	{
+		const auto ourState = *ourStates.begin();
+		ourStates.erase(ourStates.begin());
+		const auto theirState = *theirStates.begin();
+		theirStates.erase(theirStates.begin());
+
+		if (!(ourState->IsAcceptState() == theirState->IsAcceptState()))
+		{
+			return false;
+		}
+
+		for (const auto& ourTransition : ourState->GetOutTransitions())
+		{
+			const auto theirTransition =
+				theirState->GetOutTransitionWithSameCondition(ourTransition->GetConditions());
+			if (theirTransition == nullptr)
+			{
+				return false;
+			}
+
+			auto ourIter = ourVisitedStates.find(ourTransition->GetOutState());
+			auto theirIter = theirVisitedStates.find(theirTransition->GetOutState());
+			if (ourIter == ourVisitedStates.end() && theirIter == theirVisitedStates.end())
+			{
+				ourVisitedStates.insert(ourTransition->GetOutState());
+				theirVisitedStates.insert(theirTransition->GetOutState());
+				ourStates.push_back(ourTransition->GetOutState());
+				theirStates.push_back(theirTransition->GetOutState());
+			}
+			else if (ourIter != ourVisitedStates.end() && theirIter != theirVisitedStates.end())
+			{
+				continue;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
+	return ourStates.empty() && theirStates.empty();
 }
 
 std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemachine::Copy() const
@@ -270,6 +315,30 @@ dregx::statemachine::Statemachine& dregx::statemachine::Statemachine::operator&(
 	Concatenate(rhs);
 
 	return *this;
+}
+
+bool dregx::statemachine::Statemachine::operator==(const Statemachine& rhs) const
+{
+	if (&rhs == this)
+	{
+		return true;
+	}
+
+	auto lhsCopy = this->Copy();
+	auto rhsCopy = rhs.Copy();
+
+	lhsCopy->Minimize();
+	rhsCopy->Minimize();
+
+	return lhsCopy->Equal(*rhsCopy);
+}
+
+bool dregx::statemachine::Statemachine::operator==(Statemachine& rhs)
+{
+	this->Minimize();
+	rhs.Minimize();
+
+	return Equal(rhs);
 }
 
 void dregx::statemachine::Statemachine::AddState(std::unique_ptr<State> state)
@@ -442,8 +511,6 @@ std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetA
 	return acceptStates;
 }
 
-#include <iostream>
-
 std::string dregx::statemachine::Statemachine::Print() const
 {
 	std::string graph = "digraph DFA {\n";
@@ -474,22 +541,22 @@ std::string dregx::statemachine::Statemachine::Print() const
 	{
 		graph += std::to_string(mapStateWithIndex.find(state.get())->second);
 
-		if (state->IsAcceptState() && !state->IsStartState())
+		graph += " [label = \"State";
+
+		if (state->IsStartState())
 		{
-			graph += " [label = \"Accept State: ";
+			graph += " Start";
 		}
-		else if (state->IsAcceptState() && state->IsStartState())
+		if (state->IsSinkState())
 		{
-			graph += " [label = \"Start Accept State: ";
+			graph += " Sink";
 		}
-		else if (state->IsStartState())
+		if (state->IsAcceptState())
 		{
-			graph += " [label = \"Start State: ";
+			graph += " Accept";
 		}
-		else
-		{
-			graph += " [label = \"Inter State: ";
-		}
+		graph += ": ";
+
 		graph += std::to_string(mapStateWithIndex.find(state.get())->second);
 		graph += "\"]";
 		graph += ";\n";
@@ -901,4 +968,219 @@ void dregx::statemachine::Statemachine::ToDFA()
 	this->transitions = std::move(newDfaTransitions);
 
 	IsDFA = true;
+}
+
+void dregx::statemachine::Statemachine::Minimize()
+{
+	if (!IsDFA)
+	{
+		return;
+	}
+
+	if (!AllTransitionDeterminized)
+	{
+		DeterminizeAllTransitions();
+	}
+
+	std::set<State*> acceptedPartition;
+	std::set<State*> nonAcceptedPartition;
+	for (auto& state : states)
+	{
+		if (state->IsAcceptState())
+		{
+			acceptedPartition.insert(state.get());
+		}
+		else
+		{
+			nonAcceptedPartition.insert(state.get());
+		}
+	}
+
+	std::vector<std::set<State*>> lastEquivalenceSets;
+	lastEquivalenceSets.push_back(std::move(nonAcceptedPartition));
+	lastEquivalenceSets.push_back(std::move(acceptedPartition));
+
+	std::vector<std::set<State*>> equivalenceSets = lastEquivalenceSets;
+	std::vector<std::set<State*>> nextEquivalenceSets;
+	bool success = false; // If True we have the minimal partitions
+
+	const auto alphabet = GetAlphabet();
+	while (!equivalenceSets.empty())
+	{
+		auto currentSet = *equivalenceSets.begin();
+		equivalenceSets.erase(equivalenceSets.begin());
+
+		if (currentSet.size() == 1)
+		{
+			nextEquivalenceSets.push_back(currentSet);
+		}
+		else
+		{
+			std::set<State*> currentPartition;
+			std::set<State*> otherPartition;
+
+			for (const auto& alpha : alphabet)
+			{
+				currentPartition.clear();
+
+				std::size_t mainPartition = 0;
+				bool first = true;
+				for (const auto& state : currentSet)
+				{
+					std::size_t partition = 0;
+					auto outState = state->GetOutTransitionWithSameCondition(alpha)->GetOutState();
+					for (auto& set : lastEquivalenceSets)
+					{
+						if (set.find(outState) == set.end())
+						{
+							partition++;
+							continue;
+						}
+
+						if (first)
+						{
+							currentPartition.insert(state);
+							mainPartition = partition;
+							first = false;
+						}
+						else if (mainPartition == partition)
+						{
+							currentPartition.insert(state);
+						}
+						else
+						{
+							otherPartition.insert(state);
+						}
+						break;
+					}
+				}
+
+				if (!otherPartition.empty())
+				{
+					// we have separated the states
+					// further specialization is done in the next iteration of the main loop
+					break;
+				}
+			}
+
+			if (!currentPartition.empty())
+			{
+				nextEquivalenceSets.push_back(std::move(currentPartition));
+			}
+			if (!otherPartition.empty())
+			{
+				nextEquivalenceSets.push_back(std::move(otherPartition));
+			}
+		}
+
+		if (equivalenceSets.empty())
+		{
+			if (lastEquivalenceSets == nextEquivalenceSets)
+			{
+				success = true;
+				break;
+			}
+			else
+			{
+				lastEquivalenceSets = nextEquivalenceSets;
+				equivalenceSets = std::move(nextEquivalenceSets);
+				nextEquivalenceSets = {};
+			}
+		}
+	}
+
+	if (!success)
+	{
+		throw std::logic_error("Statemachine::Minimize: Programmer error should never throw");
+	}
+
+	std::vector<std::unique_ptr<State>> newStates;
+	std::map<State*, State*> mapSetWithState;
+	std::vector<std::unique_ptr<Transition>> newTransitions;
+	for (auto& set : nextEquivalenceSets)
+	{
+		auto newState = std::make_unique<State>();
+		newState->SetAccept((*set.begin())->IsAcceptState());
+		for (auto& state : set)
+		{
+			mapSetWithState.insert({state, newState.get()});
+
+			if (state->IsStartState())
+			{
+				newState->SetStart(true);
+			}
+		}
+
+		newStates.push_back(std::move(newState));
+	}
+
+	for (auto& set : nextEquivalenceSets)
+	{
+		auto someStateInPartition = *set.begin();
+		auto setState = mapSetWithState.find(someStateInPartition)->second;
+
+		for (auto& transition : someStateInPartition->GetOutTransitions())
+		{
+			auto iter = mapSetWithState.find(transition->GetOutState());
+			auto outState = iter->second;
+			auto newTransition =
+				std::make_unique<Transition>(setState, transition->GetConditions(), outState);
+			newTransitions.push_back(std::move(newTransition));
+		}
+	}
+
+	this->states = std::move(newStates);
+	this->transitions = std::move(newTransitions);
+}
+
+std::set<std::vector<dregx::statemachine::Conditional>>
+dregx::statemachine::Statemachine::GetAlphabet()
+{
+	std::set<std::vector<Conditional>> alphabet;
+	for (const auto& transition : transitions)
+	{
+		alphabet.insert(transition->GetConditions());
+	}
+
+	return alphabet;
+}
+
+void dregx::statemachine::Statemachine::DeterminizeAllTransitions()
+{
+	if (!IsDFA)
+	{
+		return;
+	}
+
+	AllTransitionDeterminized = true;
+	EmbeddedAcceptState = true;
+	containsCycles = true; // Sink introduces cycles
+	std::set<std::vector<Conditional>> alphabet = GetAlphabet();
+
+	if (sinkState == nullptr)
+	{
+		auto newSinkState = std::make_unique<State>();
+		sinkState = newSinkState.get();
+		sinkState->SetSink(true);
+		AddState(std::move(newSinkState));
+		for (const auto& alpha : alphabet)
+		{
+			auto newTransition = std::make_unique<Transition>(sinkState, alpha, sinkState);
+			AddTransition(std::move(newTransition));
+		}
+	}
+
+	for (const auto& alpha : alphabet)
+	{
+		for (auto& state : states)
+		{
+			if (state->DoesOutTransitionExistWithSameCondition(alpha))
+			{
+				continue;
+			}
+
+			auto newTransition = std::make_unique<Transition>(state.get(), alpha, sinkState);
+			AddTransition(std::move(newTransition));
+		}
+	}
 }

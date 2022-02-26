@@ -54,7 +54,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
-#include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
+#include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
 #include "dregx/Ast/Node/capture_logic.h"
 #include "dregx/Ast/Node/capture_symbols.h"
 #include "dregx/Ast/Node/capture_whitespace.h"
@@ -134,7 +134,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 %nterm<dregx_deamerreserved_star__opt_pad__OR__word__> deamerreserved_star__opt_pad__OR__word__
 %nterm<dregx_square> square
 %nterm<dregx_capture> capture
-%nterm<dregx_deamerreserved_plus__capture_logic__> deamerreserved_plus__capture_logic__
+%nterm<dregx_deamerreserved_star__capture_logic__> deamerreserved_star__capture_logic__
 %nterm<dregx_capture_logic> capture_logic
 %nterm<dregx_capture_symbols> capture_symbols
 %nterm<dregx_capture_whitespace> capture_whitespace
@@ -201,7 +201,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 	::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* dregx_deamerreserved_star__opt_pad__OR__word__;
 	::dregx::ast::node::square* dregx_square;
 	::dregx::ast::node::capture* dregx_capture;
-	::dregx::ast::node::deamerreserved_plus__capture_logic__* dregx_deamerreserved_plus__capture_logic__;
+	::dregx::ast::node::deamerreserved_star__capture_logic__* dregx_deamerreserved_star__capture_logic__;
 	::dregx::ast::node::capture_logic* dregx_capture_logic;
 	::dregx::ast::node::capture_symbols* dregx_capture_symbols;
 	::dregx::ast::node::capture_whitespace* dregx_capture_whitespace;
@@ -441,13 +441,13 @@ square:
 
 
 capture:
-	opt_pad LEFT_SQUARE_BRACKET_NOT deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  {
+	opt_pad LEFT_SQUARE_BRACKET_NOT deamerreserved_star__capture_logic__ RIGHT_SQUARE_BRACKET  {
 		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, new dregx::ast::node::LEFT_SQUARE_BRACKET_NOT({::dregx::ast::Type::LEFT_SQUARE_BRACKET_NOT, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), $3, new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $4 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-	| opt_pad LEFT_SQUARE_BRACKET deamerreserved_plus__capture_logic__ RIGHT_SQUARE_BRACKET  {
+	| opt_pad LEFT_SQUARE_BRACKET deamerreserved_star__capture_logic__ RIGHT_SQUARE_BRACKET  {
 		auto* const newNode = new dregx::ast::node::capture({::dregx::ast::Type::capture, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), $3, new dregx::ast::node::RIGHT_SQUARE_BRACKET({::dregx::ast::Type::RIGHT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $4 }) });
 		$$ = newNode;
 
@@ -456,15 +456,15 @@ capture:
 ;
 
 
-deamerreserved_plus__capture_logic__:
-	capture_logic  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1 });
+deamerreserved_star__capture_logic__:
+	capture_logic deamerreserved_star__capture_logic__  {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__capture_logic__({::dregx::ast::Type::deamerreserved_star__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, $2 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
-	| capture_logic deamerreserved_plus__capture_logic__  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_plus__capture_logic__({::dregx::ast::Type::deamerreserved_plus__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, $2 });
+	|  {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__capture_logic__({::dregx::ast::Type::deamerreserved_star__capture_logic__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted

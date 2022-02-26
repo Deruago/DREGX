@@ -44,7 +44,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
-#include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
+#include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
 #include "dregx/Ast/Node/capture_logic.h"
 #include "dregx/Ast/Node/capture_symbols.h"
 #include "dregx/Ast/Node/capture_whitespace.h"
@@ -290,9 +290,9 @@ namespace dregx { namespace ast { namespace listener {
 				DefaultAction(node);
 				break;
 			}
-			case dregx::ast::Type::deamerreserved_plus__capture_logic__:
+			case dregx::ast::Type::deamerreserved_star__capture_logic__:
 			{
-				Listen(static_cast<const dregx::ast::node::deamerreserved_plus__capture_logic__*>(node));
+				Listen(static_cast<const dregx::ast::node::deamerreserved_star__capture_logic__*>(node));
 				DefaultAction(node);
 				break;
 			}
@@ -554,7 +554,7 @@ namespace dregx { namespace ast { namespace listener {
 		virtual void Listen(const dregx::ast::node::capture* node)
 		{
 		}
-		virtual void Listen(const dregx::ast::node::deamerreserved_plus__capture_logic__* node)
+		virtual void Listen(const dregx::ast::node::deamerreserved_star__capture_logic__* node)
 		{
 		}
 		virtual void Listen(const dregx::ast::node::capture_logic* node)

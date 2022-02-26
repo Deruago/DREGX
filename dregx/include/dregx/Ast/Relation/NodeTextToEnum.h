@@ -45,7 +45,7 @@ namespace dregx { namespace ast { namespace relation {
 		{ "capture", ::dregx::ast::Type::capture },
 	
 
-		{ "deamerreserved_plus__capture_logic__", ::dregx::ast::Type::deamerreserved_plus__capture_logic__ },
+		{ "deamerreserved_star__capture_logic__", ::dregx::ast::Type::deamerreserved_star__capture_logic__ },
 	
 
 		{ "capture_logic", ::dregx::ast::Type::capture_logic },

@@ -19,9 +19,12 @@ namespace dregx::ast::listener::user
 	class TranslateToIr : public EnterExitListener
 	{
 	public:
-		TranslateToIr()
+		TranslateToIr() = default;
+
+		void Dispatch(const deamer::external::cpp::ast::Node* node) override
 		{
 			AddCapture(new ir::Group());
+			EnterExitListener::Dispatch(node);
 		}
 
 	private:
@@ -52,7 +55,6 @@ namespace dregx::ast::listener::user
 					});
 			}
 		}
-
 		void ListenExit(const dregx::ast::node::group* node) override
 		{
 			groupFlavor--;
@@ -64,7 +66,6 @@ namespace dregx::ast::listener::user
 			orGroupFlavor++;
 			AddCapture(new ir::OrGroup());
 		}
-
 		void ListenExit(const dregx::ast::node::or_concat* node) override
 		{
 			orGroupFlavor--;
@@ -92,7 +93,6 @@ namespace dregx::ast::listener::user
 					});
 			}
 		}
-
 		void ListenExit(const dregx::ast::node::square* node) override
 		{
 			squareFlavor--;
@@ -120,7 +120,6 @@ namespace dregx::ast::listener::user
 				});
 			newWord->SetWord(padding + word);
 		}
-
 		void ListenExit(const dregx::ast::node::standalone* node) override
 		{
 			wordFlavor--;
@@ -136,12 +135,20 @@ namespace dregx::ast::listener::user
 														 node->GetIndex(0)->GetIndex(2)->GetText());
 			AddCapture(newRangeCapture);
 		}
+		void ListenExit(const dregx::ast::node::capture_range* node) override
+		{
+			PopCapture();
+		}
 
 		void ListenEntry(const dregx::ast::node::capture_special_character* node) override
 		{
 			auto* newEscapeCharacterCapture = new ir::EscapeCharacter(
 				reference::Access(node).special_char_any().any().GetContent()[0]->GetText());
 			AddCapture(newEscapeCharacterCapture);
+		}
+		void ListenExit(const dregx::ast::node::capture_special_character* node) override
+		{
+			PopCapture();
 		}
 
 		void ListenEntry(const dregx::ast::node::extension_modifier* node) override
@@ -160,11 +167,19 @@ namespace dregx::ast::listener::user
 			auto* newCharacterCapture = new ir::Character(node->GetText());
 			AddCapture(newCharacterCapture);
 		}
+		void ListenExit(const dregx::ast::node::capture_letter* node) override
+		{
+			PopCapture();
+		}
 
 		void ListenEntry(const dregx::ast::node::capture_number* node) override
 		{
 			auto* newCharacterCapture = new ir::Character(node->GetText());
 			AddCapture(newCharacterCapture);
+		}
+		void ListenExit(const dregx::ast::node::capture_number* node) override
+		{
+			PopCapture();
 		}
 
 		void ListenEntry(const dregx::ast::node::capture_whitespace* node) override
@@ -172,32 +187,15 @@ namespace dregx::ast::listener::user
 			auto* newCharacterCapture = new ir::Character(node->GetText());
 			AddCapture(newCharacterCapture);
 		}
+		void ListenExit(const dregx::ast::node::capture_whitespace* node) override
+		{
+			PopCapture();
+		}
 
 		void ListenEntry(const dregx::ast::node::capture_symbols* node) override
 		{
 			auto* newCharacterCapture = new ir::Character(node->GetText());
 			AddCapture(newCharacterCapture);
-		}
-
-		void ListenExit(const dregx::ast::node::capture_range* node) override
-		{
-			PopCapture();
-		}
-		void ListenExit(const dregx::ast::node::capture_special_character* node) override
-		{
-			PopCapture();
-		}
-		void ListenExit(const dregx::ast::node::capture_letter* node) override
-		{
-			PopCapture();
-		}
-		void ListenExit(const dregx::ast::node::capture_number* node) override
-		{
-			PopCapture();
-		}
-		void ListenExit(const dregx::ast::node::capture_whitespace* node) override
-		{
-			PopCapture();
 		}
 		void ListenExit(const dregx::ast::node::capture_symbols* node) override
 		{

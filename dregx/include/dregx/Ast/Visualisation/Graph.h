@@ -136,14 +136,14 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"capture\"];\n";
 		}
 
-		void ListenEntry(const ::dregx::ast::node::deamerreserved_plus__capture_logic__* node) override
+		void ListenEntry(const ::dregx::ast::node::deamerreserved_star__capture_logic__* node) override
 		{
 			for (const auto* child : node->GetNodes())
 			{
 				AddConnection(node, child);
 			}
 
-			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_plus__capture_logic__\"];\n";
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__capture_logic__\"];\n";
 		}
 
 		void ListenEntry(const ::dregx::ast::node::capture_logic* node) override
@@ -701,7 +701,7 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 		{
 		}
 
-		void ListenExit(const ::dregx::ast::node::deamerreserved_plus__capture_logic__* node) override
+		void ListenExit(const ::dregx::ast::node::deamerreserved_star__capture_logic__* node) override
 		{
 		}
 

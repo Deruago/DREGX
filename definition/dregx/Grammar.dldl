@@ -31,8 +31,8 @@ square
 	capture
 
 capture
-	opt_pad LEFT_SQUARE_BRACKET_NOT capture_logic+ RIGHT_SQUARE_BRACKET
-	opt_pad LEFT_SQUARE_BRACKET capture_logic+ RIGHT_SQUARE_BRACKET
+	opt_pad LEFT_SQUARE_BRACKET_NOT capture_logic* RIGHT_SQUARE_BRACKET
+	opt_pad LEFT_SQUARE_BRACKET capture_logic* RIGHT_SQUARE_BRACKET
 
 capture_logic
 	capture_range

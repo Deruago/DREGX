@@ -17,7 +17,7 @@
 #include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
-#include "dregx/Ast/Node/deamerreserved_plus__capture_logic__.h"
+#include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
 #include "dregx/Ast/Node/capture_logic.h"
 #include "dregx/Ast/Node/capture_symbols.h"
 #include "dregx/Ast/Node/capture_whitespace.h"
@@ -183,7 +183,7 @@ namespace dregx { namespace ast { namespace reference {
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::capture>;
 	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>;
+	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::capture_logic>;
 	template<>
@@ -1460,7 +1460,7 @@ AccessTemplateBase<::dregx::ast::node::OPTIONAL> OPTIONAL();
 		}
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__> deamerreserved_plus__capture_logic__();
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__> deamerreserved_star__capture_logic__();
 AccessTemplateBase<::dregx::ast::node::capture_logic> capture_logic();
 AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
 AccessTemplateBase<::dregx::ast::node::LEFT_SQUARE_BRACKET_NOT> LEFT_SQUARE_BRACKET_NOT();
@@ -1501,28 +1501,28 @@ AccessTemplateBase<::dregx::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRACKE
 	};
 
 	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__> : public AccessBase
+	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__> : public AccessBase
 	{
 	protected:
-		std::vector<const ::dregx::ast::node::deamerreserved_plus__capture_logic__*> ts;
+		std::vector<const ::dregx::ast::node::deamerreserved_star__capture_logic__*> ts;
 
 	public:
-		AccessTemplateBase(std::vector<const ::dregx::ast::node::deamerreserved_plus__capture_logic__*> ts_) : ts(std::move(ts_))
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::deamerreserved_star__capture_logic__*> ts_) : ts(std::move(ts_))
 		{
 		}
 
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_plus__capture_logic__& t) : ts({&t})
+		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_star__capture_logic__& t) : ts({&t})
 		{
 		}
 
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_plus__capture_logic__* t) : ts({t})
+		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_star__capture_logic__* t) : ts({t})
 		{
 		}
 
 		AccessTemplateBase() = default;
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>& operator[](::std::size_t index)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>& operator[](::std::size_t index)
 		{
 			if (index >= ts.size())
 			{
@@ -1538,7 +1538,7 @@ AccessTemplateBase<::dregx::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRACKE
 			return *this;
 		}
 
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
 		{
 			// swap if the other is larger
 			if (indexBegin > indexEnd)
@@ -1554,7 +1554,7 @@ AccessTemplateBase<::dregx::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRACKE
 			}
 			else
 			{
-				std::vector<const ::dregx::ast::node::deamerreserved_plus__capture_logic__*> temporaries;
+				std::vector<const ::dregx::ast::node::deamerreserved_star__capture_logic__*> temporaries;
 				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
 				{
 					temporaries.push_back(ts[i]);
@@ -1566,18 +1566,18 @@ AccessTemplateBase<::dregx::ast::node::RIGHT_SQUARE_BRACKET> RIGHT_SQUARE_BRACKE
 			return *this;
 		}
 
-		std::vector<const ::dregx::ast::node::deamerreserved_plus__capture_logic__*> GetContent()
+		std::vector<const ::dregx::ast::node::deamerreserved_star__capture_logic__*> GetContent()
 		{
 			return ts;
 		}
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__> deamerreserved_plus__capture_logic__();
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__> deamerreserved_star__capture_logic__();
 AccessTemplateBase<::dregx::ast::node::capture_logic> capture_logic();
 
 
 		template<typename FunctionType>
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>& for_all(FunctionType function)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -7413,12 +7413,12 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::OPTIONAL>(Get<::dregx::ast::Type::OPTIONAL>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__> AccessTemplateBase<::dregx::ast::node::capture>::deamerreserved_plus__capture_logic__()
+		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__> AccessTemplateBase<::dregx::ast::node::capture>::deamerreserved_star__capture_logic__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>(Get<::dregx::ast::Type::deamerreserved_plus__capture_logic__>(ts));
+			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>(Get<::dregx::ast::Type::deamerreserved_star__capture_logic__>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::capture_logic> AccessTemplateBase<::dregx::ast::node::capture>::capture_logic()
@@ -7461,15 +7461,15 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::RIGHT_SQUARE_BRACKET>(Get<::dregx::ast::Type::RIGHT_SQUARE_BRACKET>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__> AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>::deamerreserved_plus__capture_logic__()
+		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>::deamerreserved_star__capture_logic__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>(Get<::dregx::ast::Type::deamerreserved_plus__capture_logic__>(ts));
+			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>(Get<::dregx::ast::Type::deamerreserved_star__capture_logic__>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::capture_logic> AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__capture_logic__>::capture_logic()
+		inline AccessTemplateBase<::dregx::ast::node::capture_logic> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__capture_logic__>::capture_logic()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
