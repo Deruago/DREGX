@@ -243,6 +243,12 @@ bool dregx::statemachine::Statemachine::Equal(const Statemachine& rhs) const
 			return false;
 		}
 
+		if (ourState->GetOutTransitions().size() != theirState->GetOutTransitions().size() ||
+			ourState->GetInTransitions().size() != theirState->GetInTransitions().size())
+		{
+			return false;
+		}
+
 		for (const auto& ourTransition : ourState->GetOutTransitions())
 		{
 			auto* const theirTransition =
