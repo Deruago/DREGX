@@ -14,7 +14,13 @@ namespace dregx::statemachine
 	class Statemachine
 	{
 	private:
+		// Caching variables
+		std::vector<State*> acceptedStates;	   // Not implemented
+		std::vector<State*> nonAcceptedStates; // Not implemented
+		State* startState = nullptr;		   // Not implemented
 		State* sinkState = nullptr;
+
+		std::vector<std::unique_ptr<Conditional>> conditionals;
 		std::vector<std::unique_ptr<State>> states;
 		std::vector<std::unique_ptr<Transition>> transitions;
 		bool containsCycles = false;
@@ -31,8 +37,10 @@ namespace dregx::statemachine
 		void Minimize();
 		void DeterminizeAllTransitions();
 		void Or(Statemachine& rhs);
+		void And(Statemachine& rhs);
 		void Concatenate(Statemachine& rhs);
 		bool Equal(const Statemachine& rhs) const;
+		bool InEqual(const Statemachine& rhs) const;
 
 		std::unique_ptr<Statemachine> Copy() const;
 
@@ -74,6 +82,7 @@ namespace dregx::statemachine
 
 	private:
 		void ProductConstructionOR(Statemachine& rhs);
+		void ProductConstructionAND(const Statemachine& rhs);
 	};
 }
 

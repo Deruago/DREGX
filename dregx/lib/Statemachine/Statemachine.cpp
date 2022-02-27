@@ -26,8 +26,8 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 	{
 		IsDFA = false;
 		auto newStartState = std::make_unique<State>();
-		auto lhsStartState = GetStartState();
-		auto rhsStartState = rhs.GetStartState();
+		auto* lhsStartState = GetStartState();
+		auto* rhsStartState = rhs.GetStartState();
 
 		newStartState->SetStart(true);
 		lhsStartState->SetStart(false);
@@ -55,6 +55,23 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 
 	rhs.states.clear();
 	rhs.transitions.clear();
+}
+
+void dregx::statemachine::Statemachine::And(Statemachine& rhs)
+{
+	// Currently Product Construction only works for DFA
+	// There are options for NFAs, but not yet implemented.
+	if (!IsDFA)
+	{
+		ToDFA();
+	}
+
+	if (!rhs.IsDFA)
+	{
+		rhs.ToDFA();
+	}
+
+	ProductConstructionAND(rhs);
 }
 
 // Connect all lhs.acceptstates with rhs.startstate using empty transition
@@ -89,7 +106,7 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 				State* lhsState = std::get<0>(currentUnconcatenatedState);
 				State* rhsState = std::get<1>(currentUnconcatenatedState);
 
-				for (auto transition : rhsState->GetOutTransitions())
+				for (auto* transition : rhsState->GetOutTransitions())
 				{
 					if (lhsState->DoesOutTransitionExistWithSameCondition(transition))
 					{
@@ -100,7 +117,7 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 						// If not implemented embedded accept states
 						// can not benefit from this optimized algorithm
 
-						auto lhsStateOutTransitionState =
+						auto* lhsStateOutTransitionState =
 							lhsState->GetOutTransitionWithSameCondition(transition)->GetOutState();
 						unconcatenatedStates.emplace_back(lhsStateOutTransitionState,
 														  transition->GetOutState());
@@ -142,7 +159,7 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 			// As there are no cycles
 			// Each in transition eventually goes to start state.
 
-			for (auto inTransition : deleteState->GetInTransitions())
+			for (auto* inTransition : deleteState->GetInTransitions())
 			{
 				toBeDeletedStates.insert(inTransition->GetInState());
 				nextDeletionSources.insert(inTransition->GetInState());
@@ -157,7 +174,7 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 			}
 		}
 
-		for (auto deleteState : toBeDeletedStates)
+		for (auto* deleteState : toBeDeletedStates)
 		{
 			rhs.RemoveState(deleteState);
 		}
@@ -177,9 +194,9 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 	}
 	else
 	{
-		auto rhsStartState = rhs.GetStartState();
+		auto* rhsStartState = rhs.GetStartState();
 		rhsStartState->SetStart(false);
-		for (auto acceptState : GetAcceptStates())
+		for (auto* acceptState : GetAcceptStates())
 		{
 			auto linkWithRhsStartState = std::make_unique<Transition>(
 				acceptState, std::vector<Conditional>{}, rhsStartState);
@@ -215,9 +232,9 @@ bool dregx::statemachine::Statemachine::Equal(const Statemachine& rhs) const
 
 	while (!ourStates.empty() && !theirStates.empty())
 	{
-		const auto ourState = *ourStates.begin();
+		auto* const ourState = *ourStates.begin();
 		ourStates.erase(ourStates.begin());
-		const auto theirState = *theirStates.begin();
+		auto* const theirState = *theirStates.begin();
 		theirStates.erase(theirStates.begin());
 
 		if (!(ourState->IsAcceptState() == theirState->IsAcceptState()))
@@ -227,7 +244,7 @@ bool dregx::statemachine::Statemachine::Equal(const Statemachine& rhs) const
 
 		for (const auto& ourTransition : ourState->GetOutTransitions())
 		{
-			const auto theirTransition =
+			auto* const theirTransition =
 				theirState->GetOutTransitionWithSameCondition(ourTransition->GetConditions());
 			if (theirTransition == nullptr)
 			{
@@ -255,6 +272,11 @@ bool dregx::statemachine::Statemachine::Equal(const Statemachine& rhs) const
 	}
 
 	return ourStates.empty() && theirStates.empty();
+}
+
+bool dregx::statemachine::Statemachine::InEqual(const Statemachine& rhs) const
+{
+	return !Equal(rhs);
 }
 
 std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemachine::Copy() const
@@ -394,11 +416,11 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 
 		auto newStartState = std::make_unique<State>();
 		newStartState->SetStart(true);
-		auto oldStartState = GetStartState();
+		auto* oldStartState = GetStartState();
 		oldStartState->SetStart(false);
 		auto linkWithOldStartState = std::make_unique<Transition>(
 			newStartState.get(), std::vector<Conditional>{}, oldStartState);
-		for (auto acceptState : GetAcceptStates())
+		for (auto* acceptState : GetAcceptStates())
 		{
 			auto linkAcceptStateWithOldStartState = std::make_unique<Transition>(
 				acceptState, std::vector<Conditional>{}, oldStartState);
@@ -467,7 +489,7 @@ std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetS
 {
 	std::vector<dregx::statemachine::State*> outStates;
 
-	for (auto& state : GetStates())
+	for (const auto& state : GetStates())
 	{
 		if (state->HasConditions(inConditions, outConditions))
 		{
@@ -486,7 +508,7 @@ dregx::statemachine::Statemachine::GetTransitions() const
 
 dregx::statemachine::State* dregx::statemachine::Statemachine::GetStartState() const
 {
-	for (auto& state : states)
+	for (const auto& state : states)
 	{
 		if (state->IsStartState())
 		{
@@ -500,7 +522,7 @@ dregx::statemachine::State* dregx::statemachine::Statemachine::GetStartState() c
 std::vector<dregx::statemachine::State*> dregx::statemachine::Statemachine::GetAcceptStates() const
 {
 	std::vector<dregx::statemachine::State*> acceptStates;
-	for (auto& state : states)
+	for (const auto& state : states)
 	{
 		if (state->IsAcceptState())
 		{
@@ -516,12 +538,12 @@ std::string dregx::statemachine::Statemachine::Print() const
 	std::string graph = "digraph DFA {\n";
 	std::map<State*, std::size_t> mapStateWithIndex;
 
-	for (auto& state : GetStates())
+	for (const auto& state : GetStates())
 	{
 		mapStateWithIndex.insert({state.get(), mapStateWithIndex.size()});
 	}
 
-	for (auto& transition : GetTransitions())
+	for (const auto& transition : GetTransitions())
 	{
 		graph += std::to_string(mapStateWithIndex.find(transition->GetInState())->second);
 		graph += " -> ";
@@ -537,7 +559,7 @@ std::string dregx::statemachine::Statemachine::Print() const
 		}
 		graph += "\"];\n";
 	}
-	for (auto& state : GetStates())
+	for (const auto& state : GetStates())
 	{
 		graph += std::to_string(mapStateWithIndex.find(state.get())->second);
 
@@ -568,7 +590,7 @@ std::string dregx::statemachine::Statemachine::Print() const
 void dregx::statemachine::Statemachine::GetStatesToSource(const std::vector<State*>& states,
 														  std::set<State*>& embeddedStates)
 {
-	for (auto& state : states)
+	for (const auto& state : states)
 	{
 		GetStatesToSource(state, embeddedStates);
 	}
@@ -579,7 +601,7 @@ void dregx::statemachine::Statemachine::GetStatesToSource(const State* state,
 {
 	for (auto& inTransition : state->GetInTransitions())
 	{
-		auto inState = inTransition->GetInState();
+		auto* inState = inTransition->GetInState();
 		if (inState == nullptr)
 		{
 			continue;
@@ -602,7 +624,7 @@ dregx::statemachine::TransitionTable dregx::statemachine::Statemachine::ToTransi
 	std::vector<State*> unCategorizedStates = {GetStartState()};
 	while (!unCategorizedStates.empty())
 	{
-		auto currentUncategorizedState = *unCategorizedStates.begin();
+		auto* currentUncategorizedState = *unCategorizedStates.begin();
 		unCategorizedStates.erase(unCategorizedStates.begin());
 
 		if (mapStateWithIndex.find(currentUncategorizedState) == mapStateWithIndex.end())
@@ -612,7 +634,7 @@ dregx::statemachine::TransitionTable dregx::statemachine::Statemachine::ToTransi
 		table.table.emplace_back();
 		table.acceptingState.emplace_back();
 
-		for (auto outTransition : currentUncategorizedState->GetOutTransitions())
+		for (auto* outTransition : currentUncategorizedState->GetOutTransitions())
 		{
 			if (mapStateWithIndex.find(outTransition->GetOutState()) == mapStateWithIndex.end())
 			{
@@ -651,9 +673,15 @@ struct ProductionConstructionState
 
 	bool IsStart = false;
 
-	bool IsAccept()
+	bool IsAcceptOR()
 	{
 		return (our != nullptr && our->IsAcceptState()) ||
+			   (their != nullptr && their->IsAcceptState());
+	}
+
+	bool IsAcceptAND()
+	{
+		return (our != nullptr && our->IsAcceptState()) &&
 			   (their != nullptr && their->IsAcceptState());
 	}
 
@@ -667,7 +695,7 @@ struct ProductionConstructionState
 
 		if (our != nullptr)
 		{
-			for (auto transition : our->GetOutTransitions())
+			for (auto* transition : our->GetOutTransitions())
 			{
 				mapConditionalWithTuple.insert(
 					{transition->GetConditions(), {transition, nullptr}});
@@ -675,7 +703,7 @@ struct ProductionConstructionState
 		}
 		if (their != nullptr)
 		{
-			for (auto transition : their->GetOutTransitions())
+			for (auto* transition : their->GetOutTransitions())
 			{
 				auto iter = mapConditionalWithTuple.find(transition->GetConditions());
 				if (iter == mapConditionalWithTuple.end())
@@ -692,37 +720,59 @@ struct ProductionConstructionState
 
 		return mapConditionalWithTuple;
 	}
+
+	std::map<std::vector<dregx::statemachine::Conditional>,
+			 std::tuple<dregx::statemachine::Transition*, dregx::statemachine::Transition*>>
+	And()
+	{
+		std::map<std::vector<dregx::statemachine::Conditional>,
+				 std::tuple<dregx::statemachine::Transition*, dregx::statemachine::Transition*>>
+			mapConditionalWithTuple;
+
+		for (auto* lhsTransition : our->GetOutTransitions())
+		{
+			for (auto* rhsTransition : their->GetOutTransitions())
+			{
+				if (lhsTransition->GetConditions() == rhsTransition->GetConditions())
+				{
+					mapConditionalWithTuple.insert(
+						{lhsTransition->GetConditions(), {lhsTransition, rhsTransition}});
+					break;
+				}
+			}
+		}
+
+		return mapConditionalWithTuple;
+	}
 };
 
 void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 {
-	auto& ourStates = GetStates();
-	auto& theirStates = rhs.GetStates();
+	const auto& ourStates = GetStates();
+	const auto& theirStates = rhs.GetStates();
 
 	std::vector<std::unique_ptr<ProductionConstructionState>> productStates;
 	std::map<std::tuple<State*, State*>, ProductionConstructionState*>
 		mapStatesWithProductConstructionState;
-	bool first = true;
-	for (auto& ourState : ourStates)
+	for (const auto& ourState : ourStates)
 	{
-		for (auto& theirState : theirStates)
+		for (const auto& theirState : theirStates)
 		{
 			auto newProductConstructionState =
 				std::make_unique<ProductionConstructionState>(ourState.get(), theirState.get());
 			mapStatesWithProductConstructionState.insert(
 				{{ourState.get(), theirState.get()}, newProductConstructionState.get()});
 
-			if (first)
+			if (ourState->IsStartState() && theirState->IsStartState())
 			{
 				newProductConstructionState->IsStart = true;
-				first = false;
 			}
 
 			productStates.push_back(std::move(newProductConstructionState));
 		}
 	}
 
-	for (auto& ourState : ourStates)
+	for (const auto& ourState : ourStates)
 	{
 		auto newProductConstructionState =
 			std::make_unique<ProductionConstructionState>(ourState.get(), nullptr);
@@ -732,7 +782,7 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 		productStates.push_back(std::move(newProductConstructionState));
 	}
 
-	for (auto& theirState : theirStates)
+	for (const auto& theirState : theirStates)
 	{
 		auto newProductConstructionState =
 			std::make_unique<ProductionConstructionState>(nullptr, theirState.get());
@@ -749,7 +799,7 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 	{
 		auto newState = std::make_unique<State>();
 		newState->SetStart(productState->IsStart);
-		newState->SetAccept(productState->IsAccept());
+		newState->SetAccept(productState->IsAcceptOR());
 
 		mapPCSwithStates.insert({productState.get(), newState.get()});
 
@@ -758,12 +808,12 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 
 	for (auto& productionState : productStates)
 	{
-		auto thisState = mapPCSwithStates.find(productionState.get())->second;
+		auto* thisState = mapPCSwithStates.find(productionState.get())->second;
 		auto conditionalMap = productionState->Or();
 		for (auto& [conditional, transitions] : conditionalMap)
 		{
-			auto firstTransition = std::get<0>(transitions);
-			auto secondTransition = std::get<1>(transitions);
+			auto* firstTransition = std::get<0>(transitions);
+			auto* secondTransition = std::get<1>(transitions);
 			State* firstState = nullptr;
 			State* secondState = nullptr;
 			if (firstTransition != nullptr)
@@ -774,9 +824,73 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 			{
 				secondState = secondTransition->GetOutState();
 			}
-			auto otherProductState =
+			auto* otherProductState =
 				mapStatesWithProductConstructionState.find({firstState, secondState})->second;
-			auto otherState = mapPCSwithStates.find(otherProductState)->second;
+			auto* otherState = mapPCSwithStates.find(otherProductState)->second;
+			auto newTransition = std::make_unique<Transition>(thisState, conditional, otherState);
+
+			newTransitions.push_back(std::move(newTransition));
+		}
+	}
+
+	this->states = std::move(newStates);
+	this->transitions = std::move(newTransitions);
+}
+
+void dregx::statemachine::Statemachine::ProductConstructionAND(const Statemachine& rhs)
+{
+	const auto& ourStates = GetStates();
+	const auto& theirStates = rhs.GetStates();
+
+	std::vector<std::unique_ptr<ProductionConstructionState>> productStates;
+	std::map<std::tuple<State*, State*>, ProductionConstructionState*>
+		mapStatesWithProductConstructionState;
+
+	for (const auto& ourState : ourStates)
+	{
+		for (const auto& theirState : theirStates)
+		{
+			auto newProductConstructionState =
+				std::make_unique<ProductionConstructionState>(ourState.get(), theirState.get());
+			mapStatesWithProductConstructionState.insert(
+				{{ourState.get(), theirState.get()}, newProductConstructionState.get()});
+
+			if (ourState->IsStartState() && theirState->IsStartState())
+			{
+				newProductConstructionState->IsStart = true;
+			}
+
+			productStates.push_back(std::move(newProductConstructionState));
+		}
+	}
+
+	std::map<ProductionConstructionState*, State*> mapPCSwithStates;
+	std::vector<std::unique_ptr<State>> newStates;
+	std::vector<std::unique_ptr<Transition>> newTransitions;
+	for (auto& productState : productStates)
+	{
+		auto newState = std::make_unique<State>();
+		newState->SetStart(productState->IsStart);
+		newState->SetAccept(productState->IsAcceptAND());
+
+		mapPCSwithStates.insert({productState.get(), newState.get()});
+
+		newStates.push_back(std::move(newState));
+	}
+
+	for (auto& productionState : productStates)
+	{
+		auto* thisState = mapPCSwithStates.find(productionState.get())->second;
+		auto conditionalMap = productionState->And();
+		for (auto& [conditional, transitions] : conditionalMap)
+		{
+			auto* const firstTransition = std::get<0>(transitions);
+			auto* const secondTransition = std::get<1>(transitions);
+			State* firstState = firstTransition->GetOutState();
+			State* secondState = secondTransition->GetOutState();
+			auto* otherProductState =
+				mapStatesWithProductConstructionState.find({firstState, secondState})->second;
+			auto* otherState = mapPCSwithStates.find(otherProductState)->second;
 			auto newTransition = std::make_unique<Transition>(thisState, conditional, otherState);
 
 			newTransitions.push_back(std::move(newTransition));
@@ -790,7 +904,7 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 {
 	State* sharedAcceptState = nullptr;
-	for (auto acceptState : GetAcceptStates())
+	for (auto* acceptState : GetAcceptStates())
 	{
 		if (acceptState->GetOutTransitions().empty() && sharedAcceptState == nullptr)
 		{
@@ -798,7 +912,7 @@ void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 		}
 		else if (acceptState->GetOutTransitions().empty())
 		{
-			for (auto linkedTransition : acceptState->GetInTransitions())
+			for (auto* linkedTransition : acceptState->GetInTransitions())
 			{
 				auto newTransition = std::make_unique<Transition>(linkedTransition->GetInState(),
 																  linkedTransition->GetConditions(),
@@ -834,7 +948,7 @@ struct PowersetState
 
 	bool IsAccept() const
 	{
-		for (auto state : states)
+		for (auto* state : states)
 		{
 			if (state->IsAcceptState())
 			{
@@ -866,7 +980,7 @@ void dregx::statemachine::Statemachine::ToDFA()
 	std::map<std::set<State*>, std::unique_ptr<PowersetState>> allPowerStates;
 	std::vector<std::unique_ptr<PowersetTransition>> allTransitions;
 
-	auto startState = GetStartState();
+	auto* startState = GetStartState();
 	auto startPowerState = std::make_unique<PowersetState>();
 	startPowerState->startState = true;
 	startPowerState->states = startState->GetConnectedStatesWithConditional({});
@@ -880,13 +994,13 @@ void dregx::statemachine::Statemachine::ToDFA()
 
 	while (!unFinishedpowersetStates.empty())
 	{
-		auto currentPowerState = *unFinishedpowersetStates.begin();
+		auto* currentPowerState = *unFinishedpowersetStates.begin();
 		unFinishedpowersetStates.erase(unFinishedpowersetStates.begin());
 
 		std::set<std::vector<Conditional>> conditionals;
-		for (auto state : currentPowerState->states)
+		for (auto* state : currentPowerState->states)
 		{
-			for (auto transition : state->GetOutTransitions())
+			for (auto* transition : state->GetOutTransitions())
 			{
 				if (transition->GetConditions().empty())
 				{
@@ -900,16 +1014,16 @@ void dregx::statemachine::Statemachine::ToDFA()
 		for (auto conditional : conditionals)
 		{
 			std::set<State*> outStates;
-			for (auto state : currentPowerState->states)
+			for (auto* state : currentPowerState->states)
 			{
-				auto outTransition = state->GetOutTransitionWithSameCondition(conditional);
+				auto* outTransition = state->GetOutTransitionWithSameCondition(conditional);
 				if (outTransition == nullptr)
 				{
 					continue;
 				}
 				outStates.insert(outTransition->GetOutState());
 
-				for (auto outStateConnected :
+				for (auto* outStateConnected :
 					 outTransition->GetOutState()->GetConnectedStatesWithConditional({}))
 				{
 					outStates.insert(outStateConnected);
@@ -957,8 +1071,8 @@ void dregx::statemachine::Statemachine::ToDFA()
 
 	for (auto& transition : allTransitions)
 	{
-		auto inState = mapPowerToState.find(transition->in)->second;
-		auto outState = mapPowerToState.find(transition->out)->second;
+		auto* inState = mapPowerToState.find(transition->in)->second;
+		auto* outState = mapPowerToState.find(transition->out)->second;
 		auto newTransition =
 			std::make_unique<Transition>(inState, transition->conditional, outState);
 		newDfaTransitions.push_back(std::move(newTransition));
@@ -1028,7 +1142,7 @@ void dregx::statemachine::Statemachine::Minimize()
 				for (const auto& state : currentSet)
 				{
 					std::size_t partition = 0;
-					auto outState = state->GetOutTransitionWithSameCondition(alpha)->GetOutState();
+					auto* outState = state->GetOutTransitionWithSameCondition(alpha)->GetOutState();
 					for (auto& set : lastEquivalenceSets)
 					{
 						if (set.find(outState) == set.end())
@@ -1101,7 +1215,7 @@ void dregx::statemachine::Statemachine::Minimize()
 	{
 		auto newState = std::make_unique<State>();
 		newState->SetAccept((*set.begin())->IsAcceptState());
-		for (auto& state : set)
+		for (const auto& state : set)
 		{
 			mapSetWithState.insert({state, newState.get()});
 
@@ -1116,13 +1230,13 @@ void dregx::statemachine::Statemachine::Minimize()
 
 	for (auto& set : nextEquivalenceSets)
 	{
-		auto someStateInPartition = *set.begin();
-		auto setState = mapSetWithState.find(someStateInPartition)->second;
+		auto* someStateInPartition = *set.begin();
+		auto* setState = mapSetWithState.find(someStateInPartition)->second;
 
 		for (auto& transition : someStateInPartition->GetOutTransitions())
 		{
 			auto iter = mapSetWithState.find(transition->GetOutState());
-			auto outState = iter->second;
+			auto* outState = iter->second;
 			auto newTransition =
 				std::make_unique<Transition>(setState, transition->GetConditions(), outState);
 			newTransitions.push_back(std::move(newTransition));

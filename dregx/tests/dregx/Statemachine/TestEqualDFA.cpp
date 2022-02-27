@@ -67,6 +67,26 @@ TEST_F(TestEqualDFA, CompareDFA_REG1_A_REG2_A_RETURN_TRUE)
 
 	EXPECT_TRUE(statemachine1->Equal(*statemachine2));
 	EXPECT_TRUE(statemachine2->Equal(*statemachine1));
+
+	auto expectedStatemachine = statemachine::Statemachine();
+	{
+		auto startState = std::make_unique<statemachine::State>();
+		startState->SetStart(true);
+
+		auto acceptState = std::make_unique<statemachine::State>();
+		acceptState->SetAccept(true);
+
+		auto transition = std::make_unique<statemachine::Transition>(
+			startState.get(), std::vector<statemachine::Conditional>{{"a"}}, acceptState.get());
+
+		expectedStatemachine.AddState(std::move(startState));
+		expectedStatemachine.AddState(std::move(acceptState));
+		expectedStatemachine.AddTransition(std::move(transition));
+		expectedStatemachine.DeterminizeAllTransitions();
+	}
+
+	EXPECT_TRUE(expectedStatemachine.Equal(*statemachine1));
+	EXPECT_TRUE(expectedStatemachine.Equal(*statemachine2));
 }
 
 TEST_F(TestEqualDFA, CompareDFA_REG1_A_REG2_B_RETURN_FALSE)
@@ -101,6 +121,32 @@ TEST_F(TestEqualDFA, CompareDFA_REG1_AB_REG2_AB_RETURN_TRUE)
 
 	EXPECT_TRUE(statemachine1->Equal(*statemachine2));
 	EXPECT_TRUE(statemachine2->Equal(*statemachine1));
+
+	auto expectedStatemachine = statemachine::Statemachine();
+	{
+		auto startState = std::make_unique<statemachine::State>();
+		startState->SetStart(true);
+
+		auto interState = std::make_unique<statemachine::State>();
+
+		auto acceptState = std::make_unique<statemachine::State>();
+		acceptState->SetAccept(true);
+
+		auto transition1 = std::make_unique<statemachine::Transition>(
+			startState.get(), std::vector<statemachine::Conditional>{{"a"}}, interState.get());
+		auto transition2 = std::make_unique<statemachine::Transition>(
+			interState.get(), std::vector<statemachine::Conditional>{{"b"}}, acceptState.get());
+
+		expectedStatemachine.AddState(std::move(startState));
+		expectedStatemachine.AddState(std::move(interState));
+		expectedStatemachine.AddState(std::move(acceptState));
+		expectedStatemachine.AddTransition(std::move(transition1));
+		expectedStatemachine.AddTransition(std::move(transition2));
+		expectedStatemachine.DeterminizeAllTransitions();
+	}
+
+	EXPECT_TRUE(expectedStatemachine.Equal(*statemachine1));
+	EXPECT_TRUE(expectedStatemachine.Equal(*statemachine2));
 }
 
 TEST_F(TestEqualDFA, CompareDFA_REG1_AB_REG2_AC_RETURN_FALSE)
@@ -169,6 +215,23 @@ TEST_F(TestEqualDFA, CompareDFA_REG1_A_STAR_REG2_A_STAR_STAR_RETURN_TRUE)
 
 	EXPECT_TRUE(statemachine1->Equal(*statemachine2));
 	EXPECT_TRUE(statemachine2->Equal(*statemachine1));
+
+	auto expectedStatemachine = statemachine::Statemachine();
+	{
+		auto startState = std::make_unique<statemachine::State>();
+		startState->SetStart(true);
+		startState->SetAccept(true);
+
+		auto transition = std::make_unique<statemachine::Transition>(
+			startState.get(), std::vector<statemachine::Conditional>{{"a"}}, startState.get());
+
+		expectedStatemachine.AddState(std::move(startState));
+		expectedStatemachine.AddTransition(std::move(transition));
+		expectedStatemachine.DeterminizeAllTransitions();
+	}
+
+	EXPECT_TRUE(expectedStatemachine.Equal(*statemachine1));
+	EXPECT_TRUE(expectedStatemachine.Equal(*statemachine2));
 }
 
 TEST_F(TestEqualDFA, CompareDFA_REG1_AB_OPT_D_REG2_D_OR_ABD_RETURN_TRUE)
