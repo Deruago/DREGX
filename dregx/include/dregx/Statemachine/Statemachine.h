@@ -20,7 +20,6 @@ namespace dregx::statemachine
 		State* startState = nullptr;		   // Not implemented
 		State* sinkState = nullptr;
 
-		std::vector<std::unique_ptr<Conditional>> conditionals;
 		std::vector<std::unique_ptr<State>> states;
 		std::vector<std::unique_ptr<Transition>> transitions;
 		bool containsCycles = false;

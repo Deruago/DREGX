@@ -48,7 +48,6 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Capture* captu
 	if (!embed && newStatemachine != nullptr)
 	{
 		newStatemachine->ToDFA();
-		// newStatemachine->OptimizeFinalAcceptStates();
 	}
 
 	return newStatemachine;
@@ -66,7 +65,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Group* group, 
 		ConvertToStatemachine(group->GetSubGroups()[0], true);
 	for (auto i = 1; i < group->GetSubGroups().size(); i++)
 	{
-		const auto currentCapture = group->GetSubGroups()[i];
+		auto* const currentCapture = group->GetSubGroups()[i];
 		auto newStatemachine = ConvertToStatemachine(currentCapture, true);
 		currentStatemachine->Concatenate(*newStatemachine);
 	}
@@ -87,7 +86,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::OrGroup* orGro
 		ConvertToStatemachine(orGroup->GetSubGroups()[0], true);
 	for (auto i = 1; i < orGroup->GetSubGroups().size(); i++)
 	{
-		const auto currentCapture = orGroup->GetSubGroups()[i];
+		auto* const currentCapture = orGroup->GetSubGroups()[i];
 		auto newStatemachine = ConvertToStatemachine(currentCapture, true);
 		currentStatemachine->Or(*newStatemachine);
 	}
@@ -112,7 +111,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 	{
 		if (capture->GetCaptureType() == ir::CaptureType::capturerange)
 		{
-			const auto captureRange = static_cast<ir::CaptureRange*>(capture);
+			auto* const captureRange = static_cast<ir::CaptureRange*>(capture);
 			if (captureRange->GetLowerBoundCharacter().size() != 1 ||
 				captureRange->GetUpperBoundCharacter().size() != 1)
 			{

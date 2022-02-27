@@ -1271,19 +1271,15 @@ void dregx::statemachine::Statemachine::DeterminizeAllTransitions()
 	containsCycles = true; // Sink introduces cycles
 	std::set<std::vector<Conditional>> alphabet = GetAlphabet();
 
+	std::unique_ptr<State> newSinkState;
 	if (sinkState == nullptr)
 	{
-		auto newSinkState = std::make_unique<State>();
+		newSinkState = std::make_unique<State>();
 		sinkState = newSinkState.get();
 		sinkState->SetSink(true);
-		AddState(std::move(newSinkState));
-		for (const auto& alpha : alphabet)
-		{
-			auto newTransition = std::make_unique<Transition>(sinkState, alpha, sinkState);
-			AddTransition(std::move(newTransition));
-		}
 	}
 
+	std::size_t unMappedLinks = 0;
 	for (const auto& alpha : alphabet)
 	{
 		for (auto& state : states)
@@ -1292,9 +1288,23 @@ void dregx::statemachine::Statemachine::DeterminizeAllTransitions()
 			{
 				continue;
 			}
-
+			unMappedLinks++;
 			auto newTransition = std::make_unique<Transition>(state.get(), alpha, sinkState);
 			AddTransition(std::move(newTransition));
 		}
+	}
+
+	if (unMappedLinks != 0)
+	{
+		AddState(std::move(newSinkState));
+		for (const auto& alpha : alphabet)
+		{
+			auto newTransition = std::make_unique<Transition>(sinkState, alpha, sinkState);
+			AddTransition(std::move(newTransition));
+		}
+	}
+	else
+	{
+		sinkState = nullptr;
 	}
 }

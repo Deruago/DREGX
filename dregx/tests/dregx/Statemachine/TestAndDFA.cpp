@@ -60,39 +60,26 @@ TEST_F(TestAndDFA, CompareDFA_REG1_A_REG2_A_RETURN_TRUE)
 	auto statemachine2 = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture2.get());
 
 	auto statemachine1Copy = statemachine1->Copy();
-	statemachine1Copy->ToTransitionTable().Print();
 	statemachine1Copy->And(*statemachine2->Copy());
-	statemachine1Copy->ToTransitionTable().Print();
 
 	auto statemachine2Copy = statemachine2->Copy();
 	statemachine2Copy->And(*statemachine1->Copy());
 
-	statemachine1->ToTransitionTable().Print();
 	statemachine1->Minimize();
-	statemachine1->ToTransitionTable().Print();
 
-	statemachine2->ToTransitionTable().Print();
 	statemachine2->Minimize();
-	statemachine2->ToTransitionTable().Print();
 
 	statemachine1Copy->Minimize();
-	statemachine1Copy->ToTransitionTable().Print();
 
-	statemachine2Copy->ToTransitionTable().Print();
 	statemachine2Copy->Minimize();
-	statemachine2Copy->ToTransitionTable().Print();
 
 	auto statemachine1MinimizedCopy = statemachine1->Copy();
 	statemachine1MinimizedCopy->And(*statemachine2->Copy());
-	statemachine1MinimizedCopy->ToTransitionTable().Print();
 	statemachine1MinimizedCopy->Minimize();
-	statemachine1MinimizedCopy->ToTransitionTable().Print();
 
 	auto statemachine2MinimizedCopy = statemachine2->Copy();
 	statemachine2MinimizedCopy->And(*statemachine1->Copy());
-	statemachine2MinimizedCopy->ToTransitionTable().Print();
 	statemachine2MinimizedCopy->Minimize();
-	statemachine2MinimizedCopy->ToTransitionTable().Print();
 
 	EXPECT_TRUE(statemachine1->Equal(*statemachine1Copy));
 	EXPECT_TRUE(statemachine2->Equal(*statemachine2Copy));
