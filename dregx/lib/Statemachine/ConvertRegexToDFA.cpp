@@ -102,6 +102,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 	auto transitions = std::vector<std::unique_ptr<Transition>>();
 	auto startState = std::make_unique<State>();
 	startState->SetStart(true);
+	statemachine->SetStartState(startState.get());
 
 	// Multiple transitions to 1 accept state
 	auto acceptState = std::make_unique<State>();
