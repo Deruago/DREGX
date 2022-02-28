@@ -88,3 +88,27 @@ TEST_F(TestAnalyzer, IsRegexSubsetOf_GiveDisjointSet_ReturnFalse)
 
 	EXPECT_FALSE(analyzer.IsRegexSubsetOf("[b]+"));
 }
+
+TEST_F(TestAnalyzer, IsRegexDisjointOf_GiveSubSet_ReturnFalse)
+{
+	auto analyzer = deamer::dregx::Analyzer();
+	analyzer.SetRegex("[a-zA-Z]+");
+
+	EXPECT_FALSE(analyzer.IsRegexDisjointOf("[a]+"));
+}
+
+TEST_F(TestAnalyzer, IsRegexDisjointOf_GiveBaseSet_ReturnFalse)
+{
+	auto analyzer = deamer::dregx::Analyzer();
+	analyzer.SetRegex("[a]+");
+
+	EXPECT_FALSE(analyzer.IsRegexDisjointOf("[a-zA-Z]+"));
+}
+
+TEST_F(TestAnalyzer, IsRegexDisjointOf_GiveDisjointSet_ReturnTrue)
+{
+	auto analyzer = deamer::dregx::Analyzer();
+	analyzer.SetRegex("[a]+");
+
+	EXPECT_TRUE(analyzer.IsRegexDisjointOf("[b]+"));
+}

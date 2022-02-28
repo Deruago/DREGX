@@ -375,6 +375,16 @@ bool dregx::statemachine::Statemachine::operator==(Statemachine& rhs)
 	return Equal(rhs);
 }
 
+bool dregx::statemachine::Statemachine::operator!=(Statemachine& rhs)
+{
+	return !(*this == rhs);
+}
+
+bool dregx::statemachine::Statemachine::operator!=(const Statemachine& rhs) const
+{
+	return !(*this == rhs);
+}
+
 void dregx::statemachine::Statemachine::AddState(std::unique_ptr<State> state)
 {
 	states.push_back(std::move(state));

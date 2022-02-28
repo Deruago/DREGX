@@ -48,6 +48,8 @@ namespace dregx::statemachine
 		Statemachine& operator&(Statemachine& rhs);
 		bool operator==(Statemachine& rhs);
 		bool operator==(const Statemachine& rhs) const;
+		bool operator!=(Statemachine& rhs);
+		bool operator!=(const Statemachine& rhs) const;
 
 	public:
 		void AddState(std::unique_ptr<State> value);

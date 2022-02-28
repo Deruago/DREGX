@@ -53,6 +53,20 @@ bool deamer::dregx::Analyzer::IsRegexBasesetOf(const std::string& rhs_regex_)
 	return statemachine->Equal(*copyOur);
 }
 
+bool deamer::dregx::Analyzer::IsRegexDisjointOf(const std::string& rhs_regex_)
+{
+	const auto rhsStatemachine = CreateDFA(rhs_regex_);
+	rhsStatemachine->Minimize();
+	auto copyRhsStatemachine = rhsStatemachine->Copy();
+
+	const auto copyOur = statemachine->Copy();
+
+	copyOur->And(*copyRhsStatemachine);
+	copyOur->Minimize();
+
+	return copyOur->GetTransitions().size() == 0;
+}
+
 std::unique_ptr<::dregx::statemachine::Statemachine>
 deamer::dregx::Analyzer::CreateDFA(const std::string& regex_)
 {

@@ -23,6 +23,7 @@ namespace deamer::dregx
 	public:
 		bool IsRegexSubsetOf(const std::string& rhs_regex_);
 		bool IsRegexBasesetOf(const std::string& rhs_regex_);
+		bool IsRegexDisjointOf(const std::string& rhs_regex_);
 
 	private:
 		std::unique_ptr<::dregx::statemachine::Statemachine> CreateDFA(const std::string& regex_);
