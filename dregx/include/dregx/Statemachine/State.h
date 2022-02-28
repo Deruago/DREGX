@@ -15,6 +15,7 @@ namespace dregx::statemachine
 		bool start = false;
 		bool accept = false;
 		bool sink = false;
+		std::size_t depth = 0;
 
 		std::vector<Transition*> inTransitions;
 		std::vector<Transition*> outTransitions;
@@ -27,6 +28,7 @@ namespace dregx::statemachine
 		void SetStart(bool start_);
 		void SetSink(bool sink_);
 		void SetAccept(bool accept_);
+		void SetDepth(std::size_t depth_);
 
 		void SetInTransitions(std::vector<Transition*> inTransitions_);
 		void SetOutTransitions(std::vector<Transition*> outTransitions_);
@@ -41,6 +43,8 @@ namespace dregx::statemachine
 		bool IsStartState() const;
 		bool IsSinkState() const;
 		bool IsAcceptState() const;
+
+		std::size_t GetDepth() const;
 
 		std::vector<Transition*> GetInTransitions() const;
 		std::vector<Transition*> GetOutTransitions() const;

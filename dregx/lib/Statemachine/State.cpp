@@ -33,6 +33,11 @@ void dregx::statemachine::State::SetAccept(bool accept_)
 	accept = accept_;
 }
 
+void dregx::statemachine::State::SetDepth(std::size_t depth_)
+{
+	depth = depth_;
+}
+
 void dregx::statemachine::State::SetInTransitions(std::vector<Transition*> inTransitions_)
 {
 	inTransitions = inTransitions_;
@@ -98,6 +103,11 @@ bool dregx::statemachine::State::IsSinkState() const
 bool dregx::statemachine::State::IsAcceptState() const
 {
 	return accept;
+}
+
+std::size_t dregx::statemachine::State::GetDepth() const
+{
+	return depth;
 }
 
 std::vector<dregx::statemachine::Transition*> dregx::statemachine::State::GetInTransitions() const

@@ -58,6 +58,7 @@ namespace dregx::statemachine
 		void SetTransitions(std::vector<std::unique_ptr<Transition>> transitions_);
 		void Extend(const ir::Extension& extension);
 		void SetStartState(State* startState_);
+		void UpdateDepth();
 
 		void RemoveTransition(Transition* transition);
 		void RemoveState(State* state);

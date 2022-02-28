@@ -468,6 +468,48 @@ void dregx::statemachine::Statemachine::SetStartState(State* startState_)
 	startState = startState_;
 }
 
+void dregx::statemachine::Statemachine::UpdateDepth()
+{
+	// For each transition
+	// If transition is unvisited insert in unvisited states
+	// And assign depth + 1
+	// Otherwise
+	// Check if the output state depth is more than our depth + 1
+	// If True update with lower depth
+	std::map<State*, std::size_t> mapStateWithDepth = {{GetStartState(), 0}};
+	std::set<State*> unVisitedStates = {GetStartState()};
+
+	while (!unVisitedStates.empty())
+	{
+		auto* const currentState = *unVisitedStates.begin();
+		unVisitedStates.erase(unVisitedStates.begin());
+		const auto ourDepth = mapStateWithDepth.find(currentState)->second;
+
+		for (const auto* const transition : currentState->GetOutTransitions())
+		{
+			auto* const outState = transition->GetOutState();
+			auto iter = mapStateWithDepth.find(outState);
+			if (iter == mapStateWithDepth.end())
+			{
+				unVisitedStates.insert(outState);
+				mapStateWithDepth.insert({outState, ourDepth + 1});
+			}
+			else
+			{
+				if (iter->second > (ourDepth + 1))
+				{
+					iter->second = ourDepth + 1;
+				}
+			}
+		}
+	}
+
+	for (auto& [state, depth] : mapStateWithDepth)
+	{
+		state->SetDepth(depth);
+	}
+}
+
 void dregx::statemachine::Statemachine::RemoveTransition(Transition* transition)
 {
 	for (auto iter = std::cbegin(transitions); iter != std::cend(transitions); ++iter)
