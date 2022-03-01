@@ -203,7 +203,9 @@ void dregx::statemachine::Statemachine::Concatenate(Statemachine& rhs)
 				acceptState, std::vector<Conditional>{}, rhsStartState);
 			AddTransition(std::move(linkWithRhsStartState));
 			acceptState->SetAccept(false);
+			this->nonAcceptedStates.push_back(acceptState);
 		}
+		this->acceptedStates.clear();
 
 		for (auto& rhsState : rhs.states)
 		{
@@ -292,10 +294,21 @@ std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemac
 
 	std::map<State*, State*> mapExistingStateWithCopiedState;
 	State* copyStartState = nullptr;
+	std::vector<State*> newAcceptedStates;
+	std::vector<State*> newNonAcceptedStates;
 	for (const auto& existingState : states)
 	{
 		auto copyState = std::make_unique<State>();
-		copyState->SetAccept(existingState->IsAcceptState());
+		if (existingState->IsAcceptState())
+		{
+			copyState->SetAccept(true);
+			newAcceptedStates.push_back(copyState.get());
+		}
+		else
+		{
+			newNonAcceptedStates.push_back(copyState.get());
+		}
+
 		if (existingState->IsStartState())
 		{
 			copyState->SetStart(true);
@@ -323,6 +336,8 @@ std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemac
 		newStatemachine->AddTransition(std::move(copyTransition));
 	}
 
+	newStatemachine->acceptedStates = std::move(newAcceptedStates);
+	newStatemachine->nonAcceptedStates = std::move(newNonAcceptedStates);
 	newStatemachine->startState = copyStartState;
 	return std::move(newStatemachine);
 }
@@ -387,6 +402,14 @@ bool dregx::statemachine::Statemachine::operator!=(const Statemachine& rhs) cons
 
 void dregx::statemachine::Statemachine::AddState(std::unique_ptr<State> state)
 {
+	if (state->IsAcceptState())
+	{
+		acceptedStates.push_back(state.get());
+	}
+	else
+	{
+		nonAcceptedStates.push_back(state.get());
+	}
 	states.push_back(std::move(state));
 }
 
@@ -870,6 +893,8 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 	std::map<ProductionConstructionState*, State*> mapPCSwithStates;
 	std::vector<std::unique_ptr<State>> newStates;
 	std::vector<std::unique_ptr<Transition>> newTransitions;
+	std::vector<State*> newAcceptedStates;
+	std::vector<State*> newNonAcceptedStates;
 	State* newStartState = nullptr;
 	for (auto& productState : productStates)
 	{
@@ -879,7 +904,15 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 			newState->SetStart(true);
 			newStartState = newState.get();
 		}
-		newState->SetAccept(productState->IsAcceptOR());
+		if (productState->IsAcceptOR())
+		{
+			newState->SetAccept(true);
+			newAcceptedStates.push_back(newState.get());
+		}
+		else
+		{
+			newNonAcceptedStates.push_back(newState.get());
+		}
 
 		mapPCSwithStates.insert({productState.get(), newState.get()});
 
@@ -914,6 +947,8 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 	}
 
 	SetStartState(newStartState);
+	this->acceptedStates = std::move(newAcceptedStates);
+	this->nonAcceptedStates = std::move(newNonAcceptedStates);
 	this->states = std::move(newStates);
 	this->transitions = std::move(newTransitions);
 }
@@ -949,6 +984,8 @@ void dregx::statemachine::Statemachine::ProductConstructionAND(const Statemachin
 	std::vector<std::unique_ptr<State>> newStates;
 	std::vector<std::unique_ptr<Transition>> newTransitions;
 	State* newStartState = nullptr;
+	std::vector<State*> newAcceptedStates;
+	std::vector<State*> newNonAcceptedStates;
 	for (auto& productState : productStates)
 	{
 		auto newState = std::make_unique<State>();
@@ -957,7 +994,15 @@ void dregx::statemachine::Statemachine::ProductConstructionAND(const Statemachin
 			newState->SetStart(true);
 			newStartState = newState.get();
 		}
-		newState->SetAccept(productState->IsAcceptAND());
+		if (productState->IsAcceptAND())
+		{
+			newState->SetAccept(true);
+			newAcceptedStates.push_back(newState.get());
+		}
+		else
+		{
+			newNonAcceptedStates.push_back(newState.get());
+		}
 
 		mapPCSwithStates.insert({productState.get(), newState.get()});
 
@@ -984,6 +1029,8 @@ void dregx::statemachine::Statemachine::ProductConstructionAND(const Statemachin
 	}
 
 	SetStartState(newStartState);
+	this->acceptedStates = std::move(newAcceptedStates);
+	this->nonAcceptedStates = std::move(newNonAcceptedStates);
 	this->states = std::move(newStates);
 	this->transitions = std::move(newTransitions);
 }
