@@ -16,7 +16,7 @@ namespace dregx::statemachine
 		// std::size_t::max is used for rejecting states
 		std::vector<std::map<std::string, std::size_t>> table;
 		std::vector<bool> acceptingState;
-		bool Match(const std::string& text);
+		bool Match(const std::string& text) const;
 		void Print();
 	};
 }

@@ -1,7 +1,7 @@
 #include "dregx/Statemachine/TransitionTable.h"
 #include <limits>
 
-bool dregx::statemachine::TransitionTable::Match(const std::string& text)
+bool dregx::statemachine::TransitionTable::Match(const std::string& text) const
 {
 	std::size_t nextState = 0;
 	for (auto character : text)
