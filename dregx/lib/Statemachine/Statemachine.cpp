@@ -1018,6 +1018,7 @@ void dregx::statemachine::Statemachine::ProductConstructionAND(const Statemachin
 	for (auto& productState : productStates)
 	{
 		auto newState = std::make_unique<State>();
+		newState->SetFlavors(productState->GetFlavors());
 		if (productState->IsStart)
 		{
 			newState->SetStart(true);
