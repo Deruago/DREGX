@@ -38,6 +38,11 @@ void dregx::statemachine::State::SetDepth(std::size_t depth_)
 	depth = depth_;
 }
 
+void dregx::statemachine::State::SetFlavors(const std::set<std::string>& set)
+{
+	flavors = set;
+}
+
 void dregx::statemachine::State::SetInTransitions(std::vector<Transition*> inTransitions_)
 {
 	inTransitions = inTransitions_;
@@ -50,6 +55,10 @@ void dregx::statemachine::State::SetOutTransitions(std::vector<Transition*> outT
 
 void dregx::statemachine::State::RemoveInTransition(Transition* transition)
 {
+	if (inTransitions.empty())
+	{
+		return;
+	}
 	const auto iter = std::find(std::cbegin(inTransitions), std::cend(inTransitions), transition);
 	if (iter == std::cend(inTransitions))
 	{
@@ -61,6 +70,10 @@ void dregx::statemachine::State::RemoveInTransition(Transition* transition)
 
 void dregx::statemachine::State::RemoveOutTransition(Transition* transition)
 {
+	if (outTransitions.empty())
+	{
+		return;
+	}
 	const auto iter = std::find(std::cbegin(outTransitions), std::cend(outTransitions), transition);
 	if (iter == std::cend(outTransitions))
 	{
@@ -103,6 +116,11 @@ bool dregx::statemachine::State::IsSinkState() const
 bool dregx::statemachine::State::IsAcceptState() const
 {
 	return accept;
+}
+
+std::set<std::string> dregx::statemachine::State::GetFlavors() const
+{
+	return flavors;
 }
 
 std::size_t dregx::statemachine::State::GetDepth() const

@@ -19,6 +19,7 @@ namespace dregx::statemachine
 
 		std::vector<Transition*> inTransitions;
 		std::vector<Transition*> outTransitions;
+		std::set<std::string> flavors;
 
 	public:
 		State() = default;
@@ -29,6 +30,7 @@ namespace dregx::statemachine
 		void SetSink(bool sink_);
 		void SetAccept(bool accept_);
 		void SetDepth(std::size_t depth_);
+		void SetFlavors(const std::set<std::string>& set);
 
 		void SetInTransitions(std::vector<Transition*> inTransitions_);
 		void SetOutTransitions(std::vector<Transition*> outTransitions_);
@@ -43,6 +45,7 @@ namespace dregx::statemachine
 		bool IsStartState() const;
 		bool IsSinkState() const;
 		bool IsAcceptState() const;
+		std::set<std::string> GetFlavors() const;
 
 		std::size_t GetDepth() const;
 

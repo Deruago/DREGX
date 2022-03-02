@@ -94,3 +94,12 @@ TEST_F(TestFuzzer, MinimalExample_Regex_A_PLUS_Return_A)
 
 	EXPECT_EQ("a", example);
 }
+
+TEST_F(TestFuzzer, MinimalExample_Regex_A_PLUS_AB_PLUS_Return_AAB)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("(a)+(ab)+");
+	const auto example = fuzzer.GetMinimalExample();
+
+	EXPECT_EQ("aab", example);
+}

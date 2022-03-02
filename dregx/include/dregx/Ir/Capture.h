@@ -3,6 +3,7 @@
 
 #include "dregx/Ir/CaptureType.h"
 #include "dregx/Ir/Extension.h"
+#include <set>
 #include <vector>
 
 namespace dregx::ir
@@ -13,6 +14,7 @@ namespace dregx::ir
 		const CaptureType captureType; // Represents subtype
 		Extension extension;
 		std::vector<Capture*> subGroups;
+		std::set<std::string> flavors;
 
 	public:
 		Capture(CaptureType captureType_);
@@ -28,6 +30,10 @@ namespace dregx::ir
 		std::vector<Capture*> GetSubGroups() const;
 
 		virtual std::string GetFormattedRegex();
+
+		void AddFlavor(const std::string& flavor);
+		void RemoveFlavor(const std::string& flavor);
+		std::set<std::string> GetFlavors() const;
 
 	private:
 	};

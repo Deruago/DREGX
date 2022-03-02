@@ -412,26 +412,21 @@ TEST_F(TestConvertRegexToDFA, Convert2GroupOrWith1SquareBeingSubsetToDfa_DfaIsCo
 {
 	const auto capture = GetCapture("(([a])|([a][b]))");
 	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
 
-	EXPECT_EQ(3, states.size());
-	EXPECT_EQ(2, transitions.size());
+	EXPECT_EQ(4, states.size());
+	EXPECT_EQ(8, transitions.size());
 
 	const auto startState = statemachine->GetStartState();
-	const auto state_a_b =
-		statemachine
-			->GetStates({{statemachine::Conditional("a")}}, {{statemachine::Conditional("b")}})
-			.at(0);
 	const auto state_accept = statemachine->GetAcceptStates().at(0);
 
 	EXPECT_TRUE(startState->IsStartState());
-	EXPECT_FALSE(state_a_b->IsStartState());
 	EXPECT_FALSE(state_accept->IsStartState());
 
 	EXPECT_FALSE(startState->IsAcceptState());
-	EXPECT_TRUE(state_a_b->IsAcceptState());
 	EXPECT_TRUE(state_accept->IsAcceptState());
 }
 
@@ -514,12 +509,13 @@ TEST_F(TestConvertRegexToDFA, Convert3SquaresWith1CharacterOR2SquaresToDfa_DfaIs
 {
 	const auto capture = GetCapture("(([a][b][d])|([c][d]))");
 	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
 
-	EXPECT_EQ(6, states.size());
-	EXPECT_EQ(5, transitions.size());
+	EXPECT_EQ(5, states.size());
+	EXPECT_EQ(20, transitions.size());
 
 	const auto startState = statemachine->GetStartState();
 	const auto state_a_b =
@@ -548,12 +544,13 @@ TEST_F(TestConvertRegexToDFA,
 {
 	const auto capture = GetCapture("(([a][b])|([a][b]))");
 	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
 
-	EXPECT_EQ(3, states.size());
-	EXPECT_EQ(2, transitions.size());
+	EXPECT_EQ(4, states.size());
+	EXPECT_EQ(8, transitions.size());
 
 	const auto startState = statemachine->GetStartState();
 	const auto state_a_b =

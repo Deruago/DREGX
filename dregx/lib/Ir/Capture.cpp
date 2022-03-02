@@ -54,3 +54,18 @@ std::string dregx::ir::Capture::GetFormattedRegex()
 
 	return formatted;
 }
+
+void dregx::ir::Capture::AddFlavor(const std::string& flavor)
+{
+	flavors.insert(flavor);
+}
+
+void dregx::ir::Capture::RemoveFlavor(const std::string& flavor)
+{
+	flavors.erase(flavor);
+}
+
+std::set<std::string> dregx::ir::Capture::GetFlavors() const
+{
+	return flavors;
+}

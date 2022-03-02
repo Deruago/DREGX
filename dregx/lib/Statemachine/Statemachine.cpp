@@ -486,6 +486,14 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 	}
 }
 
+void dregx::statemachine::Statemachine::Group(const std::set<std::string>& set)
+{
+	for (auto acceptingState : GetAcceptStates())
+	{
+		acceptingState->SetFlavors(set);
+	}
+}
+
 void dregx::statemachine::Statemachine::SetStartState(State* startState_)
 {
 	startState = startState_;
@@ -769,6 +777,26 @@ struct ProductionConstructionState
 	{
 	}
 
+	std::set<std::string> GetFlavors() const
+	{
+		std::set<std::string> flavors;
+		if (our != nullptr)
+		{
+			for (const auto& flavor : our->GetFlavors())
+			{
+				flavors.insert(flavor);
+			}
+		}
+		if (their != nullptr)
+		{
+			for (const auto& theirFlavor : their->GetFlavors())
+			{
+				flavors.insert(theirFlavor);
+			}
+		}
+		return flavors;
+	}
+
 	bool IsStart = false;
 
 	bool IsAcceptOR()
@@ -899,6 +927,7 @@ void dregx::statemachine::Statemachine::ProductConstructionOR(Statemachine& rhs)
 	for (auto& productState : productStates)
 	{
 		auto newState = std::make_unique<State>();
+		newState->SetFlavors(productState->GetFlavors());
 		if (productState->IsStart)
 		{
 			newState->SetStart(true);
@@ -1092,6 +1121,19 @@ struct PowersetState
 
 		return false;
 	}
+
+	std::set<std::string> GetFlavors() const
+	{
+		std::set<std::string> flavors;
+		for (auto state : states)
+		{
+			for (auto flavor : state->GetFlavors())
+			{
+				flavors.insert(flavor);
+			}
+		}
+		return flavors;
+	}
 };
 
 PowersetTransition::PowersetTransition(PowersetState* in_, PowersetState* out_,
@@ -1109,6 +1151,11 @@ PowersetTransition::PowersetTransition(PowersetState* in_, PowersetState* out_,
 
 void dregx::statemachine::Statemachine::ToDFA()
 {
+	if (IsDFA)
+	{
+		return; // It is already a DFA
+	}
+
 	// Using powerset construction convert NFA to DFA
 	std::vector<PowersetState*> unFinishedpowersetStates;
 	std::map<std::set<State*>, std::unique_ptr<PowersetState>> allPowerStates;
@@ -1197,6 +1244,7 @@ void dregx::statemachine::Statemachine::ToDFA()
 	for (auto& [originalStates, powerState] : allPowerStates)
 	{
 		auto newDfaState = std::make_unique<State>();
+		newDfaState->SetFlavors(powerState->GetFlavors());
 		if (powerState->startState)
 		{
 			newDfaState->SetStart(true);
@@ -1224,7 +1272,7 @@ void dregx::statemachine::Statemachine::ToDFA()
 	IsDFA = true;
 }
 
-void dregx::statemachine::Statemachine::Minimize()
+void dregx::statemachine::Statemachine::Minimize(bool splitFlavoredAcceptStates)
 {
 	if (!IsDFA)
 	{
@@ -1236,13 +1284,29 @@ void dregx::statemachine::Statemachine::Minimize()
 		DeterminizeAllTransitions();
 	}
 
-	std::set<State*> acceptedPartition;
+	std::vector<std::set<State*>> acceptedPartitions;
 	std::set<State*> nonAcceptedPartition;
+	std::map<std::set<std::string>, std::size_t> mapFlavorWithIndex;
 	for (auto& state : states)
 	{
 		if (state->IsAcceptState())
 		{
-			acceptedPartition.insert(state.get());
+			std::size_t index = 0;
+			if (splitFlavoredAcceptStates)
+			{
+				auto iter = mapFlavorWithIndex.find(state->GetFlavors());
+				if (iter == mapFlavorWithIndex.end())
+				{
+					index = mapFlavorWithIndex.size();
+					mapFlavorWithIndex.insert({state->GetFlavors(), index});
+					acceptedPartitions.emplace_back();
+				}
+				else
+				{
+					index = iter->second;
+				}
+			}
+			acceptedPartitions[index].insert(state.get());
 		}
 		else
 		{
@@ -1252,7 +1316,10 @@ void dregx::statemachine::Statemachine::Minimize()
 
 	std::vector<std::set<State*>> lastEquivalenceSets;
 	lastEquivalenceSets.push_back(std::move(nonAcceptedPartition));
-	lastEquivalenceSets.push_back(std::move(acceptedPartition));
+	for (auto acceptedPartition : acceptedPartitions)
+	{
+		lastEquivalenceSets.push_back(std::move(acceptedPartition));
+	}
 
 	std::vector<std::set<State*>> equivalenceSets = lastEquivalenceSets;
 	std::vector<std::set<State*>> nextEquivalenceSets;
@@ -1349,6 +1416,8 @@ void dregx::statemachine::Statemachine::Minimize()
 	}
 
 	std::vector<std::unique_ptr<State>> newStates;
+	std::vector<std::unique_ptr<State>> removedStates;
+	std::set<State*> unreachableStates;
 	std::map<State*, State*> mapSetWithState;
 	std::vector<std::unique_ptr<Transition>> newTransitions;
 	State* newStartState = nullptr;
@@ -1388,6 +1457,7 @@ void dregx::statemachine::Statemachine::Minimize()
 	SetStartState(newStartState);
 	this->states = std::move(newStates);
 	this->transitions = std::move(newTransitions);
+	RemoveUnreachableStates();
 }
 
 std::set<std::vector<dregx::statemachine::Conditional>>
@@ -1400,6 +1470,54 @@ dregx::statemachine::Statemachine::GetAlphabet()
 	}
 
 	return alphabet;
+}
+
+void dregx::statemachine::Statemachine::RemoveUnreachableStates()
+{
+	bool changed = true;
+	while (true)
+	{
+		std::vector<std::unique_ptr<dregx::statemachine::State>> withoutUnreachableStates;
+		std::vector<std::unique_ptr<Transition>> withoutUnreachableTransitions;
+		for (auto& state : this->states)
+		{
+			if (state->GetInTransitions().empty() && !state->IsStartState())
+			{
+				for (auto transition : state->GetInTransitions())
+				{
+					transition->SetOutState(nullptr);
+					state->RemoveInTransition(transition);
+				}
+				for (auto transition : state->GetOutTransitions())
+				{
+					transition->SetInState(nullptr);
+					state->RemoveOutTransition(transition);
+				}
+				continue;
+			}
+
+			withoutUnreachableStates.push_back(std::move(state));
+		}
+
+		if (this->states.size() == withoutUnreachableStates.size())
+		{
+			this->states = std::move(withoutUnreachableStates);
+			break;
+		}
+
+		for (auto& transition : this->transitions)
+		{
+			if (transition->GetOutState() == nullptr || transition->GetInState() == nullptr)
+			{
+				continue;
+			}
+
+			withoutUnreachableTransitions.push_back(std::move(transition));
+		}
+
+		this->states = std::move(withoutUnreachableStates);
+		this->transitions = std::move(withoutUnreachableTransitions);
+	}
 }
 
 void dregx::statemachine::Statemachine::DeterminizeAllTransitions()

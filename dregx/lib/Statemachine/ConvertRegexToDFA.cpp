@@ -70,6 +70,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Group* group, 
 		currentStatemachine->Concatenate(*newStatemachine);
 	}
 	currentStatemachine->Extend(group->GetExtension());
+	currentStatemachine->Group(group->GetFlavors());
 
 	return currentStatemachine;
 }
@@ -153,6 +154,7 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 	statemachine->SetStates(std::move(states));
 	statemachine->SetTransitions(std::move(transitions));
 	statemachine->Extend(square->GetExtension());
+	statemachine->Group(square->GetFlavors());
 
 	return std::move(statemachine);
 }

@@ -33,7 +33,8 @@ namespace dregx::statemachine
 
 	public:
 		void ToDFA();
-		void Minimize();
+		void Minimize(bool splitFlavoredAcceptStates = true);
+		void RemoveUnreachableStates();
 		void DeterminizeAllTransitions();
 		void Or(Statemachine& rhs);
 		void And(Statemachine& rhs);
@@ -57,6 +58,7 @@ namespace dregx::statemachine
 		void SetStates(std::vector<std::unique_ptr<State>> states_);
 		void SetTransitions(std::vector<std::unique_ptr<Transition>> transitions_);
 		void Extend(const ir::Extension& extension);
+		void Group(const std::set<std::string>& set);
 		void SetStartState(State* startState_);
 		void UpdateDepth();
 
