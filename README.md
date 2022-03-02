@@ -22,7 +22,7 @@ cmake --build . --target install
 ### Get minimal match
 
 ```C++
-#include "Deamer/DREGX/Fuzzer.h"
+#include "Deamer/Dregx/Fuzzer.h"
 #include <iostream>
 
 int main()
@@ -41,7 +41,7 @@ int main()
 ### Check if some regex is subset of other regex
 
 ```C++
-#include "Deamer/DREGX/Analyzer.h"
+#include "Deamer/Dregx/Analyzer.h"
 #include <iostream>
 
 int main()
@@ -58,4 +58,7 @@ int main()
 }
 ```
 
-### 
+## Documentation
+
+See the Deamer Documentation repo: https://github.com/Deruago/DeamerDocumentation
+
