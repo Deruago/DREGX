@@ -1,4 +1,5 @@
 %define parse.error verbose
+
 %glr-parser
 
 %{

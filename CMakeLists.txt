@@ -4,8 +4,8 @@ project(dregx_LanguageProject
                       DESCRIPTION "Project for the language(s): dregx"
                       LANGUAGES CXX)
 
-option(DREGX_ENABLE_COMPILER_GENERATOR "Enable Compiler Generation" OFF)
-if (DREGX_ENABLE_COMPILER_GENERATOR)
+option(dregx_ENABLE_COMPILER_GENERATOR "Enable Compiler Generation" ON)
+if (dregx_ENABLE_COMPILER_GENERATOR)
 	find_package(Deamer REQUIRED)
 	add_subdirectory(CompilerGenerator)
 endif()

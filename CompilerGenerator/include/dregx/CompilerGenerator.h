@@ -14,9 +14,9 @@
 #include "dregx/Language.h"
 
 
-#include "Deamer/Ast/Generation/CPP/CPP.h"
 #include "Deamer/Lexer/Generator/Flex/Flex.h"
 #include "Deamer/Parser/Generator/Bison/Bison.h"
+#include "Deamer/Ast/Generation/CPP/CPP.h"
 #include "Deamer/Tool/Type/DeamerDefaultApplication/DeamerDefaultApplication.h"
 
 
@@ -52,16 +52,16 @@ namespace dregx
 			
 
 			// Initialize language outputs
-			::deamer::ast::generation::cpp::CPP CPP(::deamer::compiler::generator::Compiler<::dregx::Language>::GetLanguageDefinition());
-::deamer::lexer::generator::flex::Flex Flex(::deamer::compiler::generator::Compiler<::dregx::Language>::GetLanguageDefinition());
+			::deamer::lexer::generator::flex::Flex Flex(::deamer::compiler::generator::Compiler<::dregx::Language>::GetLanguageDefinition());
 ::deamer::parser::generator::bison::Bison Bison(::deamer::compiler::generator::Compiler<::dregx::Language>::GetLanguageDefinition());
+::deamer::ast::generation::cpp::CPP CPP(::deamer::compiler::generator::Compiler<::dregx::Language>::GetLanguageDefinition());
 ::deamer::tool::type::deamerdefaultapplication::DeamerDefaultApplication DeamerDefaultApplication(::deamer::compiler::generator::Compiler<::dregx::Language>::GetLanguageDefinition());
 
 
 			// The language generation targets
-			output.AddLanguageToolOutput(CPP.Generate());
-output.AddLanguageToolOutput(Flex.Generate());
+			output.AddLanguageToolOutput(Flex.Generate());
 output.AddLanguageToolOutput(Bison.Generate());
+output.AddLanguageToolOutput(CPP.Generate());
 output.AddLanguageToolOutput(DeamerDefaultApplication.Generate());
 
 

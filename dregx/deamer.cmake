@@ -12,7 +12,14 @@ find_package(Deamer_Algorithm REQUIRED)
 add_library(dregx_external_libraries STATIC "${dregx_SOURCE_DIR}/lib/dregx.cpp")
 target_link_libraries(dregx_external_libraries PUBLIC Deamer_External)
 target_link_libraries(dregx_external_libraries PUBLIC Deamer_Algorithm)
-target_include_directories(dregx_external_libraries PUBLIC "${dregx_SOURCE_DIR}/extern" "${dregx_SOURCE_DIR}/include")
+target_include_directories(dregx_external_libraries PRIVATE 
+	$<BUILD_INTERFACE:${dregx_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:include/>
+)
+target_include_directories(dregx_external_libraries PRIVATE 
+	$<BUILD_INTERFACE:${dregx_SOURCE_DIR}/extern>
+	$<INSTALL_INTERFACE:extern/>
+)
 
 add_library(dregx_static_library STATIC)
 target_compile_features(dregx_static_library PUBLIC cxx_std_17)
@@ -30,8 +37,22 @@ function(dregx_root_library_extend projectname extern_directory include_director
 	target_sources(dregx_static_library PRIVATE ${source_files})
 	target_sources(dregx_shared_library PRIVATE ${source_files})
 
-	target_include_directories(dregx_static_library PUBLIC ${extern_directory} ${include_directory})
-	target_include_directories(dregx_shared_library PUBLIC ${extern_directory} ${include_directory})
+	target_include_directories(dregx_static_library PRIVATE 
+		$<BUILD_INTERFACE:${include_directory}>
+		$<INSTALL_INTERFACE:include/>
+	)
+	target_include_directories(dregx_static_library PRIVATE 
+		$<BUILD_INTERFACE:${extern_directory}>
+		$<INSTALL_INTERFACE:extern/>
+	)
+	target_include_directories(dregx_shared_library PRIVATE 
+		$<BUILD_INTERFACE:${include_directory}>
+		$<INSTALL_INTERFACE:include/>
+	)
+	target_include_directories(dregx_shared_library PRIVATE 
+		$<BUILD_INTERFACE:${extern_directory}>
+		$<INSTALL_INTERFACE:extern/>
+	)
 endfunction()
 
 
@@ -41,7 +62,15 @@ function(dregx_add_external_library external_library_name source_files)
 
 	target_link_libraries(${external_library_full_name} PUBLIC Deamer_External)
 	target_link_libraries(${external_library_full_name} PUBLIC Deamer_Algorithm)
-	target_include_directories(${external_library_full_name} PRIVATE "${dregx_SOURCE_DIR}/extern" "${dregx_SOURCE_DIR}/include")
+	
+	target_include_directories(${external_library_full_name} PRIVATE 
+		$<BUILD_INTERFACE:${dregx_SOURCE_DIR}/include>
+		$<INSTALL_INTERFACE:include/>
+	)
+	target_include_directories(${external_library_full_name} PRIVATE 
+		$<BUILD_INTERFACE:${dregx_SOURCE_DIR}/extern>
+		$<INSTALL_INTERFACE:extern/>
+	)
 	target_compile_features(${external_library_full_name} PUBLIC cxx_std_17)
 	set_target_properties(${external_library_full_name} PROPERTIES LINKED_LANGUAGE CXX)
 	set_property(TARGET ${external_library_full_name} PROPERTY POSITION_INDEPENDENT_CODE ON)

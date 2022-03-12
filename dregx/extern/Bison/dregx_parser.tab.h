@@ -85,7 +85,7 @@ extern int dregxdebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 163 "./dregx_parser.y"
+#line 164 "./dregx_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::dregx::ast::node::LEFT_CURLY_BRACKET* dregx_LEFT_CURLY_BRACKET;
