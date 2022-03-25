@@ -1065,6 +1065,29 @@ void dregx::statemachine::Statemachine::ProductConstructionAND(const Statemachin
 	this->transitions = std::move(newTransitions);
 }
 
+void dregx::statemachine::Statemachine::FillSinkState()
+{
+	if (sinkState == nullptr)
+	{
+		auto newSinkState = std::make_unique<State>();
+		newSinkState->SetSink(true);
+		sinkState = newSinkState.get();
+		AddState(std::move(newSinkState));
+	}
+
+	for (auto condition : GetAlphabet())
+	{
+		if (sinkState->DoesOutTransitionExistWithSameCondition(condition))
+		{
+			continue;
+		}
+
+		// Only new transitions
+		auto newTransition = std::make_unique<Transition>(sinkState, condition, sinkState);
+		AddTransition(std::move(newTransition));
+	}
+}
+
 void dregx::statemachine::Statemachine::OptimizeFinalAcceptStates()
 {
 	State* sharedAcceptState = nullptr;
@@ -1347,7 +1370,8 @@ void dregx::statemachine::Statemachine::Minimize(bool splitFlavoredAcceptStates)
 				for (const auto& state : currentSet)
 				{
 					std::size_t partition = 0;
-					auto* outState = state->GetOutTransitionWithSameCondition(alpha)->GetOutState();
+					auto* outTransition = state->GetOutTransitionWithSameCondition(alpha);
+					auto* outState = outTransition->GetOutState();
 					for (auto& set : lastEquivalenceSets)
 					{
 						if (set.find(outState) == set.end())
@@ -1520,50 +1544,38 @@ void dregx::statemachine::Statemachine::RemoveUnreachableStates()
 
 void dregx::statemachine::Statemachine::DeterminizeAllTransitions()
 {
-	if (!IsDFA)
-	{
-		return;
-	}
-
-	AllTransitionDeterminized = true;
+	ToDFA();
+	
+	AllTransitionDeterminized = false;
 	EmbeddedAcceptState = true;
 	containsCycles = true; // Sink introduces cycles
 	std::set<std::vector<Conditional>> alphabet = GetAlphabet();
 
-	std::unique_ptr<State> newSinkState;
-	if (sinkState == nullptr)
-	{
-		newSinkState = std::make_unique<State>();
-		sinkState = newSinkState.get();
-		sinkState->SetSink(true);
-	}
-
-	std::size_t unMappedLinks = 0;
+	FillSinkState();
+	
+	bool connectionsWithSinkState = false;
 	for (const auto& alpha : alphabet)
 	{
 		for (auto& state : states)
 		{
 			if (state->DoesOutTransitionExistWithSameCondition(alpha))
 			{
+				if (state->GetOutTransitionWithSameCondition(alpha)->GetOutState() == sinkState &&
+					state.get() != sinkState)
+				{
+					connectionsWithSinkState = true;
+				}
 				continue;
 			}
-			unMappedLinks++;
+			connectionsWithSinkState = true;
 			auto newTransition = std::make_unique<Transition>(state.get(), alpha, sinkState);
 			AddTransition(std::move(newTransition));
 		}
 	}
 
-	if (unMappedLinks != 0)
+	if (!connectionsWithSinkState)
 	{
-		AddState(std::move(newSinkState));
-		for (const auto& alpha : alphabet)
-		{
-			auto newTransition = std::make_unique<Transition>(sinkState, alpha, sinkState);
-			AddTransition(std::move(newTransition));
-		}
-	}
-	else
-	{
+		RemoveState(sinkState);
 		sinkState = nullptr;
 	}
 }

@@ -90,6 +90,7 @@ namespace dregx::statemachine
 	private:
 		void ProductConstructionOR(Statemachine& rhs);
 		void ProductConstructionAND(const Statemachine& rhs);
+		void FillSinkState();
 	};
 }
 
