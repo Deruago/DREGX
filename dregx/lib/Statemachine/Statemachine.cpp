@@ -1275,10 +1275,7 @@ void dregx::statemachine::Statemachine::ToDFA()
 
 void dregx::statemachine::Statemachine::Minimize(bool splitFlavoredAcceptStates)
 {
-	if (!IsDFA)
-	{
-		return;
-	}
+	ToDFA();
 
 	if (!AllTransitionDeterminized)
 	{
