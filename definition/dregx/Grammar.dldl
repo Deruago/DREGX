@@ -21,7 +21,10 @@ group
 	opt_pad LEFT_CURLY_BRACKET word+ opt_pad RIGHT_CURLY_BRACKET [(OPTIONAL|STAR|PLUS|extension_modifier)]
 
 or_concat
-	word opt_pad OR word -> (opt_pad OR word)
+	or_element opt_pad OR or_element -> (opt_pad OR or_element)
+
+or_element
+	word+
 
 square
 	capture extension_modifier
@@ -41,6 +44,7 @@ capture_logic
 	capture_number
 	capture_whitespace
 	capture_symbols
+	capture_structure
 
 capture_symbols
 	OTHER
@@ -114,7 +118,14 @@ any_letter_exclude_underscore
 	V_
 	A_
 	LETTER
-	
+
+capture_structure
+	LEFT_CURLY_BRACKET
+	RIGHT_CURLY_BRACKET
+	LEFT_SQUARE_BRACKET
+	LEFT_BRACKET
+	RIGHT_BRACKET
+
 any
 	LEFT_CURLY_BRACKET
 	RIGHT_CURLY_BRACKET

@@ -99,6 +99,18 @@ namespace dregx::ast::listener::user
 			PopCapture();
 		}
 
+		void ListenEntry(const dregx::ast::node::or_element* node) override
+		{
+			groupFlavor++;
+			AddCapture(new ir::Group());
+		}
+
+		void ListenExit(const dregx::ast::node::or_element* node) override
+		{
+			groupFlavor--;
+			PopCapture();
+		}
+
 		void ListenEntry(const dregx::ast::node::standalone* node) override
 		{
 			wordFlavor++;
@@ -168,6 +180,16 @@ namespace dregx::ast::listener::user
 			AddCapture(newCharacterCapture);
 		}
 		void ListenExit(const dregx::ast::node::capture_letter* node) override
+		{
+			PopCapture();
+		}
+
+		void ListenEntry(const dregx::ast::node::capture_structure* node) override
+		{
+			auto* newCharacterCapture = new ir::Character(node->GetText());
+			AddCapture(newCharacterCapture);
+		}
+		void ListenExit(const dregx::ast::node::capture_structure* node) override
 		{
 			PopCapture();
 		}

@@ -85,7 +85,7 @@ extern int dregxdebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 164 "./dregx_parser.y"
+#line 168 "./dregx_parser.y"
 
 	::deamer::external::cpp::lexer::TerminalObject* Terminal;
 	::dregx::ast::node::LEFT_CURLY_BRACKET* dregx_LEFT_CURLY_BRACKET;
@@ -123,8 +123,9 @@ union YYSTYPE
 	::dregx::ast::node::group* dregx_group;
 	::dregx::ast::node::deamerreserved_plus__word__* dregx_deamerreserved_plus__word__;
 	::dregx::ast::node::or_concat* dregx_or_concat;
-	::dregx::ast::node::deamerreserved_arrow__word__* dregx_deamerreserved_arrow__word__;
-	::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* dregx_deamerreserved_star__opt_pad__OR__word__;
+	::dregx::ast::node::deamerreserved_arrow__or_element__* dregx_deamerreserved_arrow__or_element__;
+	::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__* dregx_deamerreserved_star__opt_pad__OR__or_element__;
+	::dregx::ast::node::or_element* dregx_or_element;
 	::dregx::ast::node::square* dregx_square;
 	::dregx::ast::node::capture* dregx_capture;
 	::dregx::ast::node::deamerreserved_star__capture_logic__* dregx_deamerreserved_star__capture_logic__;
@@ -150,10 +151,11 @@ union YYSTYPE
 	::dregx::ast::node::any_number* dregx_any_number;
 	::dregx::ast::node::any_letter* dregx_any_letter;
 	::dregx::ast::node::any_letter_exclude_underscore* dregx_any_letter_exclude_underscore;
+	::dregx::ast::node::capture_structure* dregx_capture_structure;
 	::dregx::ast::node::any* dregx_any;
 
 
-#line 157 "dregx_parser.tab.h"
+#line 159 "dregx_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

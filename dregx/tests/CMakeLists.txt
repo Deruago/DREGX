@@ -20,9 +20,11 @@ macro(package_add_test TESTNAME)
     add_executable(${TESTNAME} ${ARGN})
 
     # link the Google test infrastructure, mocking library
-    target_link_libraries(${TESTNAME} gtest gmock gtest_main)
-    target_link_libraries(${TESTNAME} dregx_static_library)
-	target_include_directories(${TESTNAME} PUBLIC ${dregx_SOURCE_DIR}/include/ ${dregx_SOURCE_DIR}/extern/googletest)
+    target_link_libraries(${TESTNAME} PRIVATE gtest gmock gtest_main)
+    target_link_libraries(${TESTNAME} PRIVATE Deamer::dregx)
+	target_link_libraries(${TESTNAME} PRIVATE Deamer::External)
+	target_link_libraries(${TESTNAME} PRIVATE Deamer::Algorithm)
+    target_include_directories(${TESTNAME} PRIVATE ${dregx_SOURCE_DIR}/include/ ${dregx_SOURCE_DIR}/extern/googletest)
 
     gtest_discover_tests(${TESTNAME}
         WORKING_DIRECTORY ${PROJECT_DIR}

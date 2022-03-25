@@ -7,9 +7,6 @@
 #
 # This file is part of the directory: TokenViewer
 
-# Auto-generated, do not changed this code
-# Part of: DeamerDefaultApplication tool
-# More information: https://github.com/Deruago/theDeamerProject
-
 add_executable(dregxdeamerTokenViewer main.cpp)
-target_link_libraries(dregxdeamerTokenViewer dregx_static_library)
+target_link_libraries(dregxdeamerTokenViewer  PRIVATE Deamer::External Deamer::Algorithm deamer_reserved_dregx_core_library)
+ 

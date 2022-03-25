@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
 	::dregx::CompilerGenerator dregx_compiler;
 	::deamer::file::generate::Compiler dregx_WriteToDisk(dregx_compiler.Generate());
 	dregx_WriteToDisk.SetProjectType(::deamer::file::generate::Compiler::ProjectType::single);
+	
 	dregx_WriteToDisk.Generate();
 
 

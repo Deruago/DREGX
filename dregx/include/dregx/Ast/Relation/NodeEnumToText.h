@@ -45,13 +45,18 @@ namespace dregx { namespace ast { namespace relation {
 	}
 	
 
-	case ::dregx::ast::Type::deamerreserved_arrow__word__: {
-		return "deamerreserved_arrow__word__";
+	case ::dregx::ast::Type::deamerreserved_arrow__or_element__: {
+		return "deamerreserved_arrow__or_element__";
 	}
 	
 
-	case ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__: {
-		return "deamerreserved_star__opt_pad__OR__word__";
+	case ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__: {
+		return "deamerreserved_star__opt_pad__OR__or_element__";
+	}
+	
+
+	case ::dregx::ast::Type::or_element: {
+		return "or_element";
 	}
 	
 
@@ -177,6 +182,11 @@ namespace dregx { namespace ast { namespace relation {
 
 	case ::dregx::ast::Type::any_letter_exclude_underscore: {
 		return "any_letter_exclude_underscore";
+	}
+	
+
+	case ::dregx::ast::Type::capture_structure: {
+		return "capture_structure";
 	}
 	
 

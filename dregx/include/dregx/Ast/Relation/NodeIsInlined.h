@@ -43,14 +43,19 @@ namespace dregx { namespace ast { namespace relation {
 			return false;
 		}
 
-		if (t == ::dregx::ast::Type::deamerreserved_arrow__word__)
+		if (t == ::dregx::ast::Type::deamerreserved_arrow__or_element__)
 		{
 			return true;
 		}
 
-		if (t == ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__)
+		if (t == ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__)
 		{
 			return true;
+		}
+
+		if (t == ::dregx::ast::Type::or_element)
+		{
+			return false;
 		}
 
 		if (t == ::dregx::ast::Type::square)
@@ -174,6 +179,11 @@ namespace dregx { namespace ast { namespace relation {
 		}
 
 		if (t == ::dregx::ast::Type::any_letter_exclude_underscore)
+		{
+			return false;
+		}
+
+		if (t == ::dregx::ast::Type::capture_structure)
 		{
 			return false;
 		}

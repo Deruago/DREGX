@@ -581,6 +581,34 @@ TEST_F(TestConvertRegexToDFA, ConvertToDfaCycle_SquareMin1Max2_DfaIsCorrectAndMi
 	EXPECT_EQ(2, statemachine->GetAcceptStates().size());
 }
 
+TEST_F(TestConvertRegexToDFA, ConvertToDfa_SequenceOfWordsORred)
+{
+	const auto capture = GetCapture("((((class|enum)|function)|if)|else)");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+
+	statemachine->Minimize();
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(3, states.size());
+	EXPECT_EQ(2, transitions.size());
+	EXPECT_EQ(2, statemachine->GetAcceptStates().size());
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDFA_REG1_ABC_OR_DCE)
+{
+	const auto capture = GetCapture("(abc|dce)");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+
+	EXPECT_EQ(7, states.size());
+	EXPECT_EQ(35, transitions.size());
+	EXPECT_EQ(1, statemachine->GetAcceptStates().size());
+}
+
 TEST_F(TestConvertRegexToDFA, ConvertToDfaCycle_SquareMin2Max2_DfaIsCorrectAndMinimal)
 {
 	const auto capture = GetCapture("[a]{2,2}");

@@ -522,24 +522,24 @@ TEST_F(TestTranslateToIr, RegexWith1GroupEmbeddingOr2Squares_ShouldConvertToSimp
 
 	const auto group = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::group, group->GetCaptureType());
-	EXPECT_EQ("([abc]|[cvd])", group->GetFormattedRegex());
+	EXPECT_EQ("(([abc])|([cvd]))", group->GetFormattedRegex());
 	subGroups = group->GetSubGroups();
 
 	const auto orGroup = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::orgroup, orGroup->GetCaptureType());
-	EXPECT_EQ("[abc]|[cvd]", orGroup->GetFormattedRegex());
+	EXPECT_EQ("([abc])|([cvd])", orGroup->GetFormattedRegex());
 	EXPECT_EQ(1, subGroups.size());
 
 	subGroups = orGroup->GetSubGroups();
 	EXPECT_EQ(2, subGroups.size());
 
 	const auto square1 = subGroups.at(0);
-	EXPECT_EQ(ir::CaptureType::square, square1->GetCaptureType());
-	EXPECT_EQ("[abc]", square1->GetFormattedRegex());
+	EXPECT_EQ(ir::CaptureType::group, square1->GetCaptureType());
+	EXPECT_EQ("([abc])", square1->GetFormattedRegex());
 
 	const auto square2 = subGroups.at(1);
-	EXPECT_EQ(ir::CaptureType::square, square2->GetCaptureType());
-	EXPECT_EQ("[cvd]", square2->GetFormattedRegex());
+	EXPECT_EQ(ir::CaptureType::group, square2->GetCaptureType());
+	EXPECT_EQ("([cvd])", square2->GetFormattedRegex());
 }
 
 TEST_F(TestTranslateToIr, RegexWith1GroupEmbeddingOr3Squares_ShouldConvertToSimpleSquareIr)
@@ -555,26 +555,26 @@ TEST_F(TestTranslateToIr, RegexWith1GroupEmbeddingOr3Squares_ShouldConvertToSimp
 
 	const auto group = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::group, group->GetCaptureType());
-	EXPECT_EQ("([abc]|[cvd]|[\teax])", group->GetFormattedRegex());
+	EXPECT_EQ("(([abc])|([cvd])|([\teax]))", group->GetFormattedRegex());
 	subGroups = group->GetSubGroups();
 
 	const auto orGroup = subGroups.at(0);
 	EXPECT_EQ(ir::CaptureType::orgroup, orGroup->GetCaptureType());
-	EXPECT_EQ("[abc]|[cvd]|[\teax]", orGroup->GetFormattedRegex());
+	EXPECT_EQ("([abc])|([cvd])|([\teax])", orGroup->GetFormattedRegex());
 	EXPECT_EQ(1, subGroups.size());
 
 	subGroups = orGroup->GetSubGroups();
 	EXPECT_EQ(3, subGroups.size());
 
 	const auto square1 = subGroups.at(0);
-	EXPECT_EQ(ir::CaptureType::square, square1->GetCaptureType());
-	EXPECT_EQ("[abc]", square1->GetFormattedRegex());
+	EXPECT_EQ(ir::CaptureType::group, square1->GetCaptureType());
+	EXPECT_EQ("([abc])", square1->GetFormattedRegex());
 
 	const auto square2 = subGroups.at(1);
-	EXPECT_EQ(ir::CaptureType::square, square2->GetCaptureType());
-	EXPECT_EQ("[cvd]", square2->GetFormattedRegex());
+	EXPECT_EQ(ir::CaptureType::group, square2->GetCaptureType());
+	EXPECT_EQ("([cvd])", square2->GetFormattedRegex());
 
 	const auto square3 = subGroups.at(2);
-	EXPECT_EQ(ir::CaptureType::square, square3->GetCaptureType());
-	EXPECT_EQ("[\teax]", square3->GetFormattedRegex());
+	EXPECT_EQ(ir::CaptureType::group, square3->GetCaptureType());
+	EXPECT_EQ("([\teax])", square3->GetFormattedRegex());
 }

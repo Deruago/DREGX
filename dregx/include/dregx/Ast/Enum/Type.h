@@ -49,8 +49,9 @@ namespace dregx { namespace ast {
 		group,
 		deamerreserved_plus__word__,
 		or_concat,
-		deamerreserved_arrow__word__,
-		deamerreserved_star__opt_pad__OR__word__,
+		deamerreserved_arrow__or_element__,
+		deamerreserved_star__opt_pad__OR__or_element__,
+		or_element,
 		square,
 		capture,
 		deamerreserved_star__capture_logic__,
@@ -76,6 +77,7 @@ namespace dregx { namespace ast {
 		any_number,
 		any_letter,
 		any_letter_exclude_underscore,
+		capture_structure,
 		any,
 
 	};

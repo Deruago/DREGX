@@ -33,10 +33,13 @@ namespace dregx { namespace ast { namespace relation {
 		{ "or_concat", ::dregx::ast::Type::or_concat },
 	
 
-		{ "deamerreserved_arrow__word__", ::dregx::ast::Type::deamerreserved_arrow__word__ },
+		{ "deamerreserved_arrow__or_element__", ::dregx::ast::Type::deamerreserved_arrow__or_element__ },
 	
 
-		{ "deamerreserved_star__opt_pad__OR__word__", ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__ },
+		{ "deamerreserved_star__opt_pad__OR__or_element__", ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__ },
+	
+
+		{ "or_element", ::dregx::ast::Type::or_element },
 	
 
 		{ "square", ::dregx::ast::Type::square },
@@ -112,6 +115,9 @@ namespace dregx { namespace ast { namespace relation {
 	
 
 		{ "any_letter_exclude_underscore", ::dregx::ast::Type::any_letter_exclude_underscore },
+	
+
+		{ "capture_structure", ::dregx::ast::Type::capture_structure },
 	
 
 		{ "any", ::dregx::ast::Type::any },

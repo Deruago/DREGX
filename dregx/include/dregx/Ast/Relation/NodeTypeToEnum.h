@@ -12,8 +12,9 @@ class word;
 class group;
 class deamerreserved_plus__word__;
 class or_concat;
-class deamerreserved_arrow__word__;
-class deamerreserved_star__opt_pad__OR__word__;
+class deamerreserved_arrow__or_element__;
+class deamerreserved_star__opt_pad__OR__or_element__;
+class or_element;
 class square;
 class capture;
 class deamerreserved_star__capture_logic__;
@@ -39,6 +40,7 @@ class special_char_any;
 class any_number;
 class any_letter;
 class any_letter_exclude_underscore;
+class capture_structure;
 class any;
 class LEFT_CURLY_BRACKET;
 class RIGHT_CURLY_BRACKET;
@@ -131,17 +133,24 @@ namespace dregx { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_arrow__word__>
+	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_arrow__or_element__>
 	{
-		constexpr static auto value = ::dregx::ast::Type::deamerreserved_arrow__word__;
-		using type = ::dregx::ast::node::deamerreserved_arrow__word__;
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_arrow__or_element__;
+		using type = ::dregx::ast::node::deamerreserved_arrow__or_element__;
 	};
 
 	template<>
-	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>
+	struct NodeTypeToEnum<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>
 	{
-		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__;
-		using type = ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__;
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__;
+		using type = ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::dregx::ast::node::or_element>
+	{
+		constexpr static auto value = ::dregx::ast::Type::or_element;
+		using type = ::dregx::ast::node::or_element;
 	};
 
 	template<>
@@ -317,6 +326,13 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::any_letter_exclude_underscore;
 		using type = ::dregx::ast::node::any_letter_exclude_underscore;
+	};
+
+	template<>
+	struct NodeTypeToEnum<::dregx::ast::node::capture_structure>
+	{
+		constexpr static auto value = ::dregx::ast::Type::capture_structure;
+		using type = ::dregx::ast::node::capture_structure;
 	};
 
 	template<>

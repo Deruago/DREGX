@@ -40,8 +40,9 @@
 #include "dregx/Ast/Node/group.h"
 #include "dregx/Ast/Node/deamerreserved_plus__word__.h"
 #include "dregx/Ast/Node/or_concat.h"
-#include "dregx/Ast/Node/deamerreserved_arrow__word__.h"
-#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
+#include "dregx/Ast/Node/deamerreserved_arrow__or_element__.h"
+#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__or_element__.h"
+#include "dregx/Ast/Node/or_element.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
 #include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
@@ -67,6 +68,7 @@
 #include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
+#include "dregx/Ast/Node/capture_structure.h"
 #include "dregx/Ast/Node/any.h"
 
 namespace dregx { namespace ast { namespace Visitor { 
@@ -259,14 +261,19 @@ namespace dregx { namespace ast { namespace Visitor {
 				Visit(static_cast<const dregx::ast::node::or_concat*>(node));
 				break;
 			}
-			case dregx::ast::Type::deamerreserved_arrow__word__:
+			case dregx::ast::Type::deamerreserved_arrow__or_element__:
 			{
-				Visit(static_cast<const dregx::ast::node::deamerreserved_arrow__word__*>(node));
+				Visit(static_cast<const dregx::ast::node::deamerreserved_arrow__or_element__*>(node));
 				break;
 			}
-			case dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__:
+			case dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__:
 			{
-				Visit(static_cast<const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*>(node));
+				Visit(static_cast<const dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__*>(node));
+				break;
+			}
+			case dregx::ast::Type::or_element:
+			{
+				Visit(static_cast<const dregx::ast::node::or_element*>(node));
 				break;
 			}
 			case dregx::ast::Type::square:
@@ -394,6 +401,11 @@ namespace dregx { namespace ast { namespace Visitor {
 				Visit(static_cast<const dregx::ast::node::any_letter_exclude_underscore*>(node));
 				break;
 			}
+			case dregx::ast::Type::capture_structure:
+			{
+				Visit(static_cast<const dregx::ast::node::capture_structure*>(node));
+				break;
+			}
 			case dregx::ast::Type::any:
 			{
 				Visit(static_cast<const dregx::ast::node::any*>(node));
@@ -507,10 +519,13 @@ namespace dregx { namespace ast { namespace Visitor {
 		virtual void Visit(const dregx::ast::node::or_concat* node)
 		{
 		}
-		virtual void Visit(const dregx::ast::node::deamerreserved_arrow__word__* node)
+		virtual void Visit(const dregx::ast::node::deamerreserved_arrow__or_element__* node)
 		{
 		}
-		virtual void Visit(const dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* node)
+		virtual void Visit(const dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__* node)
+		{
+		}
+		virtual void Visit(const dregx::ast::node::or_element* node)
 		{
 		}
 		virtual void Visit(const dregx::ast::node::square* node)
@@ -586,6 +601,9 @@ namespace dregx { namespace ast { namespace Visitor {
 		{
 		}
 		virtual void Visit(const dregx::ast::node::any_letter_exclude_underscore* node)
+		{
+		}
+		virtual void Visit(const dregx::ast::node::capture_structure* node)
 		{
 		}
 		virtual void Visit(const dregx::ast::node::any* node)

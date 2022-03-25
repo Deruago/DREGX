@@ -22,6 +22,8 @@ namespace dregx::statemachine
 
 		std::vector<std::unique_ptr<State>> states;
 		std::vector<std::unique_ptr<Transition>> transitions;
+
+	public:
 		bool containsCycles = false;
 		bool IsDFA = true;
 		bool EmbeddedAcceptState = false;

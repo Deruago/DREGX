@@ -106,6 +106,14 @@ TEST_F(TestEqualDFA, CompareDFA_REG1_A_REG2_B_RETURN_FALSE)
 	EXPECT_FALSE(statemachine2->Equal(*statemachine1));
 }
 
+TEST_F(TestEqualDFA, MinimizeDFA_REG1_EMPTY)
+{
+	const auto capture1 = GetCapture("");
+	auto statemachine1 = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture1.get());
+
+	statemachine1->Minimize();
+}
+
 TEST_F(TestEqualDFA, CompareDFA_REG1_AB_REG2_AB_RETURN_TRUE)
 {
 	const auto capture1 = GetCapture("ab");

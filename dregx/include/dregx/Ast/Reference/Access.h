@@ -13,8 +13,9 @@
 #include "dregx/Ast/Node/group.h"
 #include "dregx/Ast/Node/deamerreserved_plus__word__.h"
 #include "dregx/Ast/Node/or_concat.h"
-#include "dregx/Ast/Node/deamerreserved_arrow__word__.h"
-#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
+#include "dregx/Ast/Node/deamerreserved_arrow__or_element__.h"
+#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__or_element__.h"
+#include "dregx/Ast/Node/or_element.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
 #include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
@@ -40,6 +41,7 @@
 #include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
+#include "dregx/Ast/Node/capture_structure.h"
 #include "dregx/Ast/Node/any.h"
 #include "dregx/Ast/Node/LEFT_CURLY_BRACKET.h"
 #include "dregx/Ast/Node/RIGHT_CURLY_BRACKET.h"
@@ -175,9 +177,11 @@ namespace dregx { namespace ast { namespace reference {
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::or_concat>;
 	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>;
+	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>;
 	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>;
+	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>;
+	template<>
+	struct AccessTemplateBase<::dregx::ast::node::or_element>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::square>;
 	template<>
@@ -228,6 +232,8 @@ namespace dregx { namespace ast { namespace reference {
 	struct AccessTemplateBase<::dregx::ast::node::any_letter>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::any_letter_exclude_underscore>;
+	template<>
+	struct AccessTemplateBase<::dregx::ast::node::capture_structure>;
 	template<>
 	struct AccessTemplateBase<::dregx::ast::node::any>;
 	template<>
@@ -1018,9 +1024,9 @@ AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__word__> deamerreserv
 		}
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::word> word();
-AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__> deamerreserved_arrow__word__();
-AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__> deamerreserved_star__opt_pad__OR__word__();
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__> deamerreserved_arrow__or_element__();
+AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__> deamerreserved_star__opt_pad__OR__or_element__();
+AccessTemplateBase<::dregx::ast::node::or_element> or_element();
 AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
 AccessTemplateBase<::dregx::ast::node::OR> OR();
 
@@ -1058,28 +1064,28 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 	};
 
 	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__> : public AccessBase
+	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__> : public AccessBase
 	{
 	protected:
-		std::vector<const ::dregx::ast::node::deamerreserved_arrow__word__*> ts;
+		std::vector<const ::dregx::ast::node::deamerreserved_arrow__or_element__*> ts;
 
 	public:
-		AccessTemplateBase(std::vector<const ::dregx::ast::node::deamerreserved_arrow__word__*> ts_) : ts(std::move(ts_))
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::deamerreserved_arrow__or_element__*> ts_) : ts(std::move(ts_))
 		{
 		}
 
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_arrow__word__& t) : ts({&t})
+		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_arrow__or_element__& t) : ts({&t})
 		{
 		}
 
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_arrow__word__* t) : ts({t})
+		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_arrow__or_element__* t) : ts({t})
 		{
 		}
 
 		AccessTemplateBase() = default;
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>& operator[](::std::size_t index)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>& operator[](::std::size_t index)
 		{
 			if (index >= ts.size())
 			{
@@ -1095,7 +1101,7 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 			return *this;
 		}
 
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
 		{
 			// swap if the other is larger
 			if (indexBegin > indexEnd)
@@ -1111,7 +1117,7 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 			}
 			else
 			{
-				std::vector<const ::dregx::ast::node::deamerreserved_arrow__word__*> temporaries;
+				std::vector<const ::dregx::ast::node::deamerreserved_arrow__or_element__*> temporaries;
 				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
 				{
 					temporaries.push_back(ts[i]);
@@ -1123,20 +1129,20 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 			return *this;
 		}
 
-		std::vector<const ::dregx::ast::node::deamerreserved_arrow__word__*> GetContent()
+		std::vector<const ::dregx::ast::node::deamerreserved_arrow__or_element__*> GetContent()
 		{
 			return ts;
 		}
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::word> word();
-AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__> deamerreserved_star__opt_pad__OR__word__();
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__> deamerreserved_star__opt_pad__OR__or_element__();
+AccessTemplateBase<::dregx::ast::node::or_element> or_element();
 AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
 AccessTemplateBase<::dregx::ast::node::OR> OR();
 
 
 		template<typename FunctionType>
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>& for_all(FunctionType function)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -1168,28 +1174,28 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 	};
 
 	template<>
-	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__> : public AccessBase
+	struct AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__> : public AccessBase
 	{
 	protected:
-		std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*> ts;
+		std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__*> ts;
 
 	public:
-		AccessTemplateBase(std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*> ts_) : ts(std::move(ts_))
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__*> ts_) : ts(std::move(ts_))
 		{
 		}
 
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__& t) : ts({&t})
+		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__& t) : ts({&t})
 		{
 		}
 
-		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* t) : ts({t})
+		AccessTemplateBase(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__* t) : ts({t})
 		{
 		}
 
 		AccessTemplateBase() = default;
 
 	public:
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>& operator[](::std::size_t index)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>& operator[](::std::size_t index)
 		{
 			if (index >= ts.size())
 			{
@@ -1205,7 +1211,7 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 			return *this;
 		}
 
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
 		{
 			// swap if the other is larger
 			if (indexBegin > indexEnd)
@@ -1221,7 +1227,7 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 			}
 			else
 			{
-				std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*> temporaries;
+				std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__*> temporaries;
 				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
 				{
 					temporaries.push_back(ts[i]);
@@ -1233,20 +1239,128 @@ AccessTemplateBase<::dregx::ast::node::OR> OR();
 			return *this;
 		}
 
-		std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__*> GetContent()
+		std::vector<const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__> deamerreserved_star__opt_pad__OR__or_element__();
+AccessTemplateBase<::dregx::ast::node::or_element> or_element();
+AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
+AccessTemplateBase<::dregx::ast::node::OR> OR();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::dregx::ast::node::or_element> : public AccessBase
+	{
+	protected:
+		std::vector<const ::dregx::ast::node::or_element*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::or_element*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::or_element& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::or_element* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::or_element>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::dregx::ast::node::or_element>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::dregx::ast::node::or_element*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::dregx::ast::node::or_element*> GetContent()
 		{
 			return ts;
 		}
 
 	public:
 		AccessTemplateBase<::dregx::ast::node::word> word();
-AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__> deamerreserved_star__opt_pad__OR__word__();
-AccessTemplateBase<::dregx::ast::node::opt_pad> opt_pad();
-AccessTemplateBase<::dregx::ast::node::OR> OR();
+AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__word__> deamerreserved_plus__word__();
 
 
 		template<typename FunctionType>
-		AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>& for_all(FunctionType function)
+		AccessTemplateBase<::dregx::ast::node::or_element>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -1686,6 +1800,7 @@ AccessTemplateBase<::dregx::ast::node::capture_range> capture_range();
 AccessTemplateBase<::dregx::ast::node::capture_number> capture_number();
 AccessTemplateBase<::dregx::ast::node::capture_letter> capture_letter();
 AccessTemplateBase<::dregx::ast::node::capture_special_character> capture_special_character();
+AccessTemplateBase<::dregx::ast::node::capture_structure> capture_structure();
 
 
 		template<typename FunctionType>
@@ -3969,6 +4084,117 @@ AccessTemplateBase<::dregx::ast::node::LETTER> LETTER();
 
 		template<typename FunctionType>
 		AccessTemplateBase<::dregx::ast::node::any_letter_exclude_underscore>& for_all(FunctionType function)
+		{
+			for (const auto* const t : ts)
+			{
+				function(t);
+			}
+
+			return *this;
+		}
+
+	public:
+		auto begin()
+		{
+			return ts.begin();
+		}
+		auto cbegin()
+		{
+			return ts.cbegin();
+		}
+		
+		auto end()
+		{
+			return ts.end();
+		}
+		
+		auto cend()
+		{
+			return ts.cend();
+		}
+	};
+
+	template<>
+	struct AccessTemplateBase<::dregx::ast::node::capture_structure> : public AccessBase
+	{
+	protected:
+		std::vector<const ::dregx::ast::node::capture_structure*> ts;
+
+	public:
+		AccessTemplateBase(std::vector<const ::dregx::ast::node::capture_structure*> ts_) : ts(std::move(ts_))
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::capture_structure& t) : ts({&t})
+		{
+		}
+
+		AccessTemplateBase(const ::dregx::ast::node::capture_structure* t) : ts({t})
+		{
+		}
+
+		AccessTemplateBase() = default;
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::capture_structure>& operator[](::std::size_t index)
+		{
+			if (index >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				const auto* const copy = ts[index];
+				ts.clear();
+				ts.push_back(copy);
+			}
+
+			return *this;
+		}
+
+		AccessTemplateBase<::dregx::ast::node::capture_structure>& operator()(::std::size_t indexBegin, ::std::size_t indexEnd)
+		{
+			// swap if the other is larger
+			if (indexBegin > indexEnd)
+			{
+				const auto tmp = indexBegin;
+				indexBegin = indexEnd;
+				indexEnd = tmp;
+			}
+
+			if (indexBegin >= ts.size())
+			{
+				ts.clear();
+			}
+			else
+			{
+				std::vector<const ::dregx::ast::node::capture_structure*> temporaries;
+				for (auto i = indexBegin; i < ts.size() && i <= indexEnd; i++)
+				{
+					temporaries.push_back(ts[i]);
+				}
+				ts.clear();
+				ts = temporaries;
+			}
+
+			return *this;
+		}
+
+		std::vector<const ::dregx::ast::node::capture_structure*> GetContent()
+		{
+			return ts;
+		}
+
+	public:
+		AccessTemplateBase<::dregx::ast::node::LEFT_CURLY_BRACKET> LEFT_CURLY_BRACKET();
+AccessTemplateBase<::dregx::ast::node::RIGHT_CURLY_BRACKET> RIGHT_CURLY_BRACKET();
+AccessTemplateBase<::dregx::ast::node::LEFT_SQUARE_BRACKET> LEFT_SQUARE_BRACKET();
+AccessTemplateBase<::dregx::ast::node::LEFT_BRACKET> LEFT_BRACKET();
+AccessTemplateBase<::dregx::ast::node::RIGHT_BRACKET> RIGHT_BRACKET();
+
+
+		template<typename FunctionType>
+		AccessTemplateBase<::dregx::ast::node::capture_structure>& for_all(FunctionType function)
 		{
 			for (const auto* const t : ts)
 			{
@@ -7269,28 +7495,28 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__word__>(Get<::dregx::ast::Type::deamerreserved_plus__word__>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::word> AccessTemplateBase<::dregx::ast::node::or_concat>::word()
+		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__> AccessTemplateBase<::dregx::ast::node::or_concat>::deamerreserved_arrow__or_element__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::word>(Get<::dregx::ast::Type::word>(ts));
+			return AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>(Get<::dregx::ast::Type::deamerreserved_arrow__or_element__>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__> AccessTemplateBase<::dregx::ast::node::or_concat>::deamerreserved_arrow__word__()
+		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__> AccessTemplateBase<::dregx::ast::node::or_concat>::deamerreserved_star__opt_pad__OR__or_element__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>(Get<::dregx::ast::Type::deamerreserved_arrow__word__>(ts));
+			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>(Get<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__> AccessTemplateBase<::dregx::ast::node::or_concat>::deamerreserved_star__opt_pad__OR__word__()
+		inline AccessTemplateBase<::dregx::ast::node::or_element> AccessTemplateBase<::dregx::ast::node::or_concat>::or_element()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>(Get<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__>(ts));
+			return AccessTemplateBase<::dregx::ast::node::or_element>(Get<::dregx::ast::Type::or_element>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::opt_pad> AccessTemplateBase<::dregx::ast::node::or_concat>::opt_pad()
@@ -7309,23 +7535,23 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::OR>(Get<::dregx::ast::Type::OR>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::word> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>::word()
+		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>::deamerreserved_star__opt_pad__OR__or_element__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::word>(Get<::dregx::ast::Type::word>(ts));
+			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>(Get<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>::deamerreserved_star__opt_pad__OR__word__()
+		inline AccessTemplateBase<::dregx::ast::node::or_element> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>::or_element()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>(Get<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__>(ts));
+			return AccessTemplateBase<::dregx::ast::node::or_element>(Get<::dregx::ast::Type::or_element>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::opt_pad> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>::opt_pad()
+		inline AccessTemplateBase<::dregx::ast::node::opt_pad> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>::opt_pad()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
@@ -7333,7 +7559,7 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::opt_pad>(Get<::dregx::ast::Type::opt_pad>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::OR> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__word__>::OR()
+		inline AccessTemplateBase<::dregx::ast::node::OR> AccessTemplateBase<::dregx::ast::node::deamerreserved_arrow__or_element__>::OR()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
@@ -7341,23 +7567,23 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::OR>(Get<::dregx::ast::Type::OR>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::word> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>::word()
+		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>::deamerreserved_star__opt_pad__OR__or_element__()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::word>(Get<::dregx::ast::Type::word>(ts));
+			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>(Get<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>::deamerreserved_star__opt_pad__OR__word__()
+		inline AccessTemplateBase<::dregx::ast::node::or_element> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>::or_element()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
-			return AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>(Get<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__>(ts));
+			return AccessTemplateBase<::dregx::ast::node::or_element>(Get<::dregx::ast::Type::or_element>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::opt_pad> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>::opt_pad()
+		inline AccessTemplateBase<::dregx::ast::node::opt_pad> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>::opt_pad()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
@@ -7365,12 +7591,28 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 			return AccessTemplateBase<::dregx::ast::node::opt_pad>(Get<::dregx::ast::Type::opt_pad>(ts));
 		}
 
-		inline AccessTemplateBase<::dregx::ast::node::OR> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__>::OR()
+		inline AccessTemplateBase<::dregx::ast::node::OR> AccessTemplateBase<::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__>::OR()
 		{
 			// Optimized search, if it fails continue using unoptimized search.
 
 			// Unoptimized search
 			return AccessTemplateBase<::dregx::ast::node::OR>(Get<::dregx::ast::Type::OR>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::word> AccessTemplateBase<::dregx::ast::node::or_element>::word()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::word>(Get<::dregx::ast::Type::word>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__word__> AccessTemplateBase<::dregx::ast::node::or_element>::deamerreserved_plus__word__()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::deamerreserved_plus__word__>(Get<::dregx::ast::Type::deamerreserved_plus__word__>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::capture> AccessTemplateBase<::dregx::ast::node::square>::capture()
@@ -7523,6 +7765,14 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 
 			// Unoptimized search
 			return AccessTemplateBase<::dregx::ast::node::capture_special_character>(Get<::dregx::ast::Type::capture_special_character>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::capture_structure> AccessTemplateBase<::dregx::ast::node::capture_logic>::capture_structure()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::capture_structure>(Get<::dregx::ast::Type::capture_structure>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::COMMA> AccessTemplateBase<::dregx::ast::node::capture_symbols>::COMMA()
@@ -7947,6 +8197,46 @@ AccessTemplateBase<::dregx::ast::node::OTHER> OTHER();
 
 			// Unoptimized search
 			return AccessTemplateBase<::dregx::ast::node::LETTER>(Get<::dregx::ast::Type::LETTER>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::LEFT_CURLY_BRACKET> AccessTemplateBase<::dregx::ast::node::capture_structure>::LEFT_CURLY_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::LEFT_CURLY_BRACKET>(Get<::dregx::ast::Type::LEFT_CURLY_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::RIGHT_CURLY_BRACKET> AccessTemplateBase<::dregx::ast::node::capture_structure>::RIGHT_CURLY_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::RIGHT_CURLY_BRACKET>(Get<::dregx::ast::Type::RIGHT_CURLY_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::LEFT_SQUARE_BRACKET> AccessTemplateBase<::dregx::ast::node::capture_structure>::LEFT_SQUARE_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::LEFT_SQUARE_BRACKET>(Get<::dregx::ast::Type::LEFT_SQUARE_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::LEFT_BRACKET> AccessTemplateBase<::dregx::ast::node::capture_structure>::LEFT_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::LEFT_BRACKET>(Get<::dregx::ast::Type::LEFT_BRACKET>(ts));
+		}
+
+		inline AccessTemplateBase<::dregx::ast::node::RIGHT_BRACKET> AccessTemplateBase<::dregx::ast::node::capture_structure>::RIGHT_BRACKET()
+		{
+			// Optimized search, if it fails continue using unoptimized search.
+
+			// Unoptimized search
+			return AccessTemplateBase<::dregx::ast::node::RIGHT_BRACKET>(Get<::dregx::ast::Type::RIGHT_BRACKET>(ts));
 		}
 
 		inline AccessTemplateBase<::dregx::ast::node::LEFT_CURLY_BRACKET> AccessTemplateBase<::dregx::ast::node::any>::LEFT_CURLY_BRACKET()

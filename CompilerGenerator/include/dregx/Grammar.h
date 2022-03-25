@@ -34,8 +34,9 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> group;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_plus__word__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> or_concat;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_arrow__word__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__opt_pad__OR__word__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_arrow__or_element__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__opt_pad__OR__or_element__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> or_element;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> square;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> deamerreserved_star__capture_logic__;
@@ -61,6 +62,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any_number;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any_letter;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any_letter_exclude_underscore;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> capture_structure;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::NonTerminal> any;
 
 	
@@ -84,10 +86,11 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_deamerreserved_plus__word___opt_pad_RIGHT_CURLY_BRACKET_PLUS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_deamerreserved_plus__word___opt_pad_RIGHT_CURLY_BRACKET_extension_modifier;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> group_opt_pad_LEFT_CURLY_BRACKET_deamerreserved_plus__word___opt_pad_RIGHT_CURLY_BRACKET;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__word___word_deamerreserved_star__opt_pad__OR__word__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__opt_pad__OR__word___opt_pad_OR_word_deamerreserved_star__opt_pad__OR__word__;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__opt_pad__OR__word___EMPTY;
-::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> or_concat_word_opt_pad_OR_deamerreserved_arrow__word__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_arrow__or_element___or_element_deamerreserved_star__opt_pad__OR__or_element__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__opt_pad__OR__or_element___opt_pad_OR_or_element_deamerreserved_star__opt_pad__OR__or_element__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> deamerreserved_star__opt_pad__OR__or_element___EMPTY;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> or_concat_or_element_opt_pad_OR_deamerreserved_arrow__or_element__;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> or_element_deamerreserved_plus__word__;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture_extension_modifier;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture_PLUS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> square_capture_STAR;
@@ -103,6 +106,7 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_number;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_whitespace;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_symbols;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_logic_capture_structure;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_OTHER;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_PLUS;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_symbols_STAR;
@@ -142,6 +146,11 @@ namespace dregx
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_letter_exclude_underscore_V_;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_letter_exclude_underscore_A_;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_letter_exclude_underscore_LETTER;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_structure_LEFT_CURLY_BRACKET;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_structure_RIGHT_CURLY_BRACKET;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_structure_LEFT_SQUARE_BRACKET;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_structure_LEFT_BRACKET;
+::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> capture_structure_RIGHT_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_LEFT_CURLY_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_RIGHT_CURLY_BRACKET;
 ::deamer::type::SafeReserve<::deamer::language::type::definition::object::main::ProductionRule> any_LEFT_SQUARE_BRACKET;

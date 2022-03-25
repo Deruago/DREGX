@@ -10,8 +10,9 @@
 #include "dregx/Ast/Node/group.h"
 #include "dregx/Ast/Node/deamerreserved_plus__word__.h"
 #include "dregx/Ast/Node/or_concat.h"
-#include "dregx/Ast/Node/deamerreserved_arrow__word__.h"
-#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
+#include "dregx/Ast/Node/deamerreserved_arrow__or_element__.h"
+#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__or_element__.h"
+#include "dregx/Ast/Node/or_element.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
 #include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
@@ -37,6 +38,7 @@
 #include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
+#include "dregx/Ast/Node/capture_structure.h"
 #include "dregx/Ast/Node/any.h"
 #include "dregx/Ast/Node/LEFT_CURLY_BRACKET.h"
 #include "dregx/Ast/Node/RIGHT_CURLY_BRACKET.h"
@@ -128,17 +130,24 @@ namespace dregx { namespace ast { namespace relation {
 	};
 
 	template<>
-	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_arrow__word__>
+	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_arrow__or_element__>
 	{
-		constexpr static auto value = ::dregx::ast::Type::deamerreserved_arrow__word__;
-		using type = ::dregx::ast::node::deamerreserved_arrow__word__;
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_arrow__or_element__;
+		using type = ::dregx::ast::node::deamerreserved_arrow__or_element__;
 	};
 
 	template<>
-	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__>
+	struct NodeEnumToType<::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__>
 	{
-		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__;
-		using type = ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__;
+		constexpr static auto value = ::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__;
+		using type = ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__;
+	};
+
+	template<>
+	struct NodeEnumToType<::dregx::ast::Type::or_element>
+	{
+		constexpr static auto value = ::dregx::ast::Type::or_element;
+		using type = ::dregx::ast::node::or_element;
 	};
 
 	template<>
@@ -314,6 +323,13 @@ namespace dregx { namespace ast { namespace relation {
 	{
 		constexpr static auto value = ::dregx::ast::Type::any_letter_exclude_underscore;
 		using type = ::dregx::ast::node::any_letter_exclude_underscore;
+	};
+
+	template<>
+	struct NodeEnumToType<::dregx::ast::Type::capture_structure>
+	{
+		constexpr static auto value = ::dregx::ast::Type::capture_structure;
+		using type = ::dregx::ast::node::capture_structure;
 	};
 
 	template<>

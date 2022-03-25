@@ -96,24 +96,34 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"or_concat\"];\n";
 		}
 
-		void ListenEntry(const ::dregx::ast::node::deamerreserved_arrow__word__* node) override
+		void ListenEntry(const ::dregx::ast::node::deamerreserved_arrow__or_element__* node) override
 		{
 			for (const auto* child : node->GetNodes())
 			{
 				AddConnection(node, child);
 			}
 
-			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_arrow__word__\"];\n";
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_arrow__or_element__\"];\n";
 		}
 
-		void ListenEntry(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* node) override
+		void ListenEntry(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__* node) override
 		{
 			for (const auto* child : node->GetNodes())
 			{
 				AddConnection(node, child);
 			}
 
-			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__opt_pad__OR__word__\"];\n";
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"deamerreserved_star__opt_pad__OR__or_element__\"];\n";
+		}
+
+		void ListenEntry(const ::dregx::ast::node::or_element* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"or_element\"];\n";
 		}
 
 		void ListenEntry(const ::dregx::ast::node::square* node) override
@@ -364,6 +374,16 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 			}
 
 			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"any_letter_exclude_underscore\"];\n";
+		}
+
+		void ListenEntry(const ::dregx::ast::node::capture_structure* node) override
+		{
+			for (const auto* child : node->GetNodes())
+			{
+				AddConnection(node, child);
+			}
+
+			output += "\t" + std::to_string(::std::size_t(node)) + " [label=\"capture_structure\"];\n";
 		}
 
 		void ListenEntry(const ::dregx::ast::node::any* node) override
@@ -685,11 +705,15 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 		{
 		}
 
-		void ListenExit(const ::dregx::ast::node::deamerreserved_arrow__word__* node) override
+		void ListenExit(const ::dregx::ast::node::deamerreserved_arrow__or_element__* node) override
 		{
 		}
 
-		void ListenExit(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* node) override
+		void ListenExit(const ::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__* node) override
+		{
+		}
+
+		void ListenExit(const ::dregx::ast::node::or_element* node) override
 		{
 		}
 
@@ -790,6 +814,10 @@ namespace dregx { namespace ast { namespace listener { namespace deamer { namesp
 		}
 
 		void ListenExit(const ::dregx::ast::node::any_letter_exclude_underscore* node) override
+		{
+		}
+
+		void ListenExit(const ::dregx::ast::node::capture_structure* node) override
 		{
 		}
 

@@ -148,6 +148,36 @@ TEST_F(TestParserInput, Regex_not_space_ShouldCorrectlyParse)
 	ASSERT_NE(nullptr, tree);
 }
 
+TEST_F(TestParserInput, Regex_LEFT_BRACKET_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("[{]"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_RIGHT_BRACKET_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("[}]"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_LEFT_CURLY_BRACKET_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("[(]"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_RIGHT_CURLY_BRACKET_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("[)]"));
+	ASSERT_NE(nullptr, tree);
+}
+
+TEST_F(TestParserInput, Regex_LEFT_SQUARE_BRACKET_ShouldCorrectlyParse)
+{
+	std::unique_ptr<::deamer::external::cpp::ast::Tree> tree(parser.Parse("[[]"));
+	ASSERT_NE(nullptr, tree);
+}
+
 TEST_F(TestParserInput, Regex_DLDLv1_RegexMatcher_ShouldCorrectlyParse)
 {
 	// This is a complex but valid regex

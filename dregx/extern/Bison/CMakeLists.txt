@@ -9,4 +9,3 @@
 
 set(source_files ./dregx_parser.tab.cpp)
 dregx_add_external_library(Bison ${source_files})
-target_link_libraries(dregx_Bison_static_library PUBLIC dregx_Flex_static_library)

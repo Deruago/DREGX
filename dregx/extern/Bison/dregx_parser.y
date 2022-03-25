@@ -51,8 +51,9 @@
 #include "dregx/Ast/Node/group.h"
 #include "dregx/Ast/Node/deamerreserved_plus__word__.h"
 #include "dregx/Ast/Node/or_concat.h"
-#include "dregx/Ast/Node/deamerreserved_arrow__word__.h"
-#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__word__.h"
+#include "dregx/Ast/Node/deamerreserved_arrow__or_element__.h"
+#include "dregx/Ast/Node/deamerreserved_star__opt_pad__OR__or_element__.h"
+#include "dregx/Ast/Node/or_element.h"
 #include "dregx/Ast/Node/square.h"
 #include "dregx/Ast/Node/capture.h"
 #include "dregx/Ast/Node/deamerreserved_star__capture_logic__.h"
@@ -78,6 +79,7 @@
 #include "dregx/Ast/Node/any_number.h"
 #include "dregx/Ast/Node/any_letter.h"
 #include "dregx/Ast/Node/any_letter_exclude_underscore.h"
+#include "dregx/Ast/Node/capture_structure.h"
 #include "dregx/Ast/Node/any.h"
 
 
@@ -131,8 +133,9 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 %nterm<dregx_group> group
 %nterm<dregx_deamerreserved_plus__word__> deamerreserved_plus__word__
 %nterm<dregx_or_concat> or_concat
-%nterm<dregx_deamerreserved_arrow__word__> deamerreserved_arrow__word__
-%nterm<dregx_deamerreserved_star__opt_pad__OR__word__> deamerreserved_star__opt_pad__OR__word__
+%nterm<dregx_deamerreserved_arrow__or_element__> deamerreserved_arrow__or_element__
+%nterm<dregx_deamerreserved_star__opt_pad__OR__or_element__> deamerreserved_star__opt_pad__OR__or_element__
+%nterm<dregx_or_element> or_element
 %nterm<dregx_square> square
 %nterm<dregx_capture> capture
 %nterm<dregx_deamerreserved_star__capture_logic__> deamerreserved_star__capture_logic__
@@ -158,6 +161,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 %nterm<dregx_any_number> any_number
 %nterm<dregx_any_letter> any_letter
 %nterm<dregx_any_letter_exclude_underscore> any_letter_exclude_underscore
+%nterm<dregx_capture_structure> capture_structure
 %nterm<dregx_any> any
 
 
@@ -198,8 +202,9 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 	::dregx::ast::node::group* dregx_group;
 	::dregx::ast::node::deamerreserved_plus__word__* dregx_deamerreserved_plus__word__;
 	::dregx::ast::node::or_concat* dregx_or_concat;
-	::dregx::ast::node::deamerreserved_arrow__word__* dregx_deamerreserved_arrow__word__;
-	::dregx::ast::node::deamerreserved_star__opt_pad__OR__word__* dregx_deamerreserved_star__opt_pad__OR__word__;
+	::dregx::ast::node::deamerreserved_arrow__or_element__* dregx_deamerreserved_arrow__or_element__;
+	::dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__* dregx_deamerreserved_star__opt_pad__OR__or_element__;
+	::dregx::ast::node::or_element* dregx_or_element;
 	::dregx::ast::node::square* dregx_square;
 	::dregx::ast::node::capture* dregx_capture;
 	::dregx::ast::node::deamerreserved_star__capture_logic__* dregx_deamerreserved_star__capture_logic__;
@@ -225,6 +230,7 @@ static ::deamer::external::cpp::ast::Tree* outputTree = nullptr;
 	::dregx::ast::node::any_number* dregx_any_number;
 	::dregx::ast::node::any_letter* dregx_any_letter;
 	::dregx::ast::node::any_letter_exclude_underscore* dregx_any_letter_exclude_underscore;
+	::dregx::ast::node::capture_structure* dregx_capture_structure;
 	::dregx::ast::node::any* dregx_any;
 
 }
@@ -372,7 +378,7 @@ deamerreserved_plus__word__:
 
 
 or_concat:
-	word opt_pad OR deamerreserved_arrow__word__  {
+	or_element opt_pad OR deamerreserved_arrow__or_element__  {
 		auto* const newNode = new dregx::ast::node::or_concat({::dregx::ast::Type::or_concat, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1, $2, new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, $3 }), $4 });
 		$$ = newNode;
 
@@ -381,9 +387,9 @@ or_concat:
 ;
 
 
-deamerreserved_arrow__word__:
-	word deamerreserved_star__opt_pad__OR__word__  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_arrow__word__({::dregx::ast::Type::deamerreserved_arrow__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, $2 });
+deamerreserved_arrow__or_element__:
+	or_element deamerreserved_star__opt_pad__OR__or_element__  {
+		auto* const newNode = new dregx::ast::node::deamerreserved_arrow__or_element__({::dregx::ast::Type::deamerreserved_arrow__or_element__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, $2 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
@@ -391,15 +397,25 @@ deamerreserved_arrow__word__:
 ;
 
 
-deamerreserved_star__opt_pad__OR__word__:
-	opt_pad OR word deamerreserved_star__opt_pad__OR__word__  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), $3, $4 });
+deamerreserved_star__opt_pad__OR__or_element__:
+	opt_pad OR or_element deamerreserved_star__opt_pad__OR__or_element__  {
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, { $1, new dregx::ast::node::OR({::dregx::ast::Type::OR, ::deamer::external::cpp::ast::NodeValue::terminal, $2 }), $3, $4 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
 	}
 	|  {
-		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__word__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__word__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		auto* const newNode = new dregx::ast::node::deamerreserved_star__opt_pad__OR__or_element__({::dregx::ast::Type::deamerreserved_star__opt_pad__OR__or_element__, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::translation }}, {  });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+;
+
+
+or_element:
+	deamerreserved_plus__word__  {
+		auto* const newNode = new dregx::ast::node::or_element({::dregx::ast::Type::or_element, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
@@ -506,6 +522,12 @@ capture_logic:
 	}
 	| capture_symbols  {
 		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 5, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| capture_structure  {
+		auto* const newNode = new dregx::ast::node::capture_logic({::dregx::ast::Type::capture_logic, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { $1 });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
@@ -824,6 +846,40 @@ any_letter_exclude_underscore:
 	}
 	| LETTER  {
 		auto* const newNode = new dregx::ast::node::any_letter_exclude_underscore({::dregx::ast::Type::any_letter_exclude_underscore, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 6, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LETTER({::dregx::ast::Type::LETTER, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+;
+
+
+capture_structure:
+	LEFT_CURLY_BRACKET  {
+		auto* const newNode = new dregx::ast::node::capture_structure({::dregx::ast::Type::capture_structure, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 0, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_CURLY_BRACKET({::dregx::ast::Type::LEFT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| RIGHT_CURLY_BRACKET  {
+		auto* const newNode = new dregx::ast::node::capture_structure({::dregx::ast::Type::capture_structure, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 1, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_CURLY_BRACKET({::dregx::ast::Type::RIGHT_CURLY_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| LEFT_SQUARE_BRACKET  {
+		auto* const newNode = new dregx::ast::node::capture_structure({::dregx::ast::Type::capture_structure, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 2, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_SQUARE_BRACKET({::dregx::ast::Type::LEFT_SQUARE_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| LEFT_BRACKET  {
+		auto* const newNode = new dregx::ast::node::capture_structure({::dregx::ast::Type::capture_structure, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 3, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::LEFT_BRACKET({::dregx::ast::Type::LEFT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
+		$$ = newNode;
+
+		// Ignored, Deleted, tokens are deleted
+	}
+	| RIGHT_BRACKET  {
+		auto* const newNode = new dregx::ast::node::capture_structure({::dregx::ast::Type::capture_structure, ::deamer::external::cpp::ast::NodeValue::nonterminal, { 4, ::deamer::external::cpp::ast::ProductionRuleType::user }}, { new dregx::ast::node::RIGHT_BRACKET({::dregx::ast::Type::RIGHT_BRACKET, ::deamer::external::cpp::ast::NodeValue::terminal, $1 }) });
 		$$ = newNode;
 
 		// Ignored, Deleted, tokens are deleted
