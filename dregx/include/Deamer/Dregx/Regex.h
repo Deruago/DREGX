@@ -11,11 +11,12 @@ namespace deamer::dregx
 	{
 	private:
 		std::string regex;
+		std::string flavor;
 		std::unique_ptr<::dregx::statemachine::Statemachine> statemachine;
 		::dregx::statemachine::TransitionTable transitionTable;
 
 	public:
-		Regex(const std::string& regex_);
+		Regex(const std::string& regex_, const std::string& flavor_ = "");
 		~Regex() = default;
 
 	public:
@@ -23,6 +24,7 @@ namespace deamer::dregx
 
 	public:
 		std::string GetRegex() const;
+		std::unique_ptr<::dregx::statemachine::Statemachine> GetStatemachine() const;
 
 	public:
 		void Or(const Regex& rhs);

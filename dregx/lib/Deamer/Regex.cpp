@@ -4,8 +4,9 @@
 #include "dregx/Statemachine/ConvertRegexToDFA.h"
 #include <limits>
 
-deamer::dregx::Regex::Regex(const std::string& regex_)
+deamer::dregx::Regex::Regex(const std::string& regex_, const std::string& flavor_)
 {
+	flavor = flavor_;
 	SetRegex(regex_);
 }
 
@@ -127,6 +128,10 @@ deamer::dregx::Regex::CreateDFA(const std::string& regex_)
 	listener.Dispatch(tree->GetStartNode());
 
 	auto ir = listener.GetOutput();
+	if (!flavor.empty())
+	{
+		ir->AddFlavor(flavor);
+	}
 
 	return std::move(::dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir.get()));
 }
