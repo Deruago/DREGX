@@ -1149,97 +1149,47 @@ dregx::statemachine::Statemachine::GetAlphabet()
 
 void dregx::statemachine::Statemachine::RemoveUnreachableStates()
 {
-	if constexpr (false)
+	GetStartState()->any = true;
+	std::size_t lastVisited = 0;
+	std::size_t newVisited = 1;
+	std::set<State*> currentStates = {GetStartState()};
+	while (lastVisited != newVisited)
 	{
-		bool changed = true;
-		while (true)
+		lastVisited = newVisited;
+		std::set<State*> newStates;
+
+		for (auto state : currentStates)
 		{
-			std::vector<std::unique_ptr<dregx::statemachine::State>> withoutUnreachableStates;
-			std::vector<std::unique_ptr<Transition>> withoutUnreachableTransitions;
-			for (auto& state : this->states)
+			for (auto outTransition : state->GetOutTransitions())
 			{
-				if (state->GetInTransitions().empty() && !state->IsStartState())
+				newStates.insert(outTransition->GetOutState());
+				if (!outTransition->GetOutState()->any)
 				{
-					for (auto transition : state->GetInTransitions())
-					{
-						transition->SetOutState(nullptr);
-						state->RemoveInTransition(transition);
-					}
-					for (auto transition : state->GetOutTransitions())
-					{
-						transition->SetInState(nullptr);
-						state->RemoveOutTransition(transition);
-					}
-					continue;
+					outTransition->GetOutState()->any = true;
+					newVisited++;
 				}
-
-				withoutUnreachableStates.push_back(std::move(state));
 			}
+		}
 
-			if (this->states.size() == withoutUnreachableStates.size())
-			{
-				this->states = std::move(withoutUnreachableStates);
-				break;
-			}
+		currentStates = newStates;
+	}
 
-			for (auto& transition : this->transitions)
-			{
-				if (transition->GetOutState() == nullptr || transition->GetInState() == nullptr)
-				{
-					continue;
-				}
-
-				withoutUnreachableTransitions.push_back(std::move(transition));
-			}
-
-			this->states = std::move(withoutUnreachableStates);
-			this->transitions = std::move(withoutUnreachableTransitions);
+	std::vector<State*> toBeRemoved;
+	for (auto& state : states)
+	{
+		if (!state->any)
+		{
+			toBeRemoved.push_back(state.get());
 		}
 	}
-	else
+	for (auto state : toBeRemoved)
 	{
-		GetStartState()->any = true;
-		std::size_t lastVisited = 0;
-		std::size_t newVisited = 1;
-		std::set<State*> currentStates = {GetStartState()};
-		while (lastVisited != newVisited)
-		{
-			lastVisited = newVisited;
-			std::set<State*> newStates;
+		RemoveState(state);
+	}
 
-			for (auto state : currentStates)
-			{
-				for (auto outTransition : state->GetOutTransitions())
-				{
-					newStates.insert(outTransition->GetOutState());
-					if (!outTransition->GetOutState()->any)
-					{
-						outTransition->GetOutState()->any = true;
-						newVisited++;
-					}
-				}
-			}
-
-			currentStates = newStates;
-		}
-
-		std::vector<State*> toBeRemoved;
-		for (auto& state : states)
-		{
-			if (!state->any)
-			{
-				toBeRemoved.push_back(state.get());
-			}
-		}
-		for (auto state : toBeRemoved)
-		{
-			RemoveState(state);
-		}
-
-		for (auto& state : states)
-		{
-			state->any = false;
-		}
+	for (auto& state : states)
+	{
+		state->any = false;
 	}
 }
 
