@@ -11,12 +11,17 @@ namespace dregx::statemachine
 
 	class State
 	{
+	public:
+		bool any = false; // Cache variable usable for anything
+
 	private:
 		bool start = false;
 		bool accept = false;
 		bool sink = false;
 		std::size_t depth = 0;
+		std::size_t index = 0;
 
+		// Transitions are always sorted by condition
 		std::vector<Transition*> inTransitions;
 		std::vector<Transition*> outTransitions;
 		std::set<std::string> flavors;
@@ -31,6 +36,8 @@ namespace dregx::statemachine
 		void SetAccept(bool accept_);
 		void SetDepth(std::size_t depth_);
 		void SetFlavors(const std::set<std::string>& set);
+		void AddFlavors(const std::set<std::string>& set);
+		void SetIndex(std::size_t size);
 
 		void SetInTransitions(std::vector<Transition*> inTransitions_);
 		void SetOutTransitions(std::vector<Transition*> outTransitions_);
@@ -46,6 +53,7 @@ namespace dregx::statemachine
 		bool IsSinkState() const;
 		bool IsAcceptState() const;
 		std::set<std::string> GetFlavors() const;
+		std::size_t GetIndex() const;
 
 		std::size_t GetDepth() const;
 

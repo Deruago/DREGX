@@ -54,11 +54,13 @@ public:
 
 TEST_F(TestFlavor, AddFlavor_AcceptStatesShouldBeSplit)
 {
+	auto flavor1 = std::set<std::string>{"abc"};
+	auto flavor2 = std::set<std::string>{"123"};
 	const auto capture1 = GetCapture("(a)");
-	capture1->AddFlavor("abc");
+	capture1->AddFlavor(*flavor1.begin());
 	auto statemachine1 = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture1.get());
 	const auto capture2 = GetCapture("(b)");
-	capture2->AddFlavor("123");
+	capture2->AddFlavor(*flavor2.begin());
 	const auto statemachine2 =
 		statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture2.get());
 	statemachine1->Or(*statemachine2);
@@ -67,4 +69,66 @@ TEST_F(TestFlavor, AddFlavor_AcceptStatesShouldBeSplit)
 	const auto acceptStates = statemachine1->GetAcceptStates();
 
 	EXPECT_EQ(2, acceptStates.size());
+	EXPECT_TRUE(flavor1 == acceptStates.at(0)->GetFlavors() ||
+				flavor1 == acceptStates.at(1)->GetFlavors());
+	EXPECT_TRUE(flavor2 == acceptStates.at(0)->GetFlavors() ||
+				flavor2 == acceptStates.at(1)->GetFlavors());
+}
+
+TEST_F(TestFlavor, AddFlavor_MinimizeTwice_AcceptStatesShouldBeSplit)
+{
+	auto flavor1 = std::set<std::string>{"abc"};
+	auto flavor2 = std::set<std::string>{"123"};
+	const auto capture1 = GetCapture("(a)");
+	capture1->AddFlavor(*flavor1.begin());
+	auto statemachine1 = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture1.get());
+	const auto capture2 = GetCapture("(b)");
+	capture2->AddFlavor(*flavor2.begin());
+	const auto statemachine2 =
+		statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture2.get());
+	statemachine1->Or(*statemachine2);
+	statemachine1->Minimize();
+	statemachine1->Minimize();
+
+	const auto acceptStates = statemachine1->GetAcceptStates();
+
+	EXPECT_EQ(2, acceptStates.size());
+	EXPECT_TRUE(flavor1 == acceptStates.at(0)->GetFlavors() ||
+				flavor1 == acceptStates.at(1)->GetFlavors());
+	EXPECT_TRUE(flavor2 == acceptStates.at(0)->GetFlavors() ||
+				flavor2 == acceptStates.at(1)->GetFlavors());
+}
+
+TEST_F(TestFlavor, AddFlavor_OrSequenceOf3_AcceptStatesShouldBeSplit)
+{
+	auto flavor1 = std::set<std::string>{"abc"};
+	auto flavor2 = std::set<std::string>{"123"};
+	auto flavor3 = std::set<std::string>{"qwerty"};
+	const auto capture1 = GetCapture("(a)");
+	capture1->AddFlavor(*flavor1.begin());
+	auto statemachine1 = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture1.get());
+	const auto capture2 = GetCapture("(b)");
+	capture2->AddFlavor(*flavor2.begin());
+	const auto statemachine2 =
+		statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture2.get());
+	const auto capture3 = GetCapture("(c)");
+	capture3->AddFlavor(*flavor3.begin());
+	const auto statemachine3 =
+		statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture3.get());
+	statemachine1->Or(*statemachine2);
+	statemachine1->Or(*statemachine3);
+	statemachine1->Minimize();
+
+	const auto acceptStates = statemachine1->GetAcceptStates();
+
+	EXPECT_EQ(3, acceptStates.size());
+	EXPECT_TRUE(flavor1 == acceptStates.at(0)->GetFlavors() ||
+				flavor1 == acceptStates.at(1)->GetFlavors() ||
+				flavor1 == acceptStates.at(2)->GetFlavors());
+	EXPECT_TRUE(flavor2 == acceptStates.at(0)->GetFlavors() ||
+				flavor2 == acceptStates.at(1)->GetFlavors() ||
+				flavor2 == acceptStates.at(2)->GetFlavors());
+	EXPECT_TRUE(flavor3 == acceptStates.at(0)->GetFlavors() ||
+				flavor3 == acceptStates.at(1)->GetFlavors() ||
+				flavor3 == acceptStates.at(2)->GetFlavors());
 }

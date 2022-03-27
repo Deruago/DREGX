@@ -57,6 +57,10 @@ std::string dregx::ir::Capture::GetFormattedRegex()
 
 void dregx::ir::Capture::AddFlavor(const std::string& flavor)
 {
+	if (flavor.empty())
+	{
+		return;
+	}
 	flavors.insert(flavor);
 }
 

@@ -3,6 +3,7 @@
 
 #include "dregx/Statemachine/Conditional.h"
 #include <map>
+#include <set>
 #include <vector>
 
 namespace dregx::statemachine
@@ -16,6 +17,8 @@ namespace dregx::statemachine
 		// std::size_t::max is used for rejecting states
 		std::vector<std::map<std::string, std::size_t>> table;
 		std::vector<bool> acceptingState;
+		std::vector<std::set<std::string>> flavorState;
+
 		bool Match(const std::string& text) const;
 		void Print();
 	};

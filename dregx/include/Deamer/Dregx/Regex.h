@@ -13,7 +13,6 @@ namespace deamer::dregx
 		std::string regex;
 		std::string flavor;
 		std::unique_ptr<::dregx::statemachine::Statemachine> statemachine;
-		::dregx::statemachine::TransitionTable transitionTable;
 
 	public:
 		Regex(const std::string& regex_, const std::string& flavor_ = "");

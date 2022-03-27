@@ -1,3 +1,4 @@
+#include "Deamer/Dregx/Regex.h"
 #include "Deamer/External/Cpp/Ast/Tree.h"
 #include "dregx/Ast/Listener/User/TranslateToIr.h"
 #include "dregx/Bison/Parser.h"
@@ -49,6 +50,19 @@ public:
 		}
 
 		return capture;
+	}
+
+	std::unique_ptr<statemachine::Statemachine> GetStatemachine(std::string regex)
+	{
+		auto capture = GetCapture(regex);
+		capture->AddFlavor(regex);
+		return statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	}
+
+	std::unique_ptr<deamer::dregx::Regex> GetRegex(std::string regex)
+	{
+		auto regex_ = std::make_unique<deamer::dregx::Regex>(regex, regex);
+		return std::move(regex_);
 	}
 };
 
@@ -102,14 +116,20 @@ TEST_F(TestConvertRegexToDFA, ConvertSquareWith2CharactersToDfa_DfaIsCorrectAndM
 	EXPECT_FALSE(startState->IsAcceptState());
 
 	EXPECT_EQ(2, startState->GetOutTransitions().size());
-	EXPECT_EQ(transitions.at(0).get(), startState->GetOutTransitions().at(0));
+	EXPECT_TRUE(transitions.at(0).get() == startState->GetOutTransitions().at(0) ||
+				transitions.at(0).get() == startState->GetOutTransitions().at(1));
+	EXPECT_TRUE(transitions.at(1).get() == startState->GetOutTransitions().at(0) ||
+				transitions.at(1).get() == startState->GetOutTransitions().at(1));
 	EXPECT_EQ(0, startState->GetInTransitions().size());
 
 	EXPECT_FALSE(acceptState->IsStartState());
 	EXPECT_TRUE(acceptState->IsAcceptState());
 
 	EXPECT_EQ(2, acceptState->GetInTransitions().size());
-	EXPECT_EQ(transitions.at(0).get(), acceptState->GetInTransitions().at(0));
+	EXPECT_TRUE(transitions.at(0).get() == acceptState->GetInTransitions().at(0) ||
+				transitions.at(0).get() == acceptState->GetInTransitions().at(1));
+	EXPECT_TRUE(transitions.at(1).get() == acceptState->GetInTransitions().at(0) ||
+				transitions.at(1).get() == acceptState->GetInTransitions().at(1));
 	EXPECT_EQ(0, acceptState->GetOutTransitions().size());
 
 	EXPECT_EQ(startState, transitions.at(0)->GetInState());
@@ -134,14 +154,30 @@ TEST_F(TestConvertRegexToDFA, ConvertSquareWith3CharactersToDfa_DfaIsCorrectAndM
 	EXPECT_FALSE(startState->IsAcceptState());
 
 	EXPECT_EQ(3, startState->GetOutTransitions().size());
-	EXPECT_EQ(transitions.at(0).get(), startState->GetOutTransitions().at(0));
+	EXPECT_TRUE(transitions.at(0).get() == startState->GetOutTransitions().at(0) ||
+				transitions.at(0).get() == startState->GetOutTransitions().at(1) ||
+				transitions.at(0).get() == startState->GetOutTransitions().at(2));
+	EXPECT_TRUE(transitions.at(1).get() == startState->GetOutTransitions().at(0) ||
+				transitions.at(1).get() == startState->GetOutTransitions().at(1) ||
+				transitions.at(1).get() == startState->GetOutTransitions().at(2));
+	EXPECT_TRUE(transitions.at(2).get() == startState->GetOutTransitions().at(0) ||
+				transitions.at(2).get() == startState->GetOutTransitions().at(1) ||
+				transitions.at(2).get() == startState->GetOutTransitions().at(2));
 	EXPECT_EQ(0, startState->GetInTransitions().size());
 
 	EXPECT_FALSE(acceptState->IsStartState());
 	EXPECT_TRUE(acceptState->IsAcceptState());
 
 	EXPECT_EQ(3, acceptState->GetInTransitions().size());
-	EXPECT_EQ(transitions.at(0).get(), acceptState->GetInTransitions().at(0));
+	EXPECT_TRUE(transitions.at(0).get() == acceptState->GetInTransitions().at(0) ||
+				transitions.at(0).get() == acceptState->GetInTransitions().at(1) ||
+				transitions.at(0).get() == acceptState->GetInTransitions().at(2));
+	EXPECT_TRUE(transitions.at(1).get() == acceptState->GetInTransitions().at(0) ||
+				transitions.at(1).get() == acceptState->GetInTransitions().at(1) ||
+				transitions.at(1).get() == acceptState->GetInTransitions().at(2));
+	EXPECT_TRUE(transitions.at(2).get() == acceptState->GetInTransitions().at(0) ||
+				transitions.at(2).get() == acceptState->GetInTransitions().at(1) ||
+				transitions.at(2).get() == acceptState->GetInTransitions().at(2));
 	EXPECT_EQ(0, acceptState->GetOutTransitions().size());
 
 	EXPECT_EQ(startState, transitions.at(0)->GetInState());
@@ -813,13 +849,14 @@ TEST_F(TestConvertRegexToDFA,
 {
 	const auto capture = GetCapture("(([a])|([b])|([c]))*");
 	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
 
-	EXPECT_EQ(4, states.size());
-	EXPECT_EQ(12, transitions.size());
-	EXPECT_EQ(4, statemachine->GetAcceptStates().size());
+	EXPECT_EQ(1, states.size());
+	EXPECT_EQ(3, transitions.size());
+	EXPECT_EQ(1, statemachine->GetAcceptStates().size());
 	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
 }
 
@@ -828,13 +865,14 @@ TEST_F(TestConvertRegexToDFA,
 {
 	const auto capture = GetCapture("(([a])|([b])|([c])|([d]))*");
 	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
 
-	EXPECT_EQ(5, states.size());
-	EXPECT_EQ(20, transitions.size());
-	EXPECT_EQ(5, statemachine->GetAcceptStates().size());
+	EXPECT_EQ(1, states.size());
+	EXPECT_EQ(4, transitions.size());
+	EXPECT_EQ(1, statemachine->GetAcceptStates().size());
 	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
 }
 
@@ -843,13 +881,14 @@ TEST_F(TestConvertRegexToDFA,
 {
 	const auto capture = GetCapture("(([a][b][c])|([a][b][d]))*");
 	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
 
-	EXPECT_EQ(5, states.size());
-	EXPECT_EQ(6, transitions.size());
-	EXPECT_EQ(3, statemachine->GetAcceptStates().size());
+	EXPECT_EQ(4, states.size());
+	EXPECT_EQ(16, transitions.size());
+	EXPECT_EQ(1, statemachine->GetAcceptStates().size());
 	EXPECT_TRUE(statemachine->GetStartState()->IsAcceptState());
 }
 
@@ -858,7 +897,6 @@ TEST_F(TestConvertRegexToDFA, ConvertToDfaCycleStar_2A_or_5A_DfaIsCorrectAndMini
 	const auto capture = GetCapture("((aa)|(aaaaa))*");
 	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
 	statemachine->Minimize();
-	std::cout << statemachine->Print() << "\n";
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
@@ -897,4 +935,73 @@ TEST_F(TestConvertRegexToDFA, ConvertToDfa_DLDLv1RegexMatcher_DfaIsCorrectAndMin
 
 	const auto& states = statemachine->GetStates();
 	const auto& transitions = statemachine->GetTransitions();
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfa_LongOrredList)
+{
+	const auto capture = GetCapture(
+		"(((((((((((((((((((((((class|enum)|function)|if)|else)|[{])|[}])|[\\[])|[\\]])|[(])|[)])|["
+		":]"
+		")|[;])|[,])|[.])|[=][=])|[=])|[!][=])|[!])|[+])|[\\-])|[/])|[*])|[=!+\\-/"
+		"*&\\^%$#@][=!+\\-/"
+		"*&\\^%$#@]+)");
+	auto statemachine = statemachine::ConvertRegexToDFA::ConvertToStatemachine(capture.get());
+	statemachine->Minimize();
+
+	const auto& states = statemachine->GetStates();
+	const auto& transitions = statemachine->GetTransitions();
+}
+
+TEST_F(TestConvertRegexToDFA, ConvertToDfa_LongOrredListWithFlavors)
+{
+	const auto capture1 = GetRegex("class");
+	const auto capture2 = GetRegex("enum");
+	const auto capture3 = GetRegex("function");
+	const auto capture4 = GetRegex("if");
+	const auto capture5 = GetRegex("else");
+	const auto capture6 = GetRegex("[{]");
+	const auto capture7 = GetRegex("[}]");
+	const auto capture8 = GetRegex("[\\[]");
+	const auto capture9 = GetRegex("[\\]]");
+	const auto capture10 = GetRegex("[(]");
+	const auto capture11 = GetRegex("[)]");
+	const auto capture12 = GetRegex("[:]");
+	const auto capture13 = GetRegex("[;]");
+	const auto capture14 = GetRegex("[,]");
+	const auto capture15 = GetRegex("[.]");
+	const auto capture16 = GetRegex("[=][=]");
+	const auto capture17 = GetRegex("[=]");
+	const auto capture18 = GetRegex("[!][=]");
+	const auto capture19 = GetRegex("[!]");
+	const auto capture20 = GetRegex("[+]");
+	const auto capture21 = GetRegex("[\\-]");
+	const auto capture22 = GetRegex("[/]");
+	const auto capture23 = GetRegex("[*]");
+	const auto capture24 = GetRegex("[=!+\\-/*&\\^%$#@][=!+\\-/*&\\^%$#@]+");
+
+	capture1->Or(*capture2);
+	capture1->Or(*capture3);
+	capture1->Or(*capture4);
+	capture1->Or(*capture5);
+	capture1->Or(*capture6);
+	capture1->Or(*capture7);
+	capture1->Or(*capture8);
+	capture1->Or(*capture9);
+	capture1->Or(*capture10);
+	capture1->Or(*capture11);
+	capture1->Or(*capture12);
+	capture1->Or(*capture13);
+	capture1->Or(*capture14);
+	capture1->Or(*capture15);
+	capture1->Or(*capture16);
+	capture1->Or(*capture17);
+	capture1->Or(*capture18);
+	capture1->Or(*capture19);
+	capture1->Or(*capture20);
+	capture1->Or(*capture21);
+	capture1->Or(*capture22);
+	capture1->Or(*capture23);
+	capture1->Or(*capture24);
+
+	auto statemachine = capture1->GetStatemachine();
 }

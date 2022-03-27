@@ -2,6 +2,7 @@
 #define DREGX_STATEMACHINE_STATEMACHINE_H
 
 #include "dregx/Ir/Extension.h"
+#include "dregx/Statemachine/Algorithm/Flag.h"
 #include "dregx/Statemachine/State.h"
 #include "dregx/Statemachine/Transition.h"
 #include "dregx/Statemachine/TransitionTable.h"
@@ -13,21 +14,17 @@ namespace dregx::statemachine
 {
 	class Statemachine
 	{
-	private:
-		// Caching variables
-		std::vector<State*> acceptedStates;	   // Not implemented
-		std::vector<State*> nonAcceptedStates; // Not implemented
-		State* startState = nullptr;		   // Not implemented
-		State* sinkState = nullptr;
+	public:
+		std::vector<State*> acceptedStates;	   // Not implemented: Caching Variable(Do not alter)
+		std::vector<State*> nonAcceptedStates; // Not implemented: Caching Variable(Do not alter)
+		State* startState = nullptr;		   // Not implemented: Caching Variable(Do not alter)
+		State* sinkState = nullptr;			   // Caching Variable(Do not alter)
 
-		std::vector<std::unique_ptr<State>> states;
-		std::vector<std::unique_ptr<Transition>> transitions;
+		std::vector<std::unique_ptr<State>> states;			  // Caching Variable(Do not alter)
+		std::vector<std::unique_ptr<Transition>> transitions; // Caching Variable(Do not alter)
 
 	public:
-		bool containsCycles = false;
-		bool IsDFA = true;
-		bool EmbeddedAcceptState = false;
-		bool AllTransitionDeterminized = false;
+		Flag flags{false, false, false, false}; // Caching Variable(Do not alter)
 
 	public:
 		Statemachine() = default;
@@ -63,6 +60,7 @@ namespace dregx::statemachine
 		void Group(const std::set<std::string>& set);
 		void SetStartState(State* startState_);
 		void UpdateDepth();
+		void UpdateIndex();
 
 		void RemoveTransition(Transition* transition);
 		void RemoveState(State* state);
@@ -74,6 +72,7 @@ namespace dregx::statemachine
 				  std::vector<std::vector<Conditional>> outConditions) const;
 		const std::vector<std::unique_ptr<Transition>>& GetTransitions() const;
 		State* GetStartState() const;
+		State* GetSinkState() const;
 		std::vector<State*> GetAcceptStates() const;
 		std::set<std::vector<dregx::statemachine::Conditional>> GetAlphabet();
 
@@ -88,8 +87,6 @@ namespace dregx::statemachine
 		TransitionTable ToTransitionTable();
 
 	private:
-		void ProductConstructionOR(Statemachine& rhs);
-		void ProductConstructionAND(const Statemachine& rhs);
 		void FillSinkState();
 	};
 }

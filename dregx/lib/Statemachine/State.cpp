@@ -43,6 +43,23 @@ void dregx::statemachine::State::SetFlavors(const std::set<std::string>& set)
 	flavors = set;
 }
 
+void dregx::statemachine::State::AddFlavors(const std::set<std::string>& set)
+{
+	for (auto flavor : set)
+	{
+		if (flavor.empty())
+		{
+			continue;
+		}
+		flavors.insert(flavor);
+	}
+}
+
+void dregx::statemachine::State::SetIndex(std::size_t size)
+{
+	index = size;
+}
+
 void dregx::statemachine::State::SetInTransitions(std::vector<Transition*> inTransitions_)
 {
 	inTransitions = inTransitions_;
@@ -90,6 +107,15 @@ void dregx::statemachine::State::AddOutTransition(Transition* transition)
 		return;
 	}
 
+	for (auto i = 0; i < outTransitions.size(); i++)
+	{
+		if (transition->GetConditions() > outTransitions[i]->GetConditions())
+		{
+			outTransitions.insert(outTransitions.begin() + i, transition);
+			return;
+		}
+	}
+
 	outTransitions.push_back(transition);
 }
 
@@ -98,6 +124,15 @@ void dregx::statemachine::State::AddInTransition(Transition* transition)
 	if (DoesInTransitionExist(transition))
 	{
 		return;
+	}
+
+	for (auto i = 0; i < inTransitions.size(); i++)
+	{
+		if (transition->GetConditions() > inTransitions[i]->GetConditions())
+		{
+			inTransitions.insert(inTransitions.begin() + i, transition);
+			return;
+		}
 	}
 
 	inTransitions.push_back(transition);
@@ -121,6 +156,11 @@ bool dregx::statemachine::State::IsAcceptState() const
 std::set<std::string> dregx::statemachine::State::GetFlavors() const
 {
 	return flavors;
+}
+
+std::size_t dregx::statemachine::State::GetIndex() const
+{
+	return index;
 }
 
 std::size_t dregx::statemachine::State::GetDepth() const

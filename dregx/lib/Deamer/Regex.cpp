@@ -12,12 +12,18 @@ deamer::dregx::Regex::Regex(const std::string& regex_, const std::string& flavor
 
 bool deamer::dregx::Regex::Match(const std::string& text) const
 {
-	return transitionTable.Match(text);
+	return statemachine->ToTransitionTable().Match(text);
 }
 
 std::string deamer::dregx::Regex::GetRegex() const
 {
 	return regex;
+}
+
+std::unique_ptr<::dregx::statemachine::Statemachine> deamer::dregx::Regex::GetStatemachine() const
+{
+	auto copy = statemachine->Copy();
+	return std::move(copy);
 }
 
 void deamer::dregx::Regex::Or(const Regex& rhs)
@@ -29,7 +35,10 @@ void deamer::dregx::Regex::Or(const Regex& rhs)
 
 	const std::string copy = "(" + this->regex + "|" + rhs.regex + ")";
 	this->regex = copy;
-	SetRegex(this->regex);
+
+	const auto rhsCopy = rhs.GetStatemachine()->Copy();
+	statemachine->Or(*rhsCopy);
+	statemachine->ToDFA();
 }
 
 void deamer::dregx::Regex::Concatenate(const Regex& rhs)
@@ -43,11 +52,16 @@ void deamer::dregx::Regex::Concatenate(const Regex& rhs)
 		this->regex += rhs.regex;
 	}
 
-	SetRegex(this->regex);
+	const auto rhsCopy = rhs.GetStatemachine()->Copy();
+	statemachine->Concatenate(*rhsCopy);
+	statemachine->ToDFA();
 }
 
 bool deamer::dregx::Regex::Equal(const Regex& rhs) const
 {
+	rhs.statemachine->Minimize();
+	statemachine->Minimize();
+
 	return statemachine->Equal(*rhs.statemachine);
 }
 
@@ -102,7 +116,8 @@ deamer::dregx::Regex& deamer::dregx::Regex::operator+(const std::string& rhs)
 
 bool deamer::dregx::Regex::operator==(const std::string& rhs)
 {
-	return (*this) == Regex(rhs);
+	auto regex = Regex(rhs);
+	return *this == regex;
 }
 
 void deamer::dregx::Regex::SetRegex(const std::string& regex_)
@@ -112,7 +127,6 @@ void deamer::dregx::Regex::SetRegex(const std::string& regex_)
 	newStatemachine->Minimize();
 
 	statemachine = std::move(newStatemachine);
-	transitionTable = statemachine->ToTransitionTable();
 }
 
 std::unique_ptr<::dregx::statemachine::Statemachine>
@@ -128,10 +142,7 @@ deamer::dregx::Regex::CreateDFA(const std::string& regex_)
 	listener.Dispatch(tree->GetStartNode());
 
 	auto ir = listener.GetOutput();
-	if (!flavor.empty())
-	{
-		ir->AddFlavor(flavor);
-	}
+	ir->AddFlavor(flavor);
 
 	return std::move(::dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir.get()));
 }
