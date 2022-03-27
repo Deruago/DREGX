@@ -5,8 +5,6 @@
 #include "dregx/Statemachine/Algorithm/NDFA/Concatenate.h"
 #include "dregx/Statemachine/Algorithm/NDFA/Or.h"
 #include <algorithm>
-#include <iostream>
-#include <limits>
 #include <map>
 #include <memory>
 #include <set>
@@ -33,7 +31,7 @@ void dregx::statemachine::Statemachine::Or(Statemachine& rhs)
 	auto dfaOr = dfa::Or();
 	auto ndfaOr = ndfa::Or();
 
-	if (dfaOr.CheckPreconditions(this, &rhs))
+	if (dfaOr.CheckPreconditions(this, &rhs) && (rhs.states.size() * this->states.size()) < 30)
 	{
 		dfaOr.Execute(this, rhs);
 		if (states.size() > 50)
@@ -58,15 +56,7 @@ void dregx::statemachine::Statemachine::And(Statemachine& rhs)
 {
 	// Currently Product Construction only works for DFA
 	// There are options for NFAs, but not yet implemented.
-	if (!flags.IsDFA)
-	{
-		ToDFA();
-	}
-
-	if (!rhs.flags.IsDFA)
-	{
-		rhs.ToDFA();
-	}
+	ToDFA();
 
 	auto dfaAnd = dfa::And();
 	dfaAnd.Execute(this, rhs);
