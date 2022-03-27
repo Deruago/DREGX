@@ -210,6 +210,7 @@ std::unique_ptr<dregx::statemachine::Statemachine> dregx::statemachine::Statemac
 		newStatemachine->AddTransition(std::move(copyTransition));
 	}
 
+	newStatemachine->flags = this->flags;
 	newStatemachine->acceptedStates = std::move(newAcceptedStates);
 	newStatemachine->nonAcceptedStates = std::move(newNonAcceptedStates);
 	return std::move(newStatemachine);
@@ -1186,11 +1187,22 @@ void dregx::statemachine::Statemachine::RemoveUnreachableStates()
 	{
 		RemoveState(state);
 	}
-
+	std::vector<State*> acceptedStates_;
+	std::vector<State*> nonAcceptedStates_;
 	for (auto& state : states)
 	{
 		state->any = false;
+		if (state->IsAcceptState())
+		{
+			acceptedStates_.push_back(state.get());
+		}
+		else
+		{
+			nonAcceptedStates_.push_back(state.get());
+		}
 	}
+	this->acceptedStates = acceptedStates_;
+	this->nonAcceptedStates = nonAcceptedStates_;
 }
 
 void dregx::statemachine::Statemachine::DeterminizeAllTransitions()

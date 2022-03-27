@@ -1,5 +1,6 @@
 #include "dregx/Statemachine/Algorithm/DFA/Or.h"
 #include "dregx/Statemachine/Algorithm/DFA/Type/ProductionConstructionState.h"
+#include <stdexcept>
 
 dregx::statemachine::Flag dregx::statemachine::dfa::Or::Flags(Statemachine* lhs, Statemachine* rhs)
 {
@@ -133,9 +134,8 @@ void dregx::statemachine::dfa::Or::OptimizedOperation(Statemachine* lhs, Statema
 			auto* currentState = GetStateViaIndex(lhsIndex, rhsIndex);
 			auto* const lhsState = lhs->states[lhsIndex].get();
 			auto* const rhsState = rhs->states[rhsIndex].get();
-			auto* state = GetStateViaIndex(lhsIndex, rhsIndex);
 
-			ApplyMetaData(state, lhsState, rhsState);
+			ApplyMetaData(currentState, lhsState, rhsState);
 
 			// a b c d f g
 			// a c d g
@@ -165,7 +165,6 @@ void dregx::statemachine::dfa::Or::OptimizedOperation(Statemachine* lhs, Statema
 					}
 					break;
 				}
-
 				if (!lhsFinished() && rhsFinished())
 				{
 					for (; lhsTransitionIndex < lhsState->GetOutTransitions().size();
@@ -200,8 +199,8 @@ void dregx::statemachine::dfa::Or::OptimizedOperation(Statemachine* lhs, Statema
 					lhsTransitionIndex++;
 					rhsTransitionIndex++;
 				}
-				if (currentLhs->GetConditions() <
-					currentRhs->GetConditions()) // i.e. rhs does not have same transition cond
+				else if (currentLhs->GetConditions() >
+						 currentRhs->GetConditions()) // i.e. rhs does not have same transition cond
 				{
 					auto* nullState =
 						GetNullStateViaLhsIndex(currentLhs->GetOutState()->GetIndex());
@@ -211,8 +210,8 @@ void dregx::statemachine::dfa::Or::OptimizedOperation(Statemachine* lhs, Statema
 
 					lhsTransitionIndex++;
 				}
-				if (currentRhs->GetConditions() <
-					currentLhs->GetConditions()) // i.e. lhs does not have same transition cond
+				else if (currentRhs->GetConditions() >
+						 currentLhs->GetConditions()) // i.e. lhs does not have same transition cond
 				{
 					auto* nullState =
 						GetNullStateViaRhsIndex(currentRhs->GetOutState()->GetIndex());
@@ -221,6 +220,10 @@ void dregx::statemachine::dfa::Or::OptimizedOperation(Statemachine* lhs, Statema
 					newTransitions.push_back(std::move(newTransition));
 
 					rhsTransitionIndex++;
+				}
+				else
+				{
+					throw std::logic_error("Internal Error");
 				}
 			}
 		}

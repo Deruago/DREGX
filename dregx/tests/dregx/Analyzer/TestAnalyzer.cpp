@@ -41,7 +41,31 @@ public:
 	}
 };
 
-TEST_F(TestAnalyzer, IsRegexSubsetOf_GiveBaseSet_ReturnTrue)
+TEST_F(TestAnalyzer, IsRegexSubsetOf_GiveBaseSetab_ReturnTrue)
+{
+	auto analyzer = deamer::dregx::Analyzer();
+	analyzer.SetRegex("[a]+");
+
+	EXPECT_TRUE(analyzer.IsRegexSubsetOf("[ab]+"));
+}
+
+TEST_F(TestAnalyzer, IsRegexSubsetOf_GiveBaseSetaA_ReturnTrue)
+{
+	auto analyzer = deamer::dregx::Analyzer();
+	analyzer.SetRegex("[a]+");
+
+	EXPECT_TRUE(analyzer.IsRegexSubsetOf("[aA]+"));
+}
+
+TEST_F(TestAnalyzer, IsRegexSubsetOf_GiveBaseSetaB_ReturnTrue)
+{
+	auto analyzer = deamer::dregx::Analyzer();
+	analyzer.SetRegex("[a]+");
+
+	EXPECT_TRUE(analyzer.IsRegexSubsetOf("[aB]+"));
+}
+
+TEST_F(TestAnalyzer, IsRegexSubsetOf_GiveBaseSetazAZ_ReturnTrue)
 {
 	auto analyzer = deamer::dregx::Analyzer();
 	analyzer.SetRegex("[a]+");
