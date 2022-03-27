@@ -19,7 +19,6 @@ namespace dregx::statemachine::dfa
 		virtual bool CheckPreconditions(Statemachine* lhs, Statemachine* rhs) override;
 
 	private:
-		void DefaultOperation(Statemachine* lhs, Statemachine* rhs);
 		void OptimizedOperation(Statemachine* lhs, Statemachine* rhs);
 	};
 }
