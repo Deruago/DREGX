@@ -107,16 +107,12 @@ void dregx::statemachine::State::AddOutTransition(Transition* transition)
 		return;
 	}
 
-	for (auto i = 0; i < outTransitions.size(); i++)
-	{
-		if (transition->GetConditions() > outTransitions[i]->GetConditions())
-		{
-			outTransitions.insert(outTransitions.begin() + i, transition);
-			return;
-		}
-	}
 
 	outTransitions.push_back(transition);
+	auto compare = [](Transition* compareLhs, Transition* compareRhs) {
+		return compareLhs->GetConditions() > compareRhs->GetConditions();
+	};
+	std::sort(std::begin(outTransitions), std::end(outTransitions), compare);
 }
 
 void dregx::statemachine::State::AddInTransition(Transition* transition)
@@ -126,16 +122,13 @@ void dregx::statemachine::State::AddInTransition(Transition* transition)
 		return;
 	}
 
-	for (auto i = 0; i < inTransitions.size(); i++)
-	{
-		if (transition->GetConditions() > inTransitions[i]->GetConditions())
-		{
-			inTransitions.insert(inTransitions.begin() + i, transition);
-			return;
-		}
-	}
-
 	inTransitions.push_back(transition);
+
+	auto compare = [](Transition* compareLhs, Transition* compareRhs)
+	{
+		return compareLhs->GetConditions() > compareRhs->GetConditions();
+	};
+	std::sort(std::begin(inTransitions), std::end(inTransitions), compare);
 }
 
 bool dregx::statemachine::State::IsStartState() const
