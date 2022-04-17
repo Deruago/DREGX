@@ -1,4 +1,5 @@
 #include "dregx/Statemachine/Algorithm/DFA/Concatenate.h"
+#include <limits>
 
 dregx::statemachine::Flag dregx::statemachine::dfa::Concatenate::Flags(Statemachine* lhs,
 																	   Statemachine* rhs)
