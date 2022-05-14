@@ -352,7 +352,7 @@ void dregx::statemachine::Statemachine::Extend(const ir::Extension& extension)
 
 void dregx::statemachine::Statemachine::Group(const std::set<std::string>& set)
 {
-	for (auto acceptingState : GetAcceptStates())
+	for (auto* acceptingState : GetAcceptStates())
 	{
 		acceptingState->SetFlavors(set);
 	}
@@ -703,6 +703,66 @@ dregx::statemachine::TransitionTable dregx::statemachine::Statemachine::ToTransi
 	return table;
 }
 
+bool dregx::statemachine::Statemachine::ContainsCycles() const
+{
+	if (GetStartState() == nullptr)
+	{
+		return false;
+	}
+
+	std::vector<State*> stateStack = {nullptr};
+	std::vector<std::vector<State*>> unvisitedStates = {{GetStartState()}};
+
+	auto exists = [&](State* state) {
+		for (auto* i : stateStack)
+		{
+			if (i == state)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	while (!unvisitedStates.empty())
+	{
+		auto& currentUnvisitedStates = unvisitedStates[unvisitedStates.size() - 1];
+		if (currentUnvisitedStates.empty())
+		{
+			stateStack.pop_back();
+			unvisitedStates.pop_back();
+			continue;
+		}
+
+		auto* currentUnvisitedState = currentUnvisitedStates[currentUnvisitedStates.size() - 1];
+		currentUnvisitedStates.pop_back();
+
+		if (exists(currentUnvisitedState))
+		{
+			// We got an cycle
+			return true;
+		}
+
+		stateStack.push_back(currentUnvisitedState);
+
+		std::vector<State*> newUnvisitedStates;
+		for (auto* outTransition : currentUnvisitedState->GetOutTransitions())
+		{
+			if (outTransition->GetOutState() == GetSinkState())
+			{
+				// Sink is not used
+				continue;
+			}
+
+			newUnvisitedStates.push_back(outTransition->GetOutState());
+		}
+		unvisitedStates.push_back(newUnvisitedStates);
+	}
+
+	return false;
+}
+
 void dregx::statemachine::Statemachine::FillSinkState()
 {
 	if (sinkState == nullptr)
@@ -787,7 +847,7 @@ struct PowersetState
 	std::set<std::string> GetFlavors() const
 	{
 		std::set<std::string> flavors;
-		for (auto state : states)
+		for (auto* state : states)
 		{
 			for (auto flavor : state->GetFlavors())
 			{
@@ -1149,9 +1209,9 @@ void dregx::statemachine::Statemachine::RemoveUnreachableStates()
 		lastVisited = newVisited;
 		std::set<State*> newStates;
 
-		for (auto state : currentStates)
+		for (auto* state : currentStates)
 		{
-			for (auto outTransition : state->GetOutTransitions())
+			for (auto* outTransition : state->GetOutTransitions())
 			{
 				newStates.insert(outTransition->GetOutState());
 				if (!outTransition->GetOutState()->any)
@@ -1173,7 +1233,7 @@ void dregx::statemachine::Statemachine::RemoveUnreachableStates()
 			toBeRemoved.push_back(state.get());
 		}
 	}
-	for (auto state : toBeRemoved)
+	for (auto* state : toBeRemoved)
 	{
 		RemoveState(state);
 	}

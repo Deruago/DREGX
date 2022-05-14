@@ -7,6 +7,12 @@
 #include <memory>
 #include <optional>
 
+// clang-format off
+#define EXPECT_ONCE_IN(var, vars) do { int total = 0; for (auto _ : vars) { if (var == _) { total++; } } EXPECT_EQ(1, total); } while(0);
+#define EXPECT_IN(var, vars) do { int total = 0; for (auto _ : vars) { if (var == _) { total++; } } EXPECT_LE(1, total); } while(0);
+#define EXPECT_NOT_IN(var, vars) do { int total = 0; for (auto _ : vars) { if (var == _) { total++; } } EXPECT_EQ(0, total); } while(0);
+// clang-format on
+
 using namespace dregx;
 
 class TestFuzzer : public testing::Test
@@ -102,4 +108,113 @@ TEST_F(TestFuzzer, MinimalExample_Regex_A_PLUS_AB_PLUS_Return_AAB)
 	const auto example = fuzzer.GetMinimalExample();
 
 	EXPECT_EQ("aab", example);
+}
+
+TEST_F(TestFuzzer, GetAllFiniteMatches_REGEX_A_ShouldReturnAllMatches)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("[a]");
+	const auto result = fuzzer.GetAllFiniteMatches();
+
+	EXPECT_EQ(1, result.size());
+	EXPECT_IN("a", result);
+
+	EXPECT_NOT_IN("b", result);
+}
+
+TEST_F(TestFuzzer, GetAllFiniteMatches_REGEX_AB_ShouldReturnAllMatches)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("[a][b]");
+	const auto result = fuzzer.GetAllFiniteMatches();
+
+	EXPECT_EQ(1, result.size());
+	EXPECT_IN("ab", result);
+
+	EXPECT_NOT_IN("a", result);
+}
+
+TEST_F(TestFuzzer, GetAllFiniteMatches_REGEX_AB_OR_A_B_C_D_ShouldReturnAllMatches)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("[a][b]([a]|[b]|[c]|[d])");
+	const auto result = fuzzer.GetAllFiniteMatches();
+
+	EXPECT_EQ(4, result.size());
+	EXPECT_IN("aba", result);
+	EXPECT_IN("abb", result);
+	EXPECT_IN("abc", result);
+	EXPECT_IN("abd", result);
+
+	EXPECT_NOT_IN("a", result);
+	EXPECT_NOT_IN("ab", result);
+	EXPECT_NOT_IN("abe", result);
+}
+
+TEST_F(TestFuzzer, GetAllFiniteMatches_REGEX_AB_OR_A_B_C_D_0_TILL_2_ShouldReturnAllMatches)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("[a][b]([a]|[b]|[c]|[d]){0,2}");
+	const auto result = fuzzer.GetAllFiniteMatches();
+
+	EXPECT_EQ(21, result.size());
+	EXPECT_IN("ab", result);
+
+	EXPECT_IN("aba", result);
+	EXPECT_IN("abb", result);
+	EXPECT_IN("abc", result);
+	EXPECT_IN("abd", result);
+
+	EXPECT_IN("abaa", result);
+	EXPECT_IN("abba", result);
+	EXPECT_IN("abca", result);
+	EXPECT_IN("abda", result);
+	EXPECT_IN("abab", result);
+	EXPECT_IN("abbb", result);
+	EXPECT_IN("abcb", result);
+	EXPECT_IN("abdb", result);
+	EXPECT_IN("abac", result);
+	EXPECT_IN("abbc", result);
+	EXPECT_IN("abcc", result);
+	EXPECT_IN("abdc", result);
+	EXPECT_IN("abad", result);
+	EXPECT_IN("abbd", result);
+	EXPECT_IN("abcd", result);
+	EXPECT_IN("abdd", result);
+
+	EXPECT_NOT_IN("a", result);
+	EXPECT_NOT_IN("ad", result);
+	EXPECT_NOT_IN("abe", result);
+	EXPECT_NOT_IN("abae", result);
+}
+
+TEST_F(TestFuzzer, GetAllFiniteMatches_REGEX_A_A_0_TILL_2_OR_A_OR_AA_ShouldReturnAllMatches)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("[a]([a]{0,2}|[a]|[a][a])");
+	const auto result = fuzzer.GetAllFiniteMatches();
+
+	EXPECT_EQ(3, result.size());
+	EXPECT_IN("a", result);
+	EXPECT_IN("aa", result);
+	EXPECT_IN("aaa", result);
+}
+
+TEST_F(TestFuzzer, GetAllFiniteMatches_REGEX_A_0_2_B_0_3_C_0_4_D_1_4_ShouldReturnAllMatches)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("[a]{0,2}[b]{0,3}[c]{0,4}[d]{1,4}");
+	const auto result = fuzzer.GetAllFiniteMatches();
+
+	EXPECT_EQ(240, result.size());
+}
+
+TEST_F(TestFuzzer, GetAllFiniteMatches_REGEX_A_START_ShouldReturnMinimalMatch)
+{
+	auto fuzzer = deamer::dregx::Fuzzer();
+	fuzzer.SetRegex("[a]+");
+	const auto expected = fuzzer.GetMinimalExample();
+	const auto result = fuzzer.GetAllFiniteMatches();
+
+	EXPECT_EQ(expected, result[0]);
 }

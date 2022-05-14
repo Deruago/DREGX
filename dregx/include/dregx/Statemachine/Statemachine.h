@@ -86,6 +86,8 @@ namespace dregx::statemachine
 
 		TransitionTable ToTransitionTable();
 
+		bool ContainsCycles() const;
+
 	private:
 		void FillSinkState();
 	};

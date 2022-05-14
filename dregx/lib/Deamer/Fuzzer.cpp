@@ -13,7 +13,7 @@ void deamer::dregx::Fuzzer::SetRegex(const std::string& regex_)
 {
 	regex = regex_;
 	auto newStatemachine = CreateDFA(regex);
-	newStatemachine->Minimize();
+	newStatemachine->DeterminizeAllTransitions();
 
 	statemachine = std::move(newStatemachine);
 }
@@ -74,6 +74,62 @@ std::string deamer::dregx::Fuzzer::GetMinimalExample() const
 	}
 
 	return minimalExample;
+}
+
+bool deamer::dregx::Fuzzer::IsRegexFinite() const
+{
+	return !statemachine->ContainsCycles();
+}
+
+std::vector<std::string> deamer::dregx::Fuzzer::GetAllFiniteMatches() const
+{
+	if (!IsRegexFinite())
+	{
+		return {GetMinimalExample()};
+	}
+
+	const auto state = statemachine->GetStartState();
+	auto result = GetAllFiniteMatchesImplementation(state);
+
+	std::vector<std::string> toVector;
+	for (const auto& _ : result)
+	{
+		toVector.push_back(_);
+	}
+
+	return toVector;
+}
+
+std::set<std::string>
+deamer::dregx::Fuzzer::GetAllFiniteMatchesImplementation(::dregx::statemachine::State* state) const
+{
+	std::set<std::string> output;
+
+	if (state->IsSinkState())
+	{
+		return {};
+	}
+
+	if (state->IsAcceptState())
+	{
+		// If it is an accept state
+		// Add an empty string to allow callers to append the conditional.
+		output.insert("");
+	}
+
+	for (const auto& transition : state->GetOutTransitions())
+	{
+		const auto results = GetAllFiniteMatchesImplementation(transition->GetOutState());
+		for (const auto& result : results)
+		{
+			for (const auto& condition : transition->GetConditions())
+			{
+				output.insert(condition.GetCharacter() + result);
+			}
+		}
+	}
+
+	return output;
 }
 
 std::unique_ptr<::dregx::statemachine::Statemachine>
