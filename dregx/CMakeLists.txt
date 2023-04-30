@@ -13,6 +13,20 @@ include(cmake/deamer_dregx_specialized.cmake)
 add_subdirectory(extern)
 add_subdirectory(lib)
 
+option(DREGX_DEBUG "Debug Build" OFF)
+
+if(DREGX_DEBUG)
+
+else()
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		set_target_properties(dregx PROPERTIES COMPILE_FLAGS "-O3")
+	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		set_target_properties(dregx PROPERTIES COMPILE_FLAGS "-O3")
+	elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		set_target_properties(dregx PROPERTIES COMPILE_FLAGS "/O3")
+	endif()
+endif()
+
 option(DREGX_TESTS "Enables all the tests" OFF)
 if(DREGX_TESTS)
 	message(STATUS "Tests are now available.")
