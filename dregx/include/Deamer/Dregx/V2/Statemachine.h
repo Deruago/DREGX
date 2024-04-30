@@ -61,7 +61,7 @@ namespace deamer::dregx::v2
 
 	// Operations
 	public:
-		std::unique_ptr<::deamer::dregx::v2::Statemachine> Or(const Statemachine& rhs);
+		std::unique_ptr<::deamer::dregx::v2::Statemachine> Or(const Statemachine& rhs_);
 
 		void And(const Statemachine& rhs);
 

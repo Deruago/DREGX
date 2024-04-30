@@ -303,7 +303,7 @@ std::size_t nearestPowerOf2(std::size_t input)
 }
 
 std::unique_ptr<::deamer::dregx::v2::Statemachine>
-deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs)
+deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs_)
 {
 	using std::chrono::system_clock;
 	auto start = std::chrono::system_clock::now();
@@ -317,7 +317,8 @@ deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs)
 	// Initialize the new Statemachine
 	//
 
-	const Statemachine& lhs = *this;
+	const Statemachine& lhs = this->totalStates <= rhs_.totalStates ? *this : rhs_;
+	const Statemachine& rhs = rhs_.totalStates >= this->totalStates ? rhs_ : *this;
 
 	auto newStatemachine = std::make_unique<Statemachine>();
 	const auto& lhsAlphabet = lhs.mapAlphabetIdWithCharacter;
@@ -365,7 +366,7 @@ deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs)
 	}
 
 	// The target is in safe range and thus more optimal construction is possible
-	newStatemachine->totalStates = roundedLhsTotalStates * roundedRhsTotalStates;
+	newStatemachine->totalStates = roundedLhsTotalStates * rhs.totalStates;
 
 	newStatemachine->transitionTable.resize(newStatemachine->totalStates * newStatemachine->totalAlphabetSize);
 
