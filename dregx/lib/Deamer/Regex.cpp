@@ -65,6 +65,12 @@ bool deamer::dregx::Regex::Equal(const Regex& rhs) const
 	return statemachine->Equal(*rhs.statemachine);
 }
 
+void deamer::dregx::Regex::Minimize()
+{
+	this->statemachine->Minimize();
+}
+
+
 deamer::dregx::Regex& deamer::dregx::Regex::operator|=(const Regex& rhs)
 {
 	Or(rhs);
@@ -123,6 +129,7 @@ bool deamer::dregx::Regex::operator==(const std::string& rhs)
 void deamer::dregx::Regex::SetRegex(const std::string& regex_)
 {
 	regex = regex_;
+	
 	auto newStatemachine = CreateDFA(regex);
 	newStatemachine->Minimize();
 

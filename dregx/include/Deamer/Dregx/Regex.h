@@ -4,6 +4,7 @@
 #include "dregx/Statemachine/Statemachine.h"
 #include "dregx/Statemachine/TransitionTable.h"
 #include <string>
+#include <memory>
 
 namespace deamer::dregx
 {
@@ -29,6 +30,9 @@ namespace deamer::dregx
 		void Or(const Regex& rhs);
 		void Concatenate(const Regex& rhs);
 		bool Equal(const Regex& rhs) const;
+
+	public:
+		void Minimize();
 
 	public:
 		Regex& operator|=(const Regex& rhs);
