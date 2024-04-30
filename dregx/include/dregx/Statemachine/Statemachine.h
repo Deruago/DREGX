@@ -90,6 +90,9 @@ namespace dregx::statemachine
 
 	private:
 		void FillSinkState();
+
+	private:
+		void VectorMinimize(bool splitFlavoredAcceptStates = true);
 	};
 }
 

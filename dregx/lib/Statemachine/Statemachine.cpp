@@ -10,6 +10,7 @@
 #include <set>
 #include <stdexcept>
 #include <utility>
+#include <execution>
 
 /*
  * Each algorithm must implement the following logic:
@@ -992,6 +993,199 @@ void dregx::statemachine::Statemachine::ToDFA()
 	this->transitions = std::move(newDfaTransitions);
 
 	flags.IsDFA = true;
+}
+
+void dregx::statemachine::Statemachine::VectorMinimize(bool splitFlavoredAcceptStates)
+{
+	ToDFA();
+
+	if (!flags.allTransitionDeterminized)
+	{
+		DeterminizeAllTransitions();
+	}
+
+	std::vector<std::vector<State*>> acceptedPartitions;
+	std::vector<State*> nonAcceptedPartition;
+	std::map<std::set<std::string>, std::size_t> mapFlavorWithIndex;
+	for (auto& state : states)
+	{
+		if (state->IsAcceptState())
+		{
+			std::size_t index = 0;
+			if (splitFlavoredAcceptStates)
+			{
+				auto iter = mapFlavorWithIndex.find(state->GetFlavors());
+				if (iter == mapFlavorWithIndex.end())
+				{
+					index = mapFlavorWithIndex.size();
+					mapFlavorWithIndex.insert({state->GetFlavors(), index});
+					acceptedPartitions.emplace_back();
+				}
+				else
+				{
+					index = iter->second;
+				}
+			}
+			acceptedPartitions[index].push_back(state.get());
+		}
+		else
+		{
+			nonAcceptedPartition.push_back(state.get());
+		}
+	}
+
+	std::vector<std::vector<State*>> lastEquivalenceSets;
+	lastEquivalenceSets.push_back(std::move(nonAcceptedPartition));
+	for (auto acceptedPartition : acceptedPartitions)
+	{
+		lastEquivalenceSets.push_back(std::move(acceptedPartition));
+	}
+
+	std::vector<std::vector<State*>> equivalenceSets = lastEquivalenceSets;
+	std::vector<std::vector<State*>> nextEquivalenceSets;
+	bool success = false; // If True we have the minimal partitions
+
+	const auto alphabet = GetAlphabet();
+	while (!equivalenceSets.empty())
+	{
+		auto currentSet = *equivalenceSets.begin();
+		equivalenceSets.erase(equivalenceSets.begin());
+
+		if (currentSet.size() == 1)
+		{
+			nextEquivalenceSets.push_back(currentSet);
+		}
+		else
+		{
+			std::vector<State*> currentPartition;
+			std::vector<State*> otherPartition;
+
+			for (const auto& alpha : alphabet)
+			{
+				currentPartition.clear();
+
+				std::size_t mainPartition = 0;
+				bool first = true;
+				for (const auto& state : currentSet)
+				{
+					std::size_t partition = 0;
+					auto* outTransition = state->GetOutTransitionWithSameCondition(alpha);
+					auto* outState = outTransition->GetOutState();
+					for (auto& set : lastEquivalenceSets)
+					{
+						if (std::find(set.begin(), set.end(), outState) ==
+							set.end())
+						{
+							partition++;
+							continue;
+						}
+
+						if (first)
+						{
+							currentPartition.push_back(state);
+							mainPartition = partition;
+							first = false;
+						}
+						else if (mainPartition == partition)
+						{
+							currentPartition.push_back(state);
+						}
+						else
+						{
+							otherPartition.push_back(state);
+						}
+						break;
+					}
+				}
+
+				if (!otherPartition.empty())
+				{
+					// we have separated the states
+					// further specialization is done in the next iteration of the main loop
+					break;
+				}
+			}
+
+			if (!currentPartition.empty())
+			{
+				nextEquivalenceSets.push_back(std::move(currentPartition));
+			}
+			if (!otherPartition.empty())
+			{
+				nextEquivalenceSets.push_back(std::move(otherPartition));
+			}
+		}
+
+		if (equivalenceSets.empty())
+		{
+			if (lastEquivalenceSets == nextEquivalenceSets)
+			{
+				success = true;
+				break;
+			}
+			else
+			{
+				lastEquivalenceSets = nextEquivalenceSets;
+				equivalenceSets = std::move(nextEquivalenceSets);
+				nextEquivalenceSets = {};
+			}
+		}
+	}
+
+	if (!success)
+	{
+		throw std::logic_error("Statemachine::Minimize: Programmer error should never throw");
+	}
+
+	std::vector<std::unique_ptr<State>> newStates;
+	std::vector<std::unique_ptr<State>> removedStates;
+	std::set<State*> unreachableStates;
+	std::map<State*, State*> mapSetWithState;
+	std::vector<std::unique_ptr<Transition>> newTransitions;
+	State* newStartState = nullptr;
+	for (auto& set : nextEquivalenceSets)
+	{
+		auto newState = std::make_unique<State>();
+		newState->SetAccept((*set.begin())->IsAcceptState());
+		for (const auto& state : set)
+		{
+			mapSetWithState.insert({state, newState.get()});
+
+			newState->AddFlavors(state->GetFlavors());
+
+			if (state->IsStartState())
+			{
+				newState->SetStart(true);
+				newStartState = newState.get();
+			}
+		}
+
+		newStates.push_back(std::move(newState));
+	}
+
+	for (auto& set : nextEquivalenceSets)
+	{
+		auto* someStateInPartition = *set.begin();
+		auto* setState = mapSetWithState.find(someStateInPartition)->second;
+
+		for (auto& transition : someStateInPartition->GetOutTransitions())
+		{
+			auto iter = mapSetWithState.find(transition->GetOutState());
+			auto* outState = iter->second;
+			auto newTransition =
+				std::make_unique<Transition>(setState, transition->GetConditions(), outState);
+			newTransitions.push_back(std::move(newTransition));
+		}
+	}
+
+	sinkState = nullptr;
+	SetStartState(newStartState);
+	this->states = std::move(newStates);
+	this->transitions = std::move(newTransitions);
+	if (newStartState != nullptr)
+	{
+		RemoveUnreachableStates();
+	}
 }
 
 void dregx::statemachine::Statemachine::Minimize(bool splitFlavoredAcceptStates)
