@@ -331,6 +331,13 @@ deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs_) const
 		}
 	}
 
+	if (result == nullptr)
+	{
+		// Some internal failure occured
+		// Use General method
+		result = GeneralOr(rhs_);
+	}
+
 	if (rhs_.IsCyclic() || this->IsCyclic())
 	{
 		result->isCyclic = true;
@@ -342,6 +349,9 @@ deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs_) const
 std::unique_ptr<::deamer::dregx::v2::Statemachine>
 deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 {
+	using std::chrono::system_clock;
+	auto start = std::chrono::system_clock::now();
+
 	auto newStatemachine = std::make_unique<::deamer::dregx::v2::Statemachine>();
 
 	// [Non]-Finite Statemachine
@@ -479,12 +489,67 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 			{
 				newStatemachine
 					->transitionTable[stateCounter * newStatemachine->totalAlphabetSize + alphaI] =
-					newStatemachine->sinkState + lhs.totalStates;
+					newStatemachine->sinkState;
 			}
 		}
 
 		stateCounter++;
 	}
+
+	//
+	// Bi-simulate Start state
+	//
+
+	for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
+	{
+		auto lhsSupportIter = lhs.mapCharacterWithAlphabetId.find(newStatemachine->mapAlphabetIdWithCharacter.find(alphaI)->second);
+		auto rhsSupportIter = rhs.mapCharacterWithAlphabetId.find(newStatemachine->mapAlphabetIdWithCharacter.find(alphaI)->second);
+
+		if (lhsSupportIter == lhs.mapCharacterWithAlphabetId.end() &&
+			rhsSupportIter == rhs.mapCharacterWithAlphabetId.end())
+		{
+			// Both automatons do not support the transition
+			// This is not possible [unreachable]
+		}
+		else if (lhsSupportIter == lhs.mapCharacterWithAlphabetId.end() &&
+				 rhsSupportIter != rhs.mapCharacterWithAlphabetId.end())
+		{
+			// Lhs does not support
+			// Rhs does support
+
+			// The target state is equal to the rescaled right hand side state
+			newStatemachine->transitionTable[
+				(newStatemachine->startState & newStatemachine->stateMask) *
+				newStatemachine->totalAlphabetSize +
+				alphaI] = rhs.transitionTable[
+					(rhs.startState & rhs.stateMask) *
+					rhs.totalAlphabetSize +
+					rhsSupportIter->second
+				] + lhs.totalStates;
+		}
+		else if (lhsSupportIter != lhs.mapCharacterWithAlphabetId.end() &&
+				 rhsSupportIter == rhs.mapCharacterWithAlphabetId.end())
+		{
+			// Lhs does support
+			// Rhs does not support
+
+			// Current logic is enough
+			// This branch does not continue for Rhs
+		}
+		else if (lhsSupportIter != lhs.mapCharacterWithAlphabetId.end() &&
+				 rhsSupportIter != rhs.mapCharacterWithAlphabetId.end())
+		{
+			// Lhs does support
+			// Rhs does support
+
+			// Continue simulation [Not yet implemented]
+			return nullptr;
+		}
+	}
+
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> diff = end - start;
+	std::cout << "[Linear] Or operation: " << diff.count() * 1000 << "ms\n";
 
 	newStatemachine->Squash();
 
@@ -680,7 +745,7 @@ deamer::dregx::v2::Statemachine::GeneralOr(const Statemachine& rhs_) const
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = end - start;
-	std::cout << "Or operation: " << diff.count() * 1000 << "ms\n";
+	std::cout << "[General] Or operation: " << diff.count() * 1000 << "ms\n";
 
 	// Squash ensures total state space is closer to optimum
 	newStatemachine->Squash();
