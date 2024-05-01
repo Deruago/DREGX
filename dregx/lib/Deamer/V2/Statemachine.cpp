@@ -448,8 +448,9 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 	newStatemachine->totalStates = lhs.totalStates + rhs.totalStates;
 	newStatemachine->transitionTable.resize((lhs.totalStates + rhs.totalStates) * newStatemachine->totalAlphabetSize);
 
-	newStatemachine->startState = lhs.startState;
-	newStatemachine->sinkState = lhs.sinkState;
+	// The start and sinks are ORred on acceptance
+	newStatemachine->startState = lhs.startState | rhs.startState & rhs.stateTypeMask;
+	newStatemachine->sinkState = lhs.sinkState   | rhs.sinkState  & rhs.stateTypeMask;
 
 	std::size_t stateCounter = 0;
 
