@@ -42,6 +42,7 @@ namespace deamer::dregx::v2
 		std::map<std::size_t, char> mapAlphabetIdWithCharacter;
 		std::map<char, std::size_t> mapCharacterWithAlphabetId;
 
+		bool isCyclic;
 	public:
 		Statemachine(std::unique_ptr<::dregx::statemachine::Statemachine> v1Statemachine,
 					 std::size_t reservedFlavorSpace_ = 10);
@@ -59,9 +60,14 @@ namespace deamer::dregx::v2
 
 		bool Match(const std::string& rhs) const;
 
+		bool IsCyclic() const;
+
 	// Operations
 	public:
-		std::unique_ptr<::deamer::dregx::v2::Statemachine> Or(const Statemachine& rhs_);
+		std::unique_ptr<::deamer::dregx::v2::Statemachine> Or(const Statemachine& rhs_) const;
+		std::unique_ptr<::deamer::dregx::v2::Statemachine> LinearOr(const Statemachine& rhs_) const;
+		std::unique_ptr<::deamer::dregx::v2::Statemachine>
+		GeneralOr(const Statemachine& rhs_) const;
 
 		void And(const Statemachine& rhs);
 

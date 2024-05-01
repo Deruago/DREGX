@@ -152,6 +152,8 @@
 		alphabetIterator++;
 	}
 
+	isCyclic = v1Statemachine->ContainsCycles();
+
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = end - start;
 	std::cout << "Conversion V1 -> V2: " << diff.count() * 1000 << "ms\n";
@@ -172,7 +174,8 @@
 	  mapAlphabetIdWithCharacter(rhs.mapAlphabetIdWithCharacter),
 	  mapCharacterWithAlphabetId(rhs.mapCharacterWithAlphabetId),
 	  startState(rhs.startState),
-	  sinkState(rhs.sinkState)
+	  sinkState(rhs.sinkState),
+	  isCyclic(rhs.isCyclic)
 {
 }
 
@@ -302,8 +305,194 @@ std::size_t nearestPowerOf2(std::size_t input)
 	return nearestPowerOf2Impl<0>(input);
 }
 
+bool deamer::dregx::v2::Statemachine::IsCyclic() const
+{
+	return isCyclic;
+}
+
 std::unique_ptr<::deamer::dregx::v2::Statemachine>
-deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs_)
+deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs_) const
+{
+	std::unique_ptr<::deamer::dregx::v2::Statemachine> result;
+	if (rhs_.IsCyclic() && this->IsCyclic())
+	{
+		result = GeneralOr(rhs_);
+	}
+	else
+	{
+		// Finite Regexes are ORrable in Linear time(States)
+		if (rhs_.IsCyclic())
+		{
+			result = rhs_.LinearOr(*this);
+		}
+		else
+		{
+			result = LinearOr(rhs_);
+		}
+	}
+
+	if (rhs_.IsCyclic() || this->IsCyclic())
+	{
+		result->isCyclic = true;
+	}
+
+	return std::move(result);
+}
+
+std::unique_ptr<::deamer::dregx::v2::Statemachine>
+deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
+{
+	auto newStatemachine = std::make_unique<::deamer::dregx::v2::Statemachine>();
+
+	// [Non]-Finite Statemachine
+	const Statemachine& lhs = *this;
+	const Statemachine& rhs = rhs_;
+
+	const auto& lhsAlphabet = lhs.mapAlphabetIdWithCharacter;
+	const auto& rhsAlphabet = rhs.mapAlphabetIdWithCharacter;
+
+	const auto& lhsFlavor = lhs.mapFlavorIdWithFlavorSet;
+	const auto& rhsFlavor = rhs.mapFlavorIdWithFlavorSet;
+
+	// Unify Alphabets
+	std::size_t commonAlphaCounter = 0;
+	for (auto [lhsId, lhsAlpha] : lhsAlphabet)
+	{
+		auto iter = newStatemachine->mapCharacterWithAlphabetId.find(lhsAlpha);
+		if (iter == newStatemachine->mapCharacterWithAlphabetId.end())
+		{
+			// New Alphabet
+			newStatemachine->mapAlphabetIdWithCharacter.insert({commonAlphaCounter, lhsAlpha});
+			newStatemachine->mapCharacterWithAlphabetId.insert({lhsAlpha, commonAlphaCounter});
+			commonAlphaCounter++;
+		}
+	}
+
+	for (auto [rhsId, rhsAlpha] : rhsAlphabet)
+	{
+		auto iter = newStatemachine->mapCharacterWithAlphabetId.find(rhsAlpha);
+		if (iter == newStatemachine->mapCharacterWithAlphabetId.end())
+		{
+			// New Alphabet
+			newStatemachine->mapAlphabetIdWithCharacter.insert({commonAlphaCounter, rhsAlpha});
+			newStatemachine->mapCharacterWithAlphabetId.insert({rhsAlpha, commonAlphaCounter});
+			commonAlphaCounter++;
+		}
+	}
+
+	newStatemachine->totalAlphabetSize = commonAlphaCounter;
+
+	std::size_t commonFlavorCounter = 0;
+	for (auto [lhsId, lhsFlavor] : lhsFlavor)
+	{
+		auto iter = newStatemachine->mapFlavorSetWithFlavorId.find(lhsFlavor);
+		if (iter == newStatemachine->mapFlavorSetWithFlavorId.end())
+		{
+			newStatemachine->mapFlavorIdWithFlavorSet.insert({commonFlavorCounter, lhsFlavor});
+			newStatemachine->mapFlavorSetWithFlavorId.insert({lhsFlavor, commonFlavorCounter});
+			commonFlavorCounter++;
+		}
+	}
+
+	for (auto [rhsId, rhsFlavor] : rhsFlavor)
+	{
+		auto iter = newStatemachine->mapFlavorSetWithFlavorId.find(rhsFlavor);
+		if (iter == newStatemachine->mapFlavorSetWithFlavorId.end())
+		{
+			newStatemachine->mapFlavorIdWithFlavorSet.insert({commonFlavorCounter, rhsFlavor});
+			newStatemachine->mapFlavorSetWithFlavorId.insert({rhsFlavor, commonFlavorCounter});
+			commonFlavorCounter++;
+		}
+	}
+
+	auto unifySets = [](auto lhs, auto rhs) {
+		for (auto element : rhs)
+		{
+			lhs.insert(element);
+		}
+
+		return lhs;
+	};
+
+	// Removeable if Flavorings have priority
+	for (auto [lhsId, lhsFlavor] : lhsFlavor)
+	{
+		for (auto [rhsId, rhsFlavor] : rhsFlavor)
+		{
+			auto unifiedSet = unifySets(lhsFlavor, rhsFlavor);
+
+			auto iter = newStatemachine->mapFlavorSetWithFlavorId.find(unifiedSet);
+			if (iter == newStatemachine->mapFlavorSetWithFlavorId.end())
+			{
+				newStatemachine->mapFlavorIdWithFlavorSet.insert({commonFlavorCounter, unifiedSet});
+				newStatemachine->mapFlavorSetWithFlavorId.insert({unifiedSet, commonFlavorCounter});
+				commonFlavorCounter++;
+			}
+		}
+	}
+
+	//
+	// Fill in lhs states in the new statemachine
+	//
+
+	newStatemachine->totalStates = lhs.totalStates + rhs.totalStates;
+	newStatemachine->transitionTable.resize((lhs.totalStates + rhs.totalStates) * newStatemachine->totalAlphabetSize);
+
+	newStatemachine->startState = lhs.startState;
+	newStatemachine->sinkState = lhs.sinkState;
+
+	std::size_t stateCounter = 0;
+
+	for (std::size_t stateI = 0; stateI < lhs.totalStates; stateI++)
+	{
+		for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
+		{
+			if (stateI < lhs.totalStates && alphaI < lhs.totalAlphabetSize)
+			{
+				newStatemachine->transitionTable[stateCounter * newStatemachine->totalAlphabetSize + alphaI] = lhs.transitionTable[stateI * lhs.totalAlphabetSize + alphaI];
+			}
+			else
+			{
+				newStatemachine->transitionTable[stateCounter * newStatemachine->totalAlphabetSize + alphaI] = newStatemachine->sinkState;
+			}
+		}
+
+		stateCounter++;
+	}
+
+	for (std::size_t stateI = 0; stateI < rhs.totalStates; stateI++)
+	{
+		for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
+		{
+			auto iter = rhs.mapCharacterWithAlphabetId.find(newStatemachine->mapAlphabetIdWithCharacter
+							.find(alphaI)
+							->second);
+
+			if (stateI < rhs.totalStates && iter != rhs.mapCharacterWithAlphabetId.end())
+			{
+				auto rhsAlphaI = iter->second;
+				newStatemachine
+					->transitionTable[stateCounter * newStatemachine->totalAlphabetSize + alphaI] =
+					rhs.transitionTable[stateI * rhs.totalAlphabetSize + rhsAlphaI] + lhs.totalStates;
+			}
+			else
+			{
+				newStatemachine
+					->transitionTable[stateCounter * newStatemachine->totalAlphabetSize + alphaI] =
+					newStatemachine->sinkState + lhs.totalStates;
+			}
+		}
+
+		stateCounter++;
+	}
+
+	newStatemachine->Squash();
+
+	return std::move(newStatemachine);
+}
+
+std::unique_ptr<::deamer::dregx::v2::Statemachine>
+deamer::dregx::v2::Statemachine::GeneralOr(const Statemachine& rhs_) const
 {
 	using std::chrono::system_clock;
 	auto start = std::chrono::system_clock::now();
@@ -518,12 +707,12 @@ void deamer::dregx::v2::Statemachine::Squash()
 	reachedStates.resize(totalStates);
 
 	std::vector<std::size_t> evaluatedStates;
-	evaluatedStates.resize(totalStates);
+	evaluatedStates.reserve(totalStates);
 	reachedStates[startState & stateMask] |= static_cast<std::size_t>(1);
-	evaluatedStates[0] = startState & stateMask;
+	evaluatedStates.push_back(startState & stateMask);
 
 	std::vector<std::size_t> newEvaluatedStates;
-	newEvaluatedStates.resize(totalStates);
+	newEvaluatedStates.reserve(totalStates);
 
 	while (!evaluatedStates.empty())
 	{
