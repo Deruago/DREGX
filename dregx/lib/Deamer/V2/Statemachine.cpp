@@ -542,8 +542,36 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 			// Lhs does support
 			// Rhs does support
 
-			// Continue simulation [Not yet implemented]
-			return nullptr;
+			// There are two cases:
+			//	Lhs goes to a sink state
+			//	Lhs goes to a non sink state
+			//
+			//	If it goes to a sink state, move to Rhs and done
+			//	Otherwise Continue Simulation [Error]
+
+			auto nextState = newStatemachine->transitionTable[
+				(newStatemachine->startState & newStatemachine->stateMask) *
+				newStatemachine->totalAlphabetSize +
+				alphaI
+			];
+
+			if (nextState == newStatemachine->sinkState)
+			{
+				// Update to Rhs
+				newStatemachine->transitionTable[
+					(newStatemachine->startState & newStatemachine->stateMask) *
+					newStatemachine->totalAlphabetSize +
+					alphaI] = rhs.transitionTable[
+						(rhs.startState & rhs.stateMask) *
+						rhs.totalAlphabetSize +
+						rhsSupportIter->second
+					] + lhs.totalStates;
+			}
+			else
+			{
+				// Unsupported
+				return nullptr;
+			}
 		}
 	}
 
