@@ -542,20 +542,32 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 			// Lhs does support
 			// Rhs does support
 
-			// There are two cases:
-			//	Lhs goes to a sink state
-			//	Lhs goes to a non sink state
+			// There are four cases:
+			//	Lhs goes to a sink state Rhs goes to a sink state [Nothing to do]
+			//	Lhs goes to a sink state Rhs does not go to a sink state [Nothing to do]
+			//	Lhs goes to a non sink state Rhs goes to a sink state [Move to Rhs]
+			//	Lhs goes to a non sink state Rhs does not go to a sink state [Continue Simulation]
 			//
-			//	If it goes to a sink state, move to Rhs and done
-			//	Otherwise Continue Simulation [Error]
 
-			auto nextState = newStatemachine->transitionTable[
+			auto nextLhsState = newStatemachine->transitionTable[
 				(newStatemachine->startState & newStatemachine->stateMask) *
 				newStatemachine->totalAlphabetSize +
 				alphaI
 			];
 
-			if (nextState == newStatemachine->sinkState)
+			auto nextRhsState = rhs.transitionTable[
+				(rhs.startState & rhs.stateMask) *
+				rhs.totalAlphabetSize +
+				rhsSupportIter->second
+			];
+
+			if (nextLhsState == newStatemachine->sinkState &&
+				nextRhsState == rhs.sinkState)
+			{
+				// Nothing to do
+			}
+			else if (nextLhsState == newStatemachine->sinkState &&
+				nextRhsState != rhs.sinkState)
 			{
 				// Update to Rhs
 				newStatemachine->transitionTable[
@@ -567,9 +579,13 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 						rhsSupportIter->second
 					] + lhs.totalStates;
 			}
+			else if (nextLhsState != newStatemachine->sinkState && nextRhsState == rhs.sinkState)
+			{
+				// Nothing to do
+			}
 			else
 			{
-				// Unsupported
+				// Continue Simulation (Unsupported)
 				return nullptr;
 			}
 		}
