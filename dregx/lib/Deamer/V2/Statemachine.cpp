@@ -501,6 +501,33 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 	// Bi-simulate Start state
 	//
 
+	struct BisimulationPair
+	{
+		std::size_t lhsState;
+		std::size_t rhsState;
+
+		constexpr BisimulationPair(std::size_t lhsState_, std::size_t rhsState_)
+			: lhsState(lhsState_),
+			  rhsState(rhsState_)
+		{
+		}
+
+		virtual ~BisimulationPair() = default;
+	};
+
+	// Projection is used to constantly check how many unique pairs exists
+	std::vector<std::size_t> projection;
+	projection.resize(lhs.totalStates);
+
+	std::vector<std::size_t> bisimulativeProjection;
+	bisimulativeProjection.resize(lhs.totalStates * rhs.totalStates);
+
+	std::vector<BisimulationPair> bisimulationPairs;
+	bisimulationPairs.reserve(lhs.totalStates * rhs.totalStates);
+
+	std::vector<BisimulationPair> reBisimulationPairs;
+	reBisimulationPairs.reserve(lhs.totalStates * rhs.totalStates);
+
 	for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
 	{
 		auto lhsSupportIter = lhs.mapCharacterWithAlphabetId.find(newStatemachine->mapAlphabetIdWithCharacter.find(alphaI)->second);
@@ -586,10 +613,184 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 			}
 			else
 			{
-				// Continue Simulation (Unsupported)
-				return nullptr;
+				// Continue Simulation
+				//
+				// Two cases:
+				//		- Projection is already filled, [Quadratic Splitting] (Error)
+				//		- Projection is not filled,     [Linear Splitting]
+				//
+
+				std::size_t bisimulativeIndex =
+					(nextLhsState & lhs.stateMask) *
+					(nextRhsState & rhs.stateMask);
+
+				newStatemachine->transitionTable[
+					(newStatemachine->startState & newStatemachine->stateMask) *
+					newStatemachine->totalAlphabetSize +
+					alphaI
+				] |= (rhs.transitionTable[
+					(rhs.startState & rhs.stateMask) *
+					rhs.totalAlphabetSize +
+					rhsSupportIter->second
+				] & rhs.stateTypeMask);
+
+				if (bisimulativeProjection[bisimulativeIndex] == 0)
+				{
+					bisimulativeProjection[bisimulativeIndex] |= 1;
+					projection[nextLhsState & lhs.stateMask] += 1;
+					bisimulationPairs.emplace_back(nextLhsState, nextRhsState);
+				}
+
+				if (projection[nextLhsState & lhs.stateMask] > 1)
+				{
+					// Requires Quadratic Splitting
+					return nullptr;
+				}
 			}
 		}
+	}
+
+	while (!bisimulationPairs.empty())
+	{
+		reBisimulationPairs.clear();
+
+		// Evaluate bisimulation pairs
+		for (const auto& bisimulationPair : bisimulationPairs)
+		{
+			std::size_t bisimulativeIndex =
+				(bisimulationPair.lhsState & lhs.stateMask) *
+				(bisimulationPair.rhsState & rhs.stateMask);
+			bisimulativeProjection[bisimulativeIndex] = 0;
+			projection[bisimulationPair.lhsState & lhs.stateMask] = 0;
+		}
+
+		for (const auto& bisimulationPair : bisimulationPairs)
+		{
+			for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
+			{
+				auto lhsSupportIter = lhs.mapCharacterWithAlphabetId.find(
+					newStatemachine->mapAlphabetIdWithCharacter.find(alphaI)->second);
+				auto rhsSupportIter = rhs.mapCharacterWithAlphabetId.find(
+					newStatemachine->mapAlphabetIdWithCharacter.find(alphaI)->second);
+
+				if (lhsSupportIter == lhs.mapCharacterWithAlphabetId.end() &&
+					rhsSupportIter == rhs.mapCharacterWithAlphabetId.end())
+				{
+					// Both automatons do not support the transition
+					// This is not possible [unreachable]
+				}
+				else if (lhsSupportIter == lhs.mapCharacterWithAlphabetId.end() &&
+						 rhsSupportIter != rhs.mapCharacterWithAlphabetId.end())
+				{
+					// Lhs does not support
+					// Rhs does support
+
+					// The target state is equal to the rescaled right hand side state
+					newStatemachine->transitionTable[(bisimulationPair.lhsState &
+													  newStatemachine->stateMask) *
+														 newStatemachine->totalAlphabetSize +
+													 alphaI] =
+						rhs.transitionTable[(bisimulationPair.rhsState & rhs.stateMask) *
+												rhs.totalAlphabetSize +
+											rhsSupportIter->second] +
+						lhs.totalStates;
+				}
+				else if (lhsSupportIter != lhs.mapCharacterWithAlphabetId.end() &&
+						 rhsSupportIter == rhs.mapCharacterWithAlphabetId.end())
+				{
+					// Lhs does support
+					// Rhs does not support
+
+					// Current logic is enough
+					// This branch does not continue for Rhs
+				}
+				else if (lhsSupportIter != lhs.mapCharacterWithAlphabetId.end() &&
+						 rhsSupportIter != rhs.mapCharacterWithAlphabetId.end())
+				{
+					// Lhs does support
+					// Rhs does support
+
+					// There are four cases:
+					//	Lhs goes to a sink state Rhs goes to a sink state [Nothing to do]
+					//	Lhs goes to a sink state Rhs does not go to a sink state [Nothing to do]
+					//	Lhs goes to a non sink state Rhs goes to a sink state [Move to Rhs]
+					//	Lhs goes to a non sink state Rhs does not go to a sink state [Continue
+					//Simulation]
+					//
+
+					auto nextLhsState =
+						newStatemachine->transitionTable[(bisimulationPair.lhsState &
+														  newStatemachine->stateMask) *
+															 newStatemachine->totalAlphabetSize +
+														 alphaI];
+
+					auto nextRhsState = rhs.transitionTable[(bisimulationPair.rhsState & rhs.stateMask) *
+																rhs.totalAlphabetSize +
+															rhsSupportIter->second];
+
+					if (nextLhsState == newStatemachine->sinkState && nextRhsState == rhs.sinkState)
+					{
+						// Nothing to do
+					}
+					else if (nextLhsState == newStatemachine->sinkState &&
+							 nextRhsState != rhs.sinkState)
+					{
+						// Update to Rhs
+						newStatemachine->transitionTable[(bisimulationPair.lhsState &
+														  newStatemachine->stateMask) *
+															 newStatemachine->totalAlphabetSize +
+														 alphaI] =
+							rhs.transitionTable[(bisimulationPair.rhsState & rhs.stateMask) *
+													rhs.totalAlphabetSize +
+												rhsSupportIter->second] +
+							lhs.totalStates;
+					}
+					else if (nextLhsState != newStatemachine->sinkState &&
+							 nextRhsState == rhs.sinkState)
+					{
+						// Nothing to do
+					}
+					else
+					{
+						// Continue Simulation
+						//
+						// Two cases:
+						//		- Projection is already filled, [Quadratic Splitting] (Error)
+						//		- Projection is not filled,     [Linear Splitting]
+						//
+
+						std::size_t bisimulativeIndex =
+							(nextLhsState & lhs.stateMask) * (nextRhsState & rhs.stateMask);
+
+						
+						newStatemachine->transitionTable[
+							(bisimulationPair.lhsState & newStatemachine->stateMask) *
+							newStatemachine->totalAlphabetSize +
+							alphaI
+						] |= (rhs.transitionTable[
+							(bisimulationPair.rhsState & rhs.stateMask) *
+							rhs.totalAlphabetSize +
+							rhsSupportIter->second
+						] & rhs.stateTypeMask);
+
+						if (bisimulativeProjection[bisimulativeIndex] == 0)
+						{
+							bisimulativeProjection[bisimulativeIndex] |= 1;
+							projection[nextLhsState & lhs.stateMask] += 1;
+							reBisimulationPairs.emplace_back(nextLhsState, nextRhsState);
+						}
+
+						if (projection[nextLhsState & lhs.stateMask] > 1)
+						{
+							// Requires Quadratic Splitting
+							return nullptr;
+						}
+					}
+				}
+			}
+		}
+
+		bisimulationPairs = reBisimulationPairs;
 	}
 
 	auto end = std::chrono::system_clock::now();
