@@ -51,7 +51,7 @@ namespace deamer::dregx::v2
 		bool isCyclic;
 
 	public:
-		CBStatemachine(std::unique_ptr<::dregx::statemachine::Statemachine> v1Statemachine, std::size_t flavorValue)
+		CBStatemachine(std::unique_ptr<::dregx::statemachine::Statemachine> v1Statemachine, std::size_t flavorValue = 0)
 		{
 			isCyclic = v1Statemachine->ContainsCycles();
 
@@ -189,7 +189,7 @@ namespace deamer::dregx::v2
 				return evaluatedDepth;
 			}
 
-			if constexpr (sizeof(std::size_t) * 8 > evaluatedDepth)
+			if constexpr (evaluatedDepth < sizeof(std::size_t) * 8)
 			{
 				return nearestLogOf2Impl<evaluatedDepth + 1>(input);
 			}
@@ -212,7 +212,7 @@ namespace deamer::dregx::v2
 				return 1 << evaluatedDepth;
 			}
 
-			if constexpr (sizeof(std::size_t) * 8 > evaluatedDepth)
+			if constexpr (evaluatedDepth < sizeof(std::size_t) * 8)
 			{
 				return nearestPowerOf2Impl<evaluatedDepth + 1>(input);
 			}
@@ -408,10 +408,98 @@ namespace deamer::dregx::v2
 		}
 
 		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
-		std::unique_ptr<ThisType> And(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs)
+		std::unique_ptr<ThisType> And(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_)
 		{
-			auto newStatemachine = std::make_unique<ThisType>();
-			return newStatemachine;
+			std::unique_ptr<ThisType> result;
+
+			result = GeneralAnd(rhs_);
+
+			return result;
+		}
+
+		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
+		std::unique_ptr<ThisType> GeneralAnd(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_)
+		{
+			static_assert(
+				std::is_same_v<alphabetIndexType, rhsAlphabetIndexType>,
+				"Cannot apply General OR on different Alphabetical Compile-time Bounded Automata");
+
+			//
+			// Initialize the new Statemachine
+			//
+
+			const auto& lhs = this->totalStates <= rhs_.totalStates ? *this : rhs_;
+			const auto& rhs = rhs_.totalStates >= this->totalStates ? rhs_ : *this;
+
+			auto newStatemachine = std::make_unique<
+				CBStatemachine<std::max(flavorBitSpace, rhsFlavorBitSpace),
+							   std::max(typeBitSpace, rhsTypeBitSpace), alphabetIndexType>>();
+
+			const auto roundedLhsTotalStates = nearestPowerOf2(lhs.totalStates);
+			const auto roundedRhsTotalStates = nearestPowerOf2(rhs.totalStates);
+			const auto log2LhsTotalStates = nearestLogOf2(roundedLhsTotalStates);
+			const auto log2RhsTotalStates = nearestLogOf2(roundedRhsTotalStates);
+
+			if (log2LhsTotalStates + log2RhsTotalStates + sizeof(char) >= sizeof(std::size_t) * 8)
+			{
+				throw std::logic_error("Expected target requirement is too large");
+			}
+
+			// The target is in safe range and thus more optimal construction is possible
+			newStatemachine->totalStates = roundedLhsTotalStates * rhs.totalStates;
+
+			newStatemachine->transitionTable.resize(newStatemachine->totalStates *
+													newStatemachine->totalAlphabetSize);
+
+			//
+			// Fill in state relations
+			//
+
+			auto combineState = [&](std::size_t lhsState, std::size_t rhsState) -> std::size_t {
+				std::size_t combinedStateIndex =
+					(lhsState & lhs.stateMask) | ((rhsState & rhs.stateMask) << log2LhsTotalStates);
+				std::size_t combinedStateType =
+					(lhsState & lhs.stateTypeMask) & (rhsState & rhs.stateTypeMask);
+				std::size_t combinedFlavorType =
+					std::max(lhsState & lhs.stateFlavorMask, rhsState & rhs.stateFlavorMask);
+
+				std::size_t combinedState = combinedStateIndex | combinedStateType |
+											combinedFlavorType
+												<< (newStatemachine->reservedStateSpace +
+													newStatemachine->reservedStateTypeSpace);
+
+				return combinedState;
+			};
+
+			newStatemachine->startState = combineState(lhs.startState, rhs.startState);
+			newStatemachine->sinkState = combineState(lhs.sinkState, rhs.sinkState);
+
+			for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
+			{
+				for (std::size_t stateLhsI = 0; stateLhsI < lhs.totalStates; stateLhsI++)
+				{
+					std::size_t lhsTargetState =
+						lhs.transitionTable[(stateLhsI * lhs.totalAlphabetSize) + alphaI];
+
+					for (std::size_t stateRhsI = 0; stateRhsI < rhs.totalStates; stateRhsI++)
+					{
+						auto combinedCurrentState = combineState(stateLhsI, stateRhsI);
+
+						std::size_t rhsTargetState =
+							rhs.transitionTable[(stateRhsI * rhs.totalAlphabetSize) + alphaI];
+
+						auto combinedTargetState = combineState(lhsTargetState, rhsTargetState);
+						newStatemachine
+							->transitionTable[(combinedCurrentState & newStatemachine->stateMask) *
+												  newStatemachine->totalAlphabetSize +
+											  alphaI] = combinedTargetState;
+					}
+				}
+			}
+
+			// Squash ensures total state space is closer to optimum
+			newStatemachine->Squash();
+			return std::move(newStatemachine);
 		}
 
 		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
@@ -431,6 +519,12 @@ namespace deamer::dregx::v2
 		//	- Removes unreachable states
 		void Squash()
 		{
+			if (totalStates == 1)
+			{
+				// Removable if DBR is build differently
+				return;
+			}
+
 			std::vector<std::size_t> reachedStates;
 			reachedStates.resize(totalStates);
 
@@ -483,7 +577,7 @@ namespace deamer::dregx::v2
 			}
 
 			std::vector<std::size_t> newTransitionTable;
-			newTransitionTable.resize(totalStates * totalAlphabetSize);
+			newTransitionTable.resize(stateCounter * totalAlphabetSize);
 
 			startState = redirectionTable[startState & stateMask] |
 						 ((startState & stateTypeMask) | (startState & stateFlavorMask));
@@ -510,9 +604,172 @@ namespace deamer::dregx::v2
 			transitionTable = newTransitionTable;
 		}
 
+		/*!	\function DeadBranchRemoval
+		 * 
+		 *	\brief Removes states that will never reach an accepting state
+		 */
+		void DeadBranchRemoval()
+		{
+			// Make total x total, where previous[lhs x rhs] represents if lhs is before rhs
+			std::vector<bool> previous;
+			previous.resize(totalStates * totalStates);
+
+			std::vector<bool> acceptProjection;
+			acceptProjection.resize(totalStates);
+
+			std::vector<std::size_t> acceptedStates;
+			acceptedStates.reserve(totalStates);
+
+			std::vector<std::size_t> unacceptedStates;
+			unacceptedStates.reserve(totalStates);
+
+			std::vector<std::size_t> reUnacceptedStates;
+			reUnacceptedStates.reserve(totalStates);
+
+			for (std::size_t stateI = 0; stateI < totalStates; stateI++)
+			{
+				for (std::size_t alphaI = 0; alphaI < totalAlphabetSize; alphaI++)
+				{
+					const std::size_t targetStateI =
+						transitionTable[stateI * totalAlphabetSize + alphaI];
+					const std::size_t targetStateIndex = targetStateI & stateMask;
+					const std::size_t targetStateAccept = targetStateI & stateTypeMask;
+					
+					previous[stateI * totalStates + targetStateIndex] = true;
+					
+					if (targetStateAccept)
+					{
+						acceptProjection[targetStateIndex] = true;
+						acceptProjection[stateI] = true; // As it is connected to something that is accepting
+					}
+				}
+			}
+
+			for (std::size_t stateI = 0; stateI < totalStates; stateI++)
+			{
+				if (!acceptProjection[stateI])
+				{
+					unacceptedStates.push_back(stateI);
+				}
+			}
+
+			std::size_t lastStateSize = 0;
+			std::size_t currentStateSize = unacceptedStates.size();
+			while (!unacceptedStates.empty() && lastStateSize != currentStateSize)
+			{
+				reUnacceptedStates.clear();
+
+				for (auto unacceptedState : unacceptedStates)
+				{
+					for (std::size_t alphaI = 0; alphaI < totalAlphabetSize; alphaI++)
+					{
+						const std::size_t targetStateI =
+							transitionTable[unacceptedState * totalAlphabetSize + alphaI];
+						const std::size_t targetStateIndex = targetStateI & stateMask;
+						const std::size_t targetStateAccept = targetStateI & stateTypeMask;
+
+						if (targetStateAccept)
+						{
+							acceptProjection[unacceptedState] = true;
+							break;
+						}
+					}
+					
+					if (!acceptProjection[unacceptedState])
+					{
+						reUnacceptedStates.push_back(unacceptedState);
+					}
+				}
+
+				unacceptedStates = reUnacceptedStates;
+
+				lastStateSize = currentStateSize;
+				currentStateSize = unacceptedStates.size();
+			}
+
+			if (unacceptedStates.empty())
+			{
+				// Everything is eventually alive
+				return;
+			}
+
+			// Sink state is always good, as it was not used as an excuse to pass previous test
+			acceptProjection[sinkState & stateMask] = true;
+
+			// Unaccepted states now define the states that will never reach an accepting state
+			std::vector<std::size_t> redirectionTable;
+			redirectionTable.resize(totalStates);
+
+			std::size_t stateCounter = 0;
+			for (std::size_t stateI = 0; stateI < totalStates; stateI++)
+			{
+				if (acceptProjection[stateI])
+				{
+					redirectionTable[stateI] = stateCounter;
+					stateCounter++;
+				}
+				else
+				{
+					// Will never be used
+					redirectionTable[stateI] = std::numeric_limits<std::size_t>::max();
+				}
+			}
+
+			// Sink state influenced result
+			if (totalStates == stateCounter)
+			{
+				return;
+			}
+			std::vector<std::size_t> newTransitionTable;
+			newTransitionTable.resize(stateCounter * totalAlphabetSize);
+
+			startState = redirectionTable[startState & stateMask] |
+						 ((startState & stateTypeMask) | (startState & stateFlavorMask));
+			sinkState = redirectionTable[sinkState & stateMask] |
+						((sinkState & stateTypeMask) | (sinkState & stateFlavorMask));
+
+			for (std::size_t stateI = 0; stateI < totalStates; stateI++)
+			{
+				if (redirectionTable[stateI] == std::numeric_limits<std::size_t>::max())
+				{
+					continue;
+				}
+
+				for (std::size_t alphaI = 0; alphaI < totalAlphabetSize; alphaI++)
+				{
+					const auto targetState = transitionTable[stateI * totalAlphabetSize + alphaI];
+					if (!acceptProjection[targetState & stateMask])
+					{
+						// Go to sink state instead of going n states with no possibility of acceptance
+						newTransitionTable[redirectionTable[stateI] * totalAlphabetSize + alphaI] =
+							sinkState;
+					}
+					else
+					{
+						newTransitionTable[redirectionTable[stateI] * totalAlphabetSize + alphaI] =
+							redirectionTable[targetState & stateMask] |
+							((targetState & stateTypeMask) | (targetState & stateFlavorMask));
+					}
+				}
+			}
+
+			totalStates = stateCounter;
+			transitionTable = newTransitionTable;
+		}
+
 		void Minimize()
 		{
+			Squash();
+			DeadBranchRemoval();
+		}
 
+		bool IsEmptyLanguage() const noexcept
+		{
+			// There is at one state that is never accepting
+			return totalStates == 1 && (
+				(startState == 0) ||
+				(startState == std::numeric_limits<std::size_t>::max()) // Could be removed if DBR is made differently
+			);
 		}
 	};
 }
