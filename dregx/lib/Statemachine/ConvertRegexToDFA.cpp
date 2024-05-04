@@ -1,5 +1,6 @@
 #include "dregx/Statemachine/ConvertRegexToDFA.h"
 #include "dregx/Ir/Capture.h"
+#include "dregx/Ir/NotCapture.h"
 #include "dregx/Ir/CaptureRange.h"
 #include "dregx/Ir/Character.h"
 #include "dregx/Ir/Group.h"
@@ -109,7 +110,13 @@ dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir::Square* square
 	auto acceptState = std::make_unique<State>();
 	acceptState->SetAccept(true);
 
-	for (auto* capture : square->GetSubGroups())
+	auto subGroupsToAnalyze = square->GetSubGroups();
+	if (!subGroupsToAnalyze.empty() && subGroupsToAnalyze[0]->GetCaptureType() == ir::CaptureType::notcapture)
+	{
+		subGroupsToAnalyze = static_cast<ir::NotCapture*>(subGroupsToAnalyze[0])->GetSubGroups();
+	}
+
+	for (auto* capture : subGroupsToAnalyze)
 	{
 		if (capture->GetCaptureType() == ir::CaptureType::capturerange)
 		{

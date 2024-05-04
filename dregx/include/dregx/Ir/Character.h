@@ -17,6 +17,7 @@ namespace dregx::ir
 	public:
 		std::string GetFormattedRegex() override;
 
+		std::set<char> GetCapturedCharacters() const override;
 	private:
 	};
 }

@@ -3,17 +3,12 @@
 #include <memory>
 #include <stdexcept>
 #include <limits>
-#include <chrono>
-#include <iostream>
 
 ::deamer::dregx::v2::Statemachine::Statemachine(
 	std::unique_ptr<::dregx::statemachine::Statemachine> v1Statemachine,
 	std::size_t reservedFlavorSpace_)
 	: Statemachine(reservedFlavorSpace_)
 {
-	using std::chrono::system_clock;
-	auto start = std::chrono::system_clock::now();
-
 	const auto& otherStates = v1Statemachine->GetStates();
 	const auto& otherAlphabet = v1Statemachine->GetAlphabet();
 
@@ -77,7 +72,7 @@
 		auto targetFlavor = indexFlavorSet(targetState->GetFlavors());
 
 		auto targetStateInformation = targetIndex | targetAccept << (reservedStateSpace) |
-									  targetFlavor << (reservedStateSpace + reservedStateTypeSpace);
+									  (targetFlavor << (reservedStateSpace + reservedStateTypeSpace));
 		return targetStateInformation;
 	};
 
@@ -153,10 +148,6 @@
 	}
 
 	isCyclic = v1Statemachine->ContainsCycles();
-
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> diff = end - start;
-	std::cout << "Conversion V1 -> V2: " << diff.count() * 1000 << "ms\n";
 }
 
 ::deamer::dregx::v2::Statemachine::Statemachine(const ::deamer::dregx::v2::Statemachine& rhs)
@@ -226,9 +217,6 @@ bool deamer::dregx::v2::Statemachine::Equal(const ::deamer::dregx::v2::Statemach
 
 bool deamer::dregx::v2::Statemachine::Match(const std::string& rhs) const
 {
-	using std::chrono::system_clock;
-	auto start = std::chrono::system_clock::now();
-
 	std::vector<std::size_t> actions;
 	for (auto character : rhs)
 	{
@@ -252,22 +240,18 @@ bool deamer::dregx::v2::Statemachine::Match(const std::string& rhs) const
 	// Positive if it is accepting
 	const auto result = (currentState & stateTypeMask) && true;
 
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> diff = end - start;
-	std::cout << "Matching a string: " << diff.count() * 1000 << "ms\n";
-
 	return result;
 }
 
 template<std::size_t evaluatedDepth>
 static std::size_t nearestLogOf2Impl(std::size_t input)
 {
-	if (input <= (1 << evaluatedDepth))
+	if (input <= (static_cast<std::size_t>(1) << evaluatedDepth))
 	{
 		return evaluatedDepth;
 	}
 
-	if constexpr (sizeof(std::size_t) * 8 > evaluatedDepth)
+	if constexpr (evaluatedDepth < (sizeof(std::size_t) * 8 - 1))
 	{
 		return nearestLogOf2Impl<evaluatedDepth + 1>(input);
 	}
@@ -285,12 +269,12 @@ static std::size_t nearestLogOf2(std::size_t input)
 template<std::size_t evaluatedDepth>
 std::size_t nearestPowerOf2Impl(std::size_t input)
 {
-	if (input <= (1 << evaluatedDepth))
+	if (input <= (static_cast<std::size_t>(1) << evaluatedDepth))
 	{
-		return 1 << evaluatedDepth;
+		return static_cast<std::size_t>(1) << evaluatedDepth;
 	}
 
-	if constexpr (sizeof(std::size_t) * 8 > evaluatedDepth)
+	if constexpr (evaluatedDepth < (sizeof(std::size_t) * 8 - 1))
 	{
 		return nearestPowerOf2Impl<evaluatedDepth + 1>(input);
 	}
@@ -349,9 +333,6 @@ deamer::dregx::v2::Statemachine::Or(const Statemachine& rhs_) const
 std::unique_ptr<::deamer::dregx::v2::Statemachine>
 deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 {
-	using std::chrono::system_clock;
-	auto start = std::chrono::system_clock::now();
-
 	auto newStatemachine = std::make_unique<::deamer::dregx::v2::Statemachine>();
 
 	// [Non]-Finite Statemachine
@@ -793,10 +774,6 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 		bisimulationPairs = reBisimulationPairs;
 	}
 
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> diff = end - start;
-	std::cout << "[Linear] Or operation: " << diff.count() * 1000 << "ms\n";
-
 	newStatemachine->Squash();
 
 	return std::move(newStatemachine);
@@ -805,8 +782,6 @@ deamer::dregx::v2::Statemachine::LinearOr(const Statemachine& rhs_) const
 std::unique_ptr<::deamer::dregx::v2::Statemachine>
 deamer::dregx::v2::Statemachine::GeneralOr(const Statemachine& rhs_) const
 {
-	using std::chrono::system_clock;
-	auto start = std::chrono::system_clock::now();
 	//
 	// With proper assumptions this can be improved:
 	//	- Flavors have priority (Present in Lexers)
@@ -989,10 +964,6 @@ deamer::dregx::v2::Statemachine::GeneralOr(const Statemachine& rhs_) const
 		}
 	}
 
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> diff = end - start;
-	std::cout << "[General] Or operation: " << diff.count() * 1000 << "ms\n";
-
 	// Squash ensures total state space is closer to optimum
 	newStatemachine->Squash();
 	return std::move(newStatemachine);
@@ -1012,8 +983,6 @@ void deamer::dregx::v2::Statemachine::ToDFA()
 
 void deamer::dregx::v2::Statemachine::Squash()
 {
-	using std::chrono::system_clock;
-	auto start = std::chrono::system_clock::now();
 	std::vector<std::size_t> reachedStates;
 	reachedStates.resize(totalStates);
 
@@ -1099,10 +1068,6 @@ void deamer::dregx::v2::Statemachine::Squash()
 
 	totalStates = stateCounter;
 	transitionTable = newTransitionTable;
-
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> diff = end - start;
-	std::cout << "Squash operation: " << diff.count() * 1000 << "ms\n";
 }
 
 void deamer::dregx::v2::Statemachine::Minimize()

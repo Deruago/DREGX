@@ -28,3 +28,8 @@ std::string dregx::ir::EscapeCharacter::GetFormattedRegex()
 {
 	return GetEscapedCharacter();
 }
+
+std::set<char> dregx::ir::EscapeCharacter::GetCapturedCharacters() const
+{
+	return {GetEscapedCharacter()[0]};
+}

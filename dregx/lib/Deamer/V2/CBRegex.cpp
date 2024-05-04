@@ -3,6 +3,7 @@
 #include "dregx/Bison/Parser.h"
 #include "dregx/Statemachine/ConvertRegexToDFA.h"
 #include "dregx/Statemachine/Statemachine.h"
+#include "dregx/Ast/Visualisation/Graph.h"
 #include <chrono>
 #include <iostream>
 #include <limits>
@@ -151,10 +152,12 @@ deamer::dregx::v2::CBRegex::CreateDFA(const std::string& regex_)
 {
 	const auto parser = ::dregx::parser::Parser();
 	const auto tree = std::unique_ptr<::deamer::external::cpp::ast::Tree>(parser.Parse(regex_));
+
 	if (tree == nullptr || tree->GetStartNode() == nullptr)
 	{
 		throw std::logic_error("CBRegex: " + regex_ + " is invalid");
 	}
+
 	auto listener = ::dregx::ast::listener::user::TranslateToIr();
 	listener.Dispatch(tree->GetStartNode());
 

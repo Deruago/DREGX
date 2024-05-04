@@ -14,6 +14,7 @@ namespace dregx::ir
 		escapecharacter,
 		capturerange,
 		orgroup,
+		notcapture,
 	};
 }
 

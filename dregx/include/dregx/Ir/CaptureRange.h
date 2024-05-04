@@ -22,6 +22,8 @@ namespace dregx::ir
 
 		std::string GetFormattedRegex() override;
 
+		std::set<char> GetCapturedCharacters() const override;
+
 	private:
 	};
 }

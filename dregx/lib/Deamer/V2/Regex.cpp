@@ -158,14 +158,14 @@ deamer::dregx::v2::Regex::CreateDFA(const std::string& regex_)
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = end - startParsing;
-	std::cout << "Parsing: " << diff.count() * 1000 << "ms\n";
+	// std::cout << "Parsing: " << diff.count() * 1000 << "ms\n";
 	
 	auto startV1 = std::chrono::system_clock::now();
 	auto v1Statemachine = ::dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir.get());
 
 	end = std::chrono::system_clock::now();
 	diff = end - startV1;
-	std::cout << "V1 construction: " << diff.count() * 1000 << "ms\n";
+	// std::cout << "V1 construction: " << diff.count() * 1000 << "ms\n";
 
 	auto startV2 = std::chrono::system_clock::now();
 
@@ -173,7 +173,7 @@ deamer::dregx::v2::Regex::CreateDFA(const std::string& regex_)
 	end = std::chrono::system_clock::now();
 	diff = end - startV1;
 	
-	std::cout << "V2 construction: " << diff.count() * 1000 << "ms\n";
+	// std::cout << "V2 construction: " << diff.count() * 1000 << "ms\n";
 
 	return std::move(v2Statemachine);
 }

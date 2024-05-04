@@ -73,3 +73,16 @@ std::set<std::string> dregx::ir::Capture::GetFlavors() const
 {
 	return flavors;
 }
+
+std::set<char> dregx::ir::Capture::GetCapturedCharacters() const
+{
+	std::set<char> combined;
+	for (auto subGroup : GetSubGroups())
+	{
+		for (auto element : subGroup->GetCapturedCharacters())
+		{
+			combined.insert({element});
+		}
+	}
+	return combined;
+}

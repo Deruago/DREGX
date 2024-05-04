@@ -22,3 +22,15 @@ std::string dregx::ir::CaptureRange::GetFormattedRegex()
 {
 	return lowerBoundCharacter + "-" + upperBoundCharacter;
 }
+
+std::set<char> dregx::ir::CaptureRange::GetCapturedCharacters() const
+{
+	std::set<char> result;
+
+	for (char lower = lowerBoundCharacter[0]; lower < upperBoundCharacter[0]; lower++)
+	{
+		result.insert({lower});
+	}
+
+	return result;
+}

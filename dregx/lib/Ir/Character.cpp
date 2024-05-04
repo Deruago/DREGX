@@ -10,3 +10,8 @@ std::string dregx::ir::Character::GetFormattedRegex()
 {
 	return letter;
 }
+
+std::set<char> dregx::ir::Character::GetCapturedCharacters() const
+{
+	return {letter[0]};
+}

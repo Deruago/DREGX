@@ -27,13 +27,15 @@ namespace dregx::ir
 
 		CaptureType GetCaptureType() const;
 		Extension GetExtension() const;
-		std::vector<Capture*> GetSubGroups() const;
+		virtual std::vector<Capture*> GetSubGroups() const;
 
 		virtual std::string GetFormattedRegex();
 
 		void AddFlavor(const std::string& flavor);
 		void RemoveFlavor(const std::string& flavor);
 		std::set<std::string> GetFlavors() const;
+
+		virtual std::set<char> GetCapturedCharacters() const;
 
 	private:
 	};

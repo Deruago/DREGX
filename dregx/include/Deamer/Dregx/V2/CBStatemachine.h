@@ -83,9 +83,15 @@ namespace deamer::dregx::v2
 				// Guaranteed to be either 1 (accept) or 0 (non accept)
 				auto targetAccept = static_cast<std::size_t>(targetState->IsAcceptState() && true);
 
-				auto targetStateInformation = targetIndex | targetAccept << (reservedStateSpace) |
-											  (flavorValue
-												  << (reservedStateSpace + reservedStateTypeSpace));
+				auto targetStateInformation = targetIndex | targetAccept << (reservedStateSpace);
+
+				if (targetAccept)
+				{
+					// Only accept states may be flavored
+					targetStateInformation |=
+						(flavorValue << (reservedStateSpace + reservedStateTypeSpace));
+				}
+
 				return targetStateInformation;
 			};
 
@@ -101,8 +107,7 @@ namespace deamer::dregx::v2
 				// The last state is always free unless maximum states is reached which will lead to
 				// non-conformance anyway. Flavor is not accepting and has no flavors Thus only
 				// indicate that it is the final state
-				sinkState = totalStates & stateMask |
-							(flavorValue << (reservedStateSpace + reservedStateTypeSpace));
+				sinkState = totalStates & stateMask;
 
 				// As a new state is added
 				totalStates++;
@@ -163,8 +168,12 @@ namespace deamer::dregx::v2
 
 					auto targetStateInformation = getStateInformation(targetState);
 
+					auto alphad = alpha[0];
+					auto character = alphad.GetCharacter()[0]; 
+
 					transitionTable[(currentStateInformation & stateMask) * totalAlphabetSize +
-									alpha[0].GetCharacter()[0]] = 
+									character
+									] = 
 						targetStateInformation;
 				}
 			}
@@ -343,7 +352,16 @@ namespace deamer::dregx::v2
 		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
 		std::unique_ptr<ThisType> Or(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_) const
 		{
+			static constexpr bool force_general = true;
+
 			std::unique_ptr<ThisType> result;
+
+			if constexpr (force_general)
+			{
+				result = GeneralOr(rhs_);
+
+				return result;
+			}
 
 			if (this->IsCyclic() && rhs_.IsCyclic())
 			{

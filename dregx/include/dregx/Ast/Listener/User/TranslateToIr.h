@@ -10,6 +10,7 @@
 #include "dregx/Ir/Extension.h"
 #include "dregx/Ir/Group.h"
 #include "dregx/Ir/OrGroup.h"
+#include "dregx/Ir/NotCapture.h"
 #include "dregx/Ir/Square.h"
 #include "dregx/Ir/Word.h"
 #include <memory>
@@ -70,6 +71,24 @@ namespace dregx::ast::listener::user
 		{
 			orGroupFlavor--;
 			PopCapture();
+		}
+
+		void ListenEntry(const dregx::ast::node::capture* node) override
+		{
+			if (!reference::Access(node).LEFT_SQUARE_BRACKET_NOT().GetContent().empty())
+			{
+				// Invert class
+				AddCapture(new ir::NotCapture());
+			}
+		}
+
+		void ListenExit(const dregx::ast::node::capture* node) override
+		{
+			if (!reference::Access(node).LEFT_SQUARE_BRACKET_NOT().GetContent().empty())
+			{
+				// Invert class
+				PopCapture();
+			}
 		}
 
 		void ListenEntry(const dregx::ast::node::square* node) override

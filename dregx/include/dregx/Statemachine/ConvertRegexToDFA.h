@@ -7,6 +7,7 @@
 namespace dregx::ir
 {
 	class Capture;
+	class NotCapture;
 	class Group;
 	class Square;
 	class Word;
@@ -18,6 +19,8 @@ namespace dregx::statemachine
 	class ConvertRegexToDFA
 	{
 	public:
+		static std::unique_ptr<Statemachine> ConvertToStatemachine(ir::NotCapture* capture,
+																   bool embed = false);
 		static std::unique_ptr<Statemachine> ConvertToStatemachine(ir::Capture* capture,
 																   bool embed = false);
 		static std::unique_ptr<Statemachine> ConvertToStatemachine(ir::Group* group,

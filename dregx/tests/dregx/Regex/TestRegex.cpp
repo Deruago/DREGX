@@ -16,6 +16,16 @@ protected:
 	virtual ~TestRegex() = default;
 };
 
+TEST_F(TestRegex, V2_CBRegex_Comment)
+{
+	auto regex = ::deamer::dregx::v2::CBRegex("[/][^\\n\\r]*[\\n\\r]{0,1}", 100);
+	regex.Match("/\n");
+	regex.Match("/ \n");
+	regex.Match("/  \n");
+	regex.Match("/  ***\n");
+	regex.Match("/  **// / *\n");
+}
+
 TEST_F(TestRegex, RegexOperatorOr_OrTwoRegexes)
 {
 	auto regex = ::deamer::dregx::Regex("[a]");
