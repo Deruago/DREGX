@@ -364,6 +364,8 @@ namespace deamer::dregx::v2
 			const auto& lhs = *this;
 			const auto& rhs = rhs_;
 
+			newStatemachine->isCyclic = lhs.IsCyclic() || rhs.IsCyclic();
+
 			//
 			// Fill in lhs states in the new statemachine
 			//
@@ -454,73 +456,50 @@ namespace deamer::dregx::v2
 
 			for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
 			{
+				// Lhs does support
+				// Rhs does support
+
+				// There are four cases:
+				//	Lhs goes to a sink state Rhs goes to a sink state [Nothing to do]
+				//	Lhs goes to a sink state Rhs does not go to a sink state [Nothing to do]
+				//	Lhs goes to a non sink state Rhs goes to a sink state [Move to Rhs]
+				//	Lhs goes to a non sink state Rhs does not go to a sink state [Continue Simulation]
+				//
+
 				auto nextLhsState =
-					newStatemachine->transitionTable[
-						(newStatemachine->startState & newStatemachine->stateMask) *
-						newStatemachine->totalAlphabetSize +
-						alphaI
-					];
+					newStatemachine->transitionTable[(newStatemachine->startState &
+														newStatemachine->stateMask) *
+															newStatemachine->totalAlphabetSize +
+														alphaI];
 
-				auto nextRhsState =
-					rhs.transitionTable[
-						(rhs.startState & rhs.stateMask) *
-						rhs.totalAlphabetSize +
-						alphaI
-					];
+				auto nextRhsState = rhs.transitionTable[(rhs.startState & rhs.stateMask) *
+															rhs.totalAlphabetSize +
+														alphaI];
 
-				newStatemachine->transitionTable[
-					(newStatemachine->startState & newStatemachine->stateMask) *
-					newStatemachine->totalAlphabetSize +
-					alphaI
-				] |=
-					(rhs.transitionTable[
-						(rhs.startState & rhs.stateMask) *
-						rhs.totalAlphabetSize +
-						alphaI
-					] & rhs.stateTypeMask);
-
-				if (nextLhsState == newStatemachine->sinkState &&
-					nextRhsState == rhs.sinkState)
+				if (nextLhsState == newStatemachine->sinkState && nextRhsState == rhs.sinkState)
 				{
-					// Both automatons do not support the transition
-					// This is not possible [unreachable]
+					// Nothing to do
 				}
 				else if (nextLhsState == newStatemachine->sinkState &&
-						 nextRhsState != rhs.sinkState)
+							nextRhsState != rhs.sinkState)
 				{
-					// Lhs does not support
-					// Rhs does support
-
-					// The target state is equal to the rescaled right hand side state
-					newStatemachine->transitionTable[
-						(newStatemachine->startState & newStatemachine->stateMask) *
-						newStatemachine->totalAlphabetSize +
-						alphaI
-					] =
-						rhs.transitionTable[
-							(rhs.startState & rhs.stateMask) *
-							rhs.totalAlphabetSize +
-							alphaI
-						] + lhs.totalStates;
+					// Update to Rhs
+					newStatemachine->transitionTable[(newStatemachine->startState &
+														newStatemachine->stateMask) *
+															newStatemachine->totalAlphabetSize +
+														alphaI] =
+						rhs.transitionTable[(rhs.startState & rhs.stateMask) *
+												rhs.totalAlphabetSize +
+											alphaI] +
+						lhs.totalStates;
 				}
 				else if (nextLhsState != newStatemachine->sinkState &&
-						 nextRhsState == rhs.sinkState)
+							nextRhsState == rhs.sinkState)
 				{
-					// Lhs does support
-					// Rhs does not support
-
-					// Current logic is enough
-					// This branch does not continue for Rhs
+					// Nothing to do
 				}
-				else if (nextLhsState != newStatemachine->sinkState &&
-						 nextRhsState != rhs.sinkState)
+				else
 				{
-					// Lhs does support
-					// Rhs does support
-					//
-					//	Lhs goes to a non sink state Rhs does not go to a sink state [Continue Simulation]
-					//
-
 					// Continue Simulation
 					//
 					// Two cases:
@@ -530,6 +509,15 @@ namespace deamer::dregx::v2
 
 					std::size_t bisimulativeIndex =
 						(nextLhsState & lhs.stateMask) * (nextRhsState & rhs.stateMask);
+
+					newStatemachine->transitionTable[(newStatemachine->startState &
+														newStatemachine->stateMask) *
+															newStatemachine->totalAlphabetSize +
+														alphaI] |=
+						(rhs.transitionTable[(rhs.startState & rhs.stateMask) *
+													rhs.totalAlphabetSize +
+											 alphaI] &
+							rhs.stateTypeMask);
 
 					if (bisimulativeProjection[bisimulativeIndex] == 0)
 					{
@@ -564,81 +552,87 @@ namespace deamer::dregx::v2
 					for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize;
 						 alphaI++)
 					{
+						// Lhs does support
+						// Rhs does support
+						//
+						// There are four cases:
+						//	Lhs goes to a sink state Rhs goes to a sink state [Nothing to do]
+						//	Lhs goes to a sink state Rhs does not go to a sink state [Nothing todo]
+						//  Lhs goes to a non sink state Rhs goes to a sink state [Move to Rhs]
+						//  Lhs goes to a non sink state Rhs does not go to a sink state [Continue Simulation]
+						//
+
 						auto nextLhsState =
 							newStatemachine
 								->transitionTable[(bisimulationPair.lhsState &
-												   newStatemachine->stateMask) *
-													  newStatemachine->totalAlphabetSize +
-												  alphaI];
+													newStatemachine->stateMask) *
+														newStatemachine->totalAlphabetSize +
+													alphaI];
 
 						auto nextRhsState =
 							rhs.transitionTable[(bisimulationPair.rhsState & rhs.stateMask) *
 													rhs.totalAlphabetSize +
 												alphaI];
 
-						newStatemachine
-							->transitionTable[(bisimulationPair.lhsState &
-												newStatemachine->stateMask) *
-													newStatemachine->totalAlphabetSize +
-												alphaI] |=
-							(rhs.transitionTable[(bisimulationPair.rhsState &
-													rhs.stateMask) *
-														rhs.totalAlphabetSize +
-													alphaI] &
-								rhs.stateTypeMask);
-
 						if (nextLhsState == newStatemachine->sinkState &&
 							nextRhsState == rhs.sinkState)
 						{
-							// Both automatons do not support the transition
-							// This is not possible [unreachable]
+							// Nothing to do
 						}
 						else if (nextLhsState == newStatemachine->sinkState &&
-								 nextRhsState != rhs.sinkState)
+									nextRhsState != rhs.sinkState)
 						{
-							// Lhs does not support
-							// Rhs does support
-
-							// The target state is equal to the rescaled right hand side state
+							// Update to Rhs
 							newStatemachine
 								->transitionTable[(bisimulationPair.lhsState &
-												   newStatemachine->stateMask) *
-													  newStatemachine->totalAlphabetSize +
-												  alphaI] =
-								rhs.transitionTable[(bisimulationPair.rhsState & rhs.stateMask) *
+													newStatemachine->stateMask) *
+														newStatemachine->totalAlphabetSize +
+													alphaI] =
+								rhs.transitionTable[(bisimulationPair.rhsState &
+														rhs.stateMask) *
 														rhs.totalAlphabetSize +
 													alphaI] +
 								lhs.totalStates;
 						}
 						else if (nextLhsState != newStatemachine->sinkState &&
-								 nextRhsState == rhs.sinkState)
+									nextRhsState == rhs.sinkState)
 						{
-							// Lhs does support
-							// Rhs does not support
-
-							// Current logic is enough
-							// This branch does not continue for Rhs
+							// Only valid if original machine is not Cyclic to guarantee correctness
+							// Possible to remove is there is a notion of cyclicity in state information
+							// Then this is reducable to checking if the state is part of a cycle
+							if (lhs.IsCyclic() || rhs.IsCyclic())
+							{
+								return nullptr;
+							}
 						}
-						else if (nextLhsState != newStatemachine->sinkState &&
-								 nextRhsState != rhs.sinkState)
+						else
 						{
-							// Lhs does support
-							// Rhs does support
-
-							// There are four cases:
-							// 	Lhs goes to a non sink state Rhs does not go to a sink state [Continue Simulation]
-							//
-
 							// Continue Simulation
 							//
 							// Two cases:
-							//		- Projection is already filled, [Quadratic Splitting]
-							//(Error)
+							//		- Projection is already filled, [Quadratic Splitting] (Error)
 							//		- Projection is not filled,     [Linear Splitting]
 							//
 
+							if ((nextLhsState & lhs.stateMask) >= lhs.totalStates)
+							{
+								// It is a cycle and unrolling is not allowed
+								return nullptr;
+							}
+
 							std::size_t bisimulativeIndex =
 								(nextLhsState & lhs.stateMask) * (nextRhsState & rhs.stateMask);
+
+							newStatemachine
+								->transitionTable[(bisimulationPair.lhsState &
+													newStatemachine->stateMask) *
+														newStatemachine->totalAlphabetSize +
+													alphaI] |=
+								(rhs.transitionTable[(bisimulationPair.rhsState &
+														rhs.stateMask) *
+															rhs.totalAlphabetSize +
+													 alphaI] &
+									rhs.stateTypeMask);
 
 							if (bisimulativeProjection[bisimulativeIndex] == 0)
 							{
@@ -652,7 +646,6 @@ namespace deamer::dregx::v2
 								// Requires Quadratic Splitting
 								return nullptr;
 							}
-							
 						}
 					}
 				}
@@ -660,7 +653,10 @@ namespace deamer::dregx::v2
 				bisimulationPairs = reBisimulationPairs;
 			}
 
-			newStatemachine->Squash();
+			// As the resulting machine is additively constructed,
+			// It does not consume a lot of space that is squashable
+			// So the result will not be Squashed
+			// newStatemachine->Squash();
 
 			return std::move(newStatemachine);
 		}
@@ -684,6 +680,7 @@ namespace deamer::dregx::v2
 				std::max(typeBitSpace, rhsTypeBitSpace),
 				alphabetIndexType
 			>>();
+			newStatemachine->isCyclic = lhs.IsCyclic() || rhs.IsCyclic();
 
 			const auto roundedLhsTotalStates = nearestPowerOf2(lhs.totalStates);
 			const auto roundedRhsTotalStates = nearestPowerOf2(rhs.totalStates);
