@@ -404,6 +404,7 @@ namespace deamer::dregx::v2
 
 			// Squash ensures total state space is closer to optimum
 			newStatemachine->Squash();
+
 			return std::move(newStatemachine);
 		}
 
@@ -499,6 +500,10 @@ namespace deamer::dregx::v2
 
 			// Squash ensures total state space is closer to optimum
 			newStatemachine->Squash();
+
+			// And produces less alive branches thus this is more performant for AND in general
+			newStatemachine->DeadBranchRemoval();
+
 			return std::move(newStatemachine);
 		}
 
@@ -519,12 +524,6 @@ namespace deamer::dregx::v2
 		//	- Removes unreachable states
 		void Squash()
 		{
-			if (totalStates == 1)
-			{
-				// Removable if DBR is build differently
-				return;
-			}
-
 			std::vector<std::size_t> reachedStates;
 			reachedStates.resize(totalStates);
 
@@ -647,7 +646,7 @@ namespace deamer::dregx::v2
 
 			for (std::size_t stateI = 0; stateI < totalStates; stateI++)
 			{
-				if (!acceptProjection[stateI])
+				if (!acceptProjection[stateI] && (stateI != (sinkState & stateMask)))
 				{
 					unacceptedStates.push_back(stateI);
 				}
@@ -668,7 +667,7 @@ namespace deamer::dregx::v2
 						const std::size_t targetStateIndex = targetStateI & stateMask;
 						const std::size_t targetStateAccept = targetStateI & stateTypeMask;
 
-						if (targetStateAccept)
+						if (acceptProjection[targetStateI])
 						{
 							acceptProjection[unacceptedState] = true;
 							break;
@@ -695,6 +694,9 @@ namespace deamer::dregx::v2
 
 			// Sink state is always good, as it was not used as an excuse to pass previous test
 			acceptProjection[sinkState & stateMask] = true;
+
+			// Start state should be different than Sink state to ensure proper continuation
+			acceptProjection[startState & stateMask] = true;
 
 			// Unaccepted states now define the states that will never reach an accepting state
 			std::vector<std::size_t> redirectionTable;
@@ -765,11 +767,29 @@ namespace deamer::dregx::v2
 
 		bool IsEmptyLanguage() const noexcept
 		{
-			// There is at one state that is never accepting
-			return totalStates == 1 && (
-				(startState == 0) ||
-				(startState == std::numeric_limits<std::size_t>::max()) // Could be removed if DBR is made differently
-			);
+			if (totalStates > 2)
+			{
+				// More states is not possible with Squash DBR
+				return false;
+			}
+
+			if (sinkState & stateTypeMask)
+			{
+				// Sink state may not be accepting
+				return false;
+			}
+
+			for (std::size_t stateAlphaI = 0; stateAlphaI < transitionTable.size(); stateAlphaI++)
+			{
+				if (transitionTable[stateAlphaI] != sinkState)
+				{
+					// Not pointing to sink state includes possibility of matching non-epsilon after Squash + DBR
+					return false;
+				}
+			}
+
+			// Guaranteed to be Epsilon
+			return true;
 		}
 	};
 }
