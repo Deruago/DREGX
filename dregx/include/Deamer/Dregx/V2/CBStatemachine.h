@@ -8,6 +8,8 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <limits>
+#include <stdexcept>
 #include <type_traits>
 
 namespace dregx::statemachine
@@ -82,8 +84,8 @@ namespace deamer::dregx::v2
 				auto targetAccept = static_cast<std::size_t>(targetState->IsAcceptState() && true);
 
 				auto targetStateInformation = targetIndex | targetAccept << (reservedStateSpace) |
-											  flavorValue
-												  << (reservedStateSpace + reservedStateTypeSpace);
+											  (flavorValue
+												  << (reservedStateSpace + reservedStateTypeSpace));
 				return targetStateInformation;
 			};
 
@@ -99,7 +101,8 @@ namespace deamer::dregx::v2
 				// The last state is always free unless maximum states is reached which will lead to
 				// non-conformance anyway. Flavor is not accepting and has no flavors Thus only
 				// indicate that it is the final state
-				sinkState = totalStates & stateMask;
+				sinkState = totalStates & stateMask |
+							(flavorValue << (reservedStateSpace + reservedStateTypeSpace));
 
 				// As a new state is added
 				totalStates++;
@@ -180,16 +183,52 @@ namespace deamer::dregx::v2
 
 		virtual ~CBStatemachine() = default;
 
+	public:
+		std::size_t GetTotalStates() const
+		{
+			return totalStates;
+		}
+
+		std::vector<std::size_t> GetTransitionTable() const
+		{
+			return transitionTable;
+		}
+
+		std::size_t GetStateIndex(std::size_t state) const
+		{
+			return state & stateMask;
+		}
+
+		bool GetStateAcceptance(std::size_t state) const
+		{
+			return (state & stateTypeMask) && true;
+		}
+
+		std::size_t GetStateFlavor(std::size_t state) const
+		{
+			return (state & stateFlavorMask) >> (reservedStateSpace + reservedStateTypeSpace);
+		}
+
+		std::size_t GetStartState() const
+		{
+			return startState;
+		}
+
+		std::size_t GetSinkState() const
+		{
+			return sinkState;
+		}
+
 	private:
 		template<std::size_t evaluatedDepth>
 		static constexpr std::size_t nearestLogOf2Impl(std::size_t input)
 		{
-			if (input <= (1 << evaluatedDepth))
+			if (input <= (static_cast<std::size_t>(1) << evaluatedDepth))
 			{
 				return evaluatedDepth;
 			}
 
-			if constexpr (evaluatedDepth < sizeof(std::size_t) * 8)
+			if constexpr (evaluatedDepth < (sizeof(std::size_t) * 8 - 1))
 			{
 				return nearestLogOf2Impl<evaluatedDepth + 1>(input);
 			}
@@ -207,12 +246,12 @@ namespace deamer::dregx::v2
 		template<std::size_t evaluatedDepth>
 		static constexpr std::size_t nearestPowerOf2Impl(std::size_t input)
 		{
-			if (input <= (1 << evaluatedDepth))
+			if (input <= (static_cast<std::size_t>(1) << evaluatedDepth))
 			{
-				return 1 << evaluatedDepth;
+				return static_cast<std::size_t>(1) << evaluatedDepth;
 			}
 
-			if constexpr (evaluatedDepth < sizeof(std::size_t) * 8)
+			if constexpr (evaluatedDepth < (sizeof(std::size_t) * 8 - 1))
 			{
 				return nearestPowerOf2Impl<evaluatedDepth + 1>(input);
 			}
@@ -383,10 +422,7 @@ namespace deamer::dregx::v2
 					rhsState & rhs.stateFlavorMask
 				);
 
-				std::size_t combinedState = combinedStateIndex | combinedStateType |
-											combinedFlavorType
-												<< (newStatemachine->reservedStateSpace +
-													newStatemachine->reservedStateTypeSpace);
+				std::size_t combinedState = combinedStateIndex | combinedStateType | combinedFlavorType;
 				return combinedState;
 			};
 
@@ -511,13 +547,18 @@ namespace deamer::dregx::v2
 						(nextLhsState & lhs.stateMask) * (nextRhsState & rhs.stateMask);
 
 					newStatemachine->transitionTable[(newStatemachine->startState &
-														newStatemachine->stateMask) *
-															newStatemachine->totalAlphabetSize +
-														alphaI] |=
-						(rhs.transitionTable[(rhs.startState & rhs.stateMask) *
-													rhs.totalAlphabetSize +
-											 alphaI] &
-							rhs.stateTypeMask);
+													  newStatemachine->stateMask) *
+														 newStatemachine->totalAlphabetSize +
+													 alphaI] =
+						leftMirrorCombineStates(
+							newStatemachine
+								->transitionTable[(newStatemachine->startState &
+												   newStatemachine->stateMask) *
+													  newStatemachine->totalAlphabetSize +
+												  alphaI],
+							rhs.transitionTable[(rhs.startState & rhs.stateMask) *
+													 rhs.totalAlphabetSize +
+												 alphaI]);
 
 					if (bisimulativeProjection[bisimulativeIndex] == 0)
 					{
@@ -627,12 +668,17 @@ namespace deamer::dregx::v2
 								->transitionTable[(bisimulationPair.lhsState &
 													newStatemachine->stateMask) *
 														newStatemachine->totalAlphabetSize +
-													alphaI] |=
-								(rhs.transitionTable[(bisimulationPair.rhsState &
-														rhs.stateMask) *
-															rhs.totalAlphabetSize +
-													 alphaI] &
-									rhs.stateTypeMask);
+												  alphaI] =
+								leftMirrorCombineStates(
+									newStatemachine
+										->transitionTable[(bisimulationPair.lhsState &
+														   newStatemachine->stateMask) *
+															  newStatemachine->totalAlphabetSize +
+														  alphaI],
+									rhs.transitionTable[(bisimulationPair.rhsState &
+														   rhs.stateMask) *
+															  rhs.totalAlphabetSize +
+														  alphaI]);
 
 							if (bisimulativeProjection[bisimulativeIndex] == 0)
 							{
@@ -712,10 +758,7 @@ namespace deamer::dregx::v2
 					rhsState & rhs.stateFlavorMask
 				);
 
-				std::size_t combinedState = combinedStateIndex | combinedStateType |
-											combinedFlavorType
-												<< (newStatemachine->reservedStateSpace +
-													newStatemachine->reservedStateTypeSpace);
+				std::size_t combinedState = combinedStateIndex | combinedStateType | combinedFlavorType;
 
 				return combinedState;
 			};
@@ -808,10 +851,7 @@ namespace deamer::dregx::v2
 				std::size_t combinedFlavorType =
 					std::max(lhsState & lhs.stateFlavorMask, rhsState & rhs.stateFlavorMask);
 
-				std::size_t combinedState = combinedStateIndex | combinedStateType |
-											combinedFlavorType
-												<< (newStatemachine->reservedStateSpace +
-													newStatemachine->reservedStateTypeSpace);
+				std::size_t combinedState = combinedStateIndex | combinedStateType | combinedFlavorType;
 
 				return combinedState;
 			};
@@ -861,7 +901,7 @@ namespace deamer::dregx::v2
 	public:
 		void ToDFA()
 		{
-
+			// Already in DFA
 		}
 
 		// Minimizes current state space
