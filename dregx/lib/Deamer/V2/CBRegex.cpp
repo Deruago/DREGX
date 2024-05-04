@@ -39,8 +39,20 @@ void deamer::dregx::v2::CBRegex::Or(const CBRegex& rhs)
 	const std::string copy = "(" + this->regex + "|" + rhs.regex + ")";
 	this->regex = copy;
 
-	const auto rhsCopy = rhs.GetStatemachine()->Copy();
-	statemachine = statemachine->Or(*rhsCopy);
+	statemachine = statemachine->Or(*rhs.statemachine);
+}
+
+void deamer::dregx::v2::CBRegex::And(const CBRegex& rhs)
+{
+	if (this == &rhs)
+	{
+		return;
+	}
+
+	const std::string copy = "(" + this->regex + "|" + rhs.regex + ")";
+	this->regex = copy;
+
+	statemachine = statemachine->And(*rhs.statemachine);
 }
 
 void deamer::dregx::v2::CBRegex::Concatenate(const CBRegex& rhs)
@@ -54,8 +66,7 @@ void deamer::dregx::v2::CBRegex::Concatenate(const CBRegex& rhs)
 		this->regex += rhs.regex;
 	}
 
-	const auto rhsCopy = rhs.GetStatemachine()->Copy();
-	statemachine->Concatenate(*rhsCopy);
+	statemachine->Concatenate(*rhs.statemachine);
 	statemachine->ToDFA();
 }
 
@@ -138,9 +149,6 @@ void deamer::dregx::v2::CBRegex::SetRegex(const std::string& regex_)
 std::unique_ptr<::deamer::dregx::v2::CBRegex::CBStatemachineType>
 deamer::dregx::v2::CBRegex::CreateDFA(const std::string& regex_)
 {
-	using std::chrono::system_clock;
-	auto startParsing = std::chrono::system_clock::now();
-
 	const auto parser = ::dregx::parser::Parser();
 	const auto tree = std::unique_ptr<::deamer::external::cpp::ast::Tree>(parser.Parse(regex_));
 	if (tree == nullptr || tree->GetStartNode() == nullptr)
@@ -153,25 +161,13 @@ deamer::dregx::v2::CBRegex::CreateDFA(const std::string& regex_)
 	auto ir = listener.GetOutput();
 	ir->AddFlavor(std::to_string(flavor));
 
-	auto end = std::chrono::system_clock::now();
-	std::chrono::duration<double> diff = end - startParsing;
-	// std::cout << "Parsing: " << diff.count() * 1000 << "ms\n";
-
 	auto startV1 = std::chrono::system_clock::now();
 	auto v1Statemachine = ::dregx::statemachine::ConvertRegexToDFA::ConvertToStatemachine(ir.get());
-
-	end = std::chrono::system_clock::now();
-	diff = end - startV1;
-	// std::cout << "V1 construction: " << diff.count() * 1000 << "ms\n";
 
 	auto startV2 = std::chrono::system_clock::now();
 
 	auto v2Statemachine =
 		std::make_unique<::deamer::dregx::v2::CBRegex::CBStatemachineType>(std::move(v1Statemachine), flavor);
-	end = std::chrono::system_clock::now();
-	diff = end - startV1;
-
-	// std::cout << "V2 construction: " << diff.count() * 1000 << "ms\n";
 
 	return std::move(v2Statemachine);
 }

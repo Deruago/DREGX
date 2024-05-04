@@ -31,6 +31,7 @@ namespace deamer::dregx::v2
 
 	public:
 		void Or(const CBRegex& rhs);
+		void And(const CBRegex& rhs);
 		void Concatenate(const CBRegex& rhs);
 		bool Equal(const CBRegex& rhs) const;
 
