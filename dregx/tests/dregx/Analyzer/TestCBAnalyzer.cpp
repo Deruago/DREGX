@@ -136,3 +136,67 @@ TEST_F(TestCBAnalyzer, IsRegexDisjointOf_GiveDisjointSet_ReturnTrue)
 
 	EXPECT_TRUE(analyzer.IsRegexDisjointOf("[b]+"));
 }
+
+TEST_F(TestCBAnalyzer, IsRegexInfinite)
+{
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[a]+").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[ab]+").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[ac]+").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[abc]+").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[abc][as]*").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[abc]*[as]*").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[abc]+[as]*").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[abc]+[as]+").IsInfinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("([abc][as])+").IsInfinite());
+
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("([abc][as])").IsInfinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[abc][as]").IsInfinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[abc]").IsInfinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[a]").IsInfinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[b]").IsInfinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[Ee][Ll]([Ss][Ee]){0,1}[Ii][Ff]").IsInfinite());
+}
+
+TEST_F(TestCBAnalyzer, IsRegexFinite)
+{
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[a]+").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[ab]+").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[ac]+").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[abc]+").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[abc][as]*").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[abc]*[as]*").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[abc]+[as]*").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("[abc]+[as]+").IsFinite());
+	EXPECT_FALSE(deamer::dregx::v2::CBAnalyzer("([abc][as])+").IsFinite());
+
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("([abc][as])").IsFinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[abc][as]").IsFinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[abc]").IsFinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[a]").IsFinite());
+	EXPECT_TRUE(deamer::dregx::v2::CBAnalyzer("[b]").IsFinite());
+}
+
+TEST_F(TestCBAnalyzer, FuzzFiniteMatches_CaseInsenstive)
+{
+	auto allMatches =
+		deamer::dregx::v2::CBAnalyzer("[Ff][Uu][Nn][Cc][Tt][Ii][Oo][Nn]").GetAllFiniteMatches();
+
+	EXPECT_NE(allMatches.find("function"), allMatches.end());
+	EXPECT_NE(allMatches.find("functioN"), allMatches.end());
+	EXPECT_NE(allMatches.find("functiOn"), allMatches.end());
+	EXPECT_NE(allMatches.find("functiON"), allMatches.end());
+	EXPECT_NE(allMatches.find("functIon"), allMatches.end());
+	EXPECT_NE(allMatches.find("functIoN"), allMatches.end());
+	EXPECT_NE(allMatches.find("functIOn"), allMatches.end());
+	EXPECT_NE(allMatches.find("functION"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTion"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTioN"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTIOn"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTION"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTIon"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTIon"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTION"), allMatches.end());
+	EXPECT_NE(allMatches.find("funcTION"), allMatches.end());
+
+	EXPECT_EQ(allMatches.size(), 256);
+}

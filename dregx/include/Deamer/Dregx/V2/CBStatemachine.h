@@ -3,14 +3,14 @@
 
 #include "dregx/Statemachine/Statemachine.h"
 #include <array>
+#include <limits>
 #include <map>
 #include <memory>
 #include <set>
-#include <string>
-#include <vector>
-#include <limits>
 #include <stdexcept>
+#include <string>
 #include <type_traits>
+#include <vector>
 
 namespace dregx::statemachine
 {
@@ -20,25 +20,29 @@ namespace dregx::statemachine
 namespace deamer::dregx::v2
 {
 	/*!	\class CBStatemachine
-	 * 
+	 *
 	 * \brief Defines a Compile-time Bounded Statemachine
 	 */
 	template<std::size_t flavorBitSpace, std::size_t typeBitSpace, typename alphabetIndexType>
 	class CBStatemachine
 	{
-	private:
+	public:
 		using ThisType = CBStatemachine<flavorBitSpace, typeBitSpace, alphabetIndexType>;
 
 		static constexpr std::size_t totalAlphabetSize = 1 << (sizeof(alphabetIndexType) * 8);
 
 		static constexpr std::size_t reservedStateTypeSpace = typeBitSpace;
 		static constexpr std::size_t reservedFlavorSpace = flavorBitSpace;
-		static constexpr std::size_t reservedStateSpace = sizeof(std::size_t) * 8 - typeBitSpace - flavorBitSpace;
+		static constexpr std::size_t reservedStateSpace =
+			sizeof(std::size_t) * 8 - typeBitSpace - flavorBitSpace;
 
 		// Masks are Inferred from reserved spaces
-		static constexpr std::size_t stateMask = (static_cast<std::size_t>(1) << reservedStateSpace) - 1;
-		static constexpr std::size_t stateTypeMask =  (static_cast<std::size_t>(1) << reservedStateSpace);
-		static constexpr std::size_t stateFlavorMask = ~((static_cast<std::size_t>(1) << (reservedStateSpace + reservedStateTypeSpace)) - 1);
+		static constexpr std::size_t stateMask =
+			(static_cast<std::size_t>(1) << reservedStateSpace) - 1;
+		static constexpr std::size_t stateTypeMask =
+			(static_cast<std::size_t>(1) << reservedStateSpace);
+		static constexpr std::size_t stateFlavorMask =
+			~((static_cast<std::size_t>(1) << (reservedStateSpace + reservedStateTypeSpace)) - 1);
 
 	private:
 		// Transition Table, inner vector is scaled ahead of time
@@ -53,7 +57,8 @@ namespace deamer::dregx::v2
 		bool isCyclic;
 
 	public:
-		CBStatemachine(std::unique_ptr<::dregx::statemachine::Statemachine> v1Statemachine, std::size_t flavorValue = 0)
+		CBStatemachine(std::unique_ptr<::dregx::statemachine::Statemachine> v1Statemachine,
+					   std::size_t flavorValue = 0)
 		{
 			isCyclic = v1Statemachine->ContainsCycles();
 
@@ -64,7 +69,8 @@ namespace deamer::dregx::v2
 
 			// Alphabet is always reduced to single Characters, V2 will be less expressive then V1,
 			// but more performant
-			auto findIndex = [&otherStates, this](::dregx::statemachine::State* targetState) -> std::size_t {
+			auto findIndex = [&otherStates,
+							  this](::dregx::statemachine::State* targetState) -> std::size_t {
 				for (std::size_t stateI = 0; stateI < totalStates; stateI++)
 				{
 					if (otherStates[stateI].get() == targetState)
@@ -118,7 +124,8 @@ namespace deamer::dregx::v2
 				// For all elements in alphabet make back-loops
 				for (std::size_t alphaI = 0; alphaI < totalAlphabetSize; alphaI++)
 				{
-					transitionTable[(sinkState & stateMask) * totalAlphabetSize + alphaI] = sinkState;
+					transitionTable[(sinkState & stateMask) * totalAlphabetSize + alphaI] =
+						sinkState;
 				}
 			}
 
@@ -163,18 +170,17 @@ namespace deamer::dregx::v2
 						continue;
 					}
 
-					// We assume that the input statemachine is a DFA, then only a single state is connected
+					// We assume that the input statemachine is a DFA, then only a single state is
+					// connected
 					auto targetState = (*std::begin(targetStates));
 
 					auto targetStateInformation = getStateInformation(targetState);
 
 					auto alphad = alpha[0];
-					auto character = alphad.GetCharacter()[0]; 
+					auto character = alphad.GetCharacter()[0];
 
 					transitionTable[(currentStateInformation & stateMask) * totalAlphabetSize +
-									character
-									] = 
-						targetStateInformation;
+									character] = targetStateInformation;
 				}
 			}
 		}
@@ -281,22 +287,20 @@ namespace deamer::dregx::v2
 			return std::make_unique<ThisType>(*this);
 		}
 
-		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
-		bool Equal(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs) const
+		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace,
+				 typename rhsAlphabetIndexType>
+		bool
+		Equal(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs)
+			const
 		{
-			if constexpr (
-				(flavorBitSpace == rhsFlavorBitSpace) &&
-				(typeBitSpace == rhsTypeBitSpace) &&
-				(std::is_same_v<alphabetIndexType, rhsAlphabetIndexType>)
-			)
+			if constexpr ((flavorBitSpace == rhsFlavorBitSpace) &&
+						  (typeBitSpace == rhsTypeBitSpace) &&
+						  (std::is_same_v<alphabetIndexType, rhsAlphabetIndexType>))
 			{
-				return
-					(this->IsCyclic() == rhs.IsCyclic()) &&
-					(this->transitionTable == rhs.transitionTable) &&
-					(this->totalStates == rhs.totalStates) &&
-					(this->startState == rhs.startState) &&
-					(this->sinkState == rhs.sinkState)
-				;
+				return (this->IsCyclic() == rhs.IsCyclic()) &&
+					   (this->transitionTable == rhs.transitionTable) &&
+					   (this->totalStates == rhs.totalStates) &&
+					   (this->startState == rhs.startState) && (this->sinkState == rhs.sinkState);
 			}
 			else
 			{
@@ -349,8 +353,11 @@ namespace deamer::dregx::v2
 
 		// Operations
 	public:
-		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
-		std::unique_ptr<ThisType> Or(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_) const
+		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace,
+				 typename rhsAlphabetIndexType>
+		std::unique_ptr<ThisType>
+		Or(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_)
+			const
 		{
 			static constexpr bool force_general = true;
 
@@ -402,8 +409,10 @@ namespace deamer::dregx::v2
 			return result;
 		}
 
-		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
-		std::unique_ptr<ThisType> LinearOr(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_) const
+		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace,
+				 typename rhsAlphabetIndexType>
+		std::unique_ptr<ThisType> LinearOr(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace,
+																rhsAlphabetIndexType>& rhs_) const
 		{
 			static_assert(
 				std::is_same_v<alphabetIndexType, rhsAlphabetIndexType>,
@@ -431,16 +440,16 @@ namespace deamer::dregx::v2
 			newStatemachine->transitionTable.resize((lhs.totalStates + rhs.totalStates) *
 													newStatemachine->totalAlphabetSize);
 
-			auto leftMirrorCombineStates = [&](std::size_t lhsState, std::size_t rhsState) -> std::size_t {
+			auto leftMirrorCombineStates = [&](std::size_t lhsState,
+											   std::size_t rhsState) -> std::size_t {
 				std::size_t combinedStateIndex = lhsState & lhs.stateMask;
 				std::size_t combinedStateType =
 					(lhsState & lhs.stateTypeMask) | (rhsState & rhs.stateTypeMask);
-				std::size_t combinedFlavorType = std::max(
-					lhsState & lhs.stateFlavorMask,
-					rhsState & rhs.stateFlavorMask
-				);
+				std::size_t combinedFlavorType =
+					std::max(lhsState & lhs.stateFlavorMask, rhsState & rhs.stateFlavorMask);
 
-				std::size_t combinedState = combinedStateIndex | combinedStateType | combinedFlavorType;
+				std::size_t combinedState =
+					combinedStateIndex | combinedStateType | combinedFlavorType;
 				return combinedState;
 			};
 
@@ -453,11 +462,10 @@ namespace deamer::dregx::v2
 			{
 				for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
 				{
-						newStatemachine->transitionTable[
-							stateCounter *
-							newStatemachine->totalAlphabetSize +
-							alphaI
-						] =	lhs.transitionTable[stateI * lhs.totalAlphabetSize + alphaI];
+					newStatemachine
+						->transitionTable[stateCounter * newStatemachine->totalAlphabetSize +
+										  alphaI] =
+						lhs.transitionTable[stateI * lhs.totalAlphabetSize + alphaI];
 				}
 
 				stateCounter++;
@@ -467,11 +475,11 @@ namespace deamer::dregx::v2
 			{
 				for (std::size_t alphaI = 0; alphaI < newStatemachine->totalAlphabetSize; alphaI++)
 				{
-					newStatemachine->transitionTable[
-						stateCounter *
-						newStatemachine->totalAlphabetSize +
-						alphaI
-					] = rhs.transitionTable[stateI * rhs.totalAlphabetSize + alphaI] + lhs.totalStates;
+					newStatemachine
+						->transitionTable[stateCounter * newStatemachine->totalAlphabetSize +
+										  alphaI] =
+						rhs.transitionTable[stateI * rhs.totalAlphabetSize + alphaI] +
+						lhs.totalStates;
 				}
 
 				stateCounter++;
@@ -517,38 +525,39 @@ namespace deamer::dregx::v2
 				//	Lhs goes to a sink state Rhs goes to a sink state [Nothing to do]
 				//	Lhs goes to a sink state Rhs does not go to a sink state [Nothing to do]
 				//	Lhs goes to a non sink state Rhs goes to a sink state [Move to Rhs]
-				//	Lhs goes to a non sink state Rhs does not go to a sink state [Continue Simulation]
+				//	Lhs goes to a non sink state Rhs does not go to a sink state [Continue
+				//Simulation]
 				//
 
 				auto nextLhsState =
 					newStatemachine->transitionTable[(newStatemachine->startState &
-														newStatemachine->stateMask) *
-															newStatemachine->totalAlphabetSize +
-														alphaI];
+													  newStatemachine->stateMask) *
+														 newStatemachine->totalAlphabetSize +
+													 alphaI];
 
-				auto nextRhsState = rhs.transitionTable[(rhs.startState & rhs.stateMask) *
-															rhs.totalAlphabetSize +
-														alphaI];
+				auto nextRhsState =
+					rhs.transitionTable[(rhs.startState & rhs.stateMask) * rhs.totalAlphabetSize +
+										alphaI];
 
 				if (nextLhsState == newStatemachine->sinkState && nextRhsState == rhs.sinkState)
 				{
 					// Nothing to do
 				}
 				else if (nextLhsState == newStatemachine->sinkState &&
-							nextRhsState != rhs.sinkState)
+						 nextRhsState != rhs.sinkState)
 				{
 					// Update to Rhs
 					newStatemachine->transitionTable[(newStatemachine->startState &
-														newStatemachine->stateMask) *
-															newStatemachine->totalAlphabetSize +
-														alphaI] =
+													  newStatemachine->stateMask) *
+														 newStatemachine->totalAlphabetSize +
+													 alphaI] =
 						rhs.transitionTable[(rhs.startState & rhs.stateMask) *
 												rhs.totalAlphabetSize +
 											alphaI] +
 						lhs.totalStates;
 				}
 				else if (nextLhsState != newStatemachine->sinkState &&
-							nextRhsState == rhs.sinkState)
+						 nextRhsState == rhs.sinkState)
 				{
 					// Nothing to do
 				}
@@ -575,8 +584,8 @@ namespace deamer::dregx::v2
 													  newStatemachine->totalAlphabetSize +
 												  alphaI],
 							rhs.transitionTable[(rhs.startState & rhs.stateMask) *
-													 rhs.totalAlphabetSize +
-												 alphaI]);
+													rhs.totalAlphabetSize +
+												alphaI]);
 
 					if (bisimulativeProjection[bisimulativeIndex] == 0)
 					{
@@ -618,15 +627,16 @@ namespace deamer::dregx::v2
 						//	Lhs goes to a sink state Rhs goes to a sink state [Nothing to do]
 						//	Lhs goes to a sink state Rhs does not go to a sink state [Nothing todo]
 						//  Lhs goes to a non sink state Rhs goes to a sink state [Move to Rhs]
-						//  Lhs goes to a non sink state Rhs does not go to a sink state [Continue Simulation]
+						//  Lhs goes to a non sink state Rhs does not go to a sink state [Continue
+						//  Simulation]
 						//
 
 						auto nextLhsState =
 							newStatemachine
 								->transitionTable[(bisimulationPair.lhsState &
-													newStatemachine->stateMask) *
-														newStatemachine->totalAlphabetSize +
-													alphaI];
+												   newStatemachine->stateMask) *
+													  newStatemachine->totalAlphabetSize +
+												  alphaI];
 
 						auto nextRhsState =
 							rhs.transitionTable[(bisimulationPair.rhsState & rhs.stateMask) *
@@ -639,26 +649,26 @@ namespace deamer::dregx::v2
 							// Nothing to do
 						}
 						else if (nextLhsState == newStatemachine->sinkState &&
-									nextRhsState != rhs.sinkState)
+								 nextRhsState != rhs.sinkState)
 						{
 							// Update to Rhs
 							newStatemachine
 								->transitionTable[(bisimulationPair.lhsState &
-													newStatemachine->stateMask) *
-														newStatemachine->totalAlphabetSize +
-													alphaI] =
-								rhs.transitionTable[(bisimulationPair.rhsState &
-														rhs.stateMask) *
+												   newStatemachine->stateMask) *
+													  newStatemachine->totalAlphabetSize +
+												  alphaI] =
+								rhs.transitionTable[(bisimulationPair.rhsState & rhs.stateMask) *
 														rhs.totalAlphabetSize +
 													alphaI] +
 								lhs.totalStates;
 						}
 						else if (nextLhsState != newStatemachine->sinkState &&
-									nextRhsState == rhs.sinkState)
+								 nextRhsState == rhs.sinkState)
 						{
 							// Only valid if original machine is not Cyclic to guarantee correctness
-							// Possible to remove is there is a notion of cyclicity in state information
-							// Then this is reducable to checking if the state is part of a cycle
+							// Possible to remove is there is a notion of cyclicity in state
+							// information Then this is reducable to checking if the state is part
+							// of a cycle
 							if (lhs.IsCyclic() || rhs.IsCyclic())
 							{
 								return nullptr;
@@ -684,8 +694,8 @@ namespace deamer::dregx::v2
 
 							newStatemachine
 								->transitionTable[(bisimulationPair.lhsState &
-													newStatemachine->stateMask) *
-														newStatemachine->totalAlphabetSize +
+												   newStatemachine->stateMask) *
+													  newStatemachine->totalAlphabetSize +
 												  alphaI] =
 								leftMirrorCombineStates(
 									newStatemachine
@@ -694,9 +704,9 @@ namespace deamer::dregx::v2
 															  newStatemachine->totalAlphabetSize +
 														  alphaI],
 									rhs.transitionTable[(bisimulationPair.rhsState &
-														   rhs.stateMask) *
-															  rhs.totalAlphabetSize +
-														  alphaI]);
+														 rhs.stateMask) *
+															rhs.totalAlphabetSize +
+														alphaI]);
 
 							if (bisimulativeProjection[bisimulativeIndex] == 0)
 							{
@@ -727,10 +737,12 @@ namespace deamer::dregx::v2
 
 		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace,
 				 typename rhsAlphabetIndexType>
-		std::unique_ptr<ThisType>
-			GeneralOr(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_) const
+		std::unique_ptr<ThisType> GeneralOr(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace,
+																 rhsAlphabetIndexType>& rhs_) const
 		{
-			static_assert(std::is_same_v<alphabetIndexType, rhsAlphabetIndexType>, "Cannot apply General OR on different Alphabetical Compile-time Bounded Automata");
+			static_assert(
+				std::is_same_v<alphabetIndexType, rhsAlphabetIndexType>,
+				"Cannot apply General OR on different Alphabetical Compile-time Bounded Automata");
 
 			//
 			// Initialize the new Statemachine
@@ -739,11 +751,9 @@ namespace deamer::dregx::v2
 			const auto& lhs = this->totalStates <= rhs_.totalStates ? *this : rhs_;
 			const auto& rhs = rhs_.totalStates >= this->totalStates ? rhs_ : *this;
 
-			auto newStatemachine = std::make_unique<CBStatemachine<
-				std::max(flavorBitSpace, rhsFlavorBitSpace),
-				std::max(typeBitSpace, rhsTypeBitSpace),
-				alphabetIndexType
-			>>();
+			auto newStatemachine = std::make_unique<
+				CBStatemachine<std::max(flavorBitSpace, rhsFlavorBitSpace),
+							   std::max(typeBitSpace, rhsTypeBitSpace), alphabetIndexType>>();
 			newStatemachine->isCyclic = lhs.IsCyclic() || rhs.IsCyclic();
 
 			const auto roundedLhsTotalStates = nearestPowerOf2(lhs.totalStates);
@@ -771,12 +781,11 @@ namespace deamer::dregx::v2
 					(lhsState & lhs.stateMask) | ((rhsState & rhs.stateMask) << log2LhsTotalStates);
 				std::size_t combinedStateType =
 					(lhsState & lhs.stateTypeMask) | (rhsState & rhs.stateTypeMask);
-				std::size_t combinedFlavorType = std::max(
-					lhsState & lhs.stateFlavorMask,
-					rhsState & rhs.stateFlavorMask
-				);
+				std::size_t combinedFlavorType =
+					std::max(lhsState & lhs.stateFlavorMask, rhsState & rhs.stateFlavorMask);
 
-				std::size_t combinedState = combinedStateIndex | combinedStateType | combinedFlavorType;
+				std::size_t combinedState =
+					combinedStateIndex | combinedStateType | combinedFlavorType;
 
 				return combinedState;
 			};
@@ -794,7 +803,7 @@ namespace deamer::dregx::v2
 					for (std::size_t stateRhsI = 0; stateRhsI < rhs.totalStates; stateRhsI++)
 					{
 						auto combinedCurrentState = combineState(stateLhsI, stateRhsI);
-						
+
 						std::size_t rhsTargetState =
 							rhs.transitionTable[(stateRhsI * rhs.totalAlphabetSize) + alphaI];
 
@@ -813,8 +822,10 @@ namespace deamer::dregx::v2
 			return std::move(newStatemachine);
 		}
 
-		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
-		std::unique_ptr<ThisType> And(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_)
+		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace,
+				 typename rhsAlphabetIndexType>
+		std::unique_ptr<ThisType>
+		And(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_)
 		{
 			std::unique_ptr<ThisType> result;
 
@@ -823,8 +834,10 @@ namespace deamer::dregx::v2
 			return result;
 		}
 
-		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
-		std::unique_ptr<ThisType> GeneralAnd(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_)
+		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace,
+				 typename rhsAlphabetIndexType>
+		std::unique_ptr<ThisType> GeneralAnd(
+			const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs_)
 		{
 			static_assert(
 				std::is_same_v<alphabetIndexType, rhsAlphabetIndexType>,
@@ -869,7 +882,8 @@ namespace deamer::dregx::v2
 				std::size_t combinedFlavorType =
 					std::max(lhsState & lhs.stateFlavorMask, rhsState & rhs.stateFlavorMask);
 
-				std::size_t combinedState = combinedStateIndex | combinedStateType | combinedFlavorType;
+				std::size_t combinedState =
+					combinedStateIndex | combinedStateType | combinedFlavorType;
 
 				return combinedState;
 			};
@@ -909,8 +923,10 @@ namespace deamer::dregx::v2
 			return std::move(newStatemachine);
 		}
 
-		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace, typename rhsAlphabetIndexType>
-		std::unique_ptr<ThisType> Concatenate(const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs)
+		template<std::size_t rhsFlavorBitSpace, std::size_t rhsTypeBitSpace,
+				 typename rhsAlphabetIndexType>
+		std::unique_ptr<ThisType> Concatenate(
+			const CBStatemachine<rhsFlavorBitSpace, rhsTypeBitSpace, rhsAlphabetIndexType>& rhs)
 		{
 			auto newStatemachine = std::make_unique<ThisType>();
 			return newStatemachine;
@@ -1006,7 +1022,7 @@ namespace deamer::dregx::v2
 		}
 
 		/*!	\function DeadBranchRemoval
-		 * 
+		 *
 		 *	\brief Removes states that will never reach an accepting state
 		 */
 		void DeadBranchRemoval()
@@ -1035,13 +1051,14 @@ namespace deamer::dregx::v2
 						transitionTable[stateI * totalAlphabetSize + alphaI];
 					const std::size_t targetStateIndex = targetStateI & stateMask;
 					const std::size_t targetStateAccept = targetStateI & stateTypeMask;
-					
+
 					previous[stateI * totalStates + targetStateIndex] = true;
-					
+
 					if (targetStateAccept)
 					{
 						acceptProjection[targetStateIndex] = true;
-						acceptProjection[stateI] = true; // As it is connected to something that is accepting
+						acceptProjection[stateI] =
+							true; // As it is connected to something that is accepting
 					}
 				}
 			}
@@ -1075,7 +1092,7 @@ namespace deamer::dregx::v2
 							break;
 						}
 					}
-					
+
 					if (!acceptProjection[unacceptedState])
 					{
 						reUnacceptedStates.push_back(unacceptedState);
@@ -1144,7 +1161,8 @@ namespace deamer::dregx::v2
 					const auto targetState = transitionTable[stateI * totalAlphabetSize + alphaI];
 					if (!acceptProjection[targetState & stateMask])
 					{
-						// Go to sink state instead of going n states with no possibility of acceptance
+						// Go to sink state instead of going n states with no possibility of
+						// acceptance
 						newTransitionTable[redirectionTable[stateI] * totalAlphabetSize + alphaI] =
 							sinkState;
 					}
@@ -1185,7 +1203,8 @@ namespace deamer::dregx::v2
 			{
 				if (transitionTable[stateAlphaI] != sinkState)
 				{
-					// Not pointing to sink state includes possibility of matching non-epsilon after Squash + DBR
+					// Not pointing to sink state includes possibility of matching non-epsilon after
+					// Squash + DBR
 					return false;
 				}
 			}
