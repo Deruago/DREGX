@@ -1179,10 +1179,136 @@ namespace deamer::dregx::v2
 			transitionTable = newTransitionTable;
 		}
 
+
+		/*!	\function DirectCycle
+		 *
+		 *	\brief Removes exact equivalent states that are directly next to eachother, e.g: 
+		 *		- (a -> s || a -> b) * (b -> b || b -> s), if all transitions a -> b, are the only valid transitions b -> b, than a == b
+		 */
+		void DirectCycle()
+		{
+			std::map<std::size_t, std::set<std::size_t>> mapStateWithPositiveContinuations;
+			std::map<std::size_t, std::set<std::size_t>> mapStateWithTargets;
+			for (std::size_t stateI = 0; stateI < totalStates; stateI++)
+			{
+				mapStateWithTargets.insert({stateI, {}});
+				mapStateWithPositiveContinuations.insert({stateI, {}});
+			}
+
+			for (std::size_t stateI = 0; stateI < totalStates; stateI++)
+			{
+				for (std::size_t alphaI = 0; alphaI < totalAlphabetSize; alphaI++)
+				{
+					const std::size_t targetStateI =
+						transitionTable[stateI * totalAlphabetSize + alphaI];
+					const std::size_t targetStateIndex = targetStateI & stateMask;
+					const std::size_t targetStateAccept = targetStateI & stateTypeMask;
+					mapStateWithTargets.find(stateI)->second.insert(targetStateIndex);
+
+					if (targetStateIndex != GetStateIndex(sinkState))
+					{
+						// Then it will continue
+						mapStateWithPositiveContinuations.find(stateI)->second.insert(alphaI);
+					}
+				}
+			}
+
+			std::vector<std::pair<std::size_t, std::size_t>> analyzedStatesAndTarget;
+			// Analyze only the states that have 2 targets from which 1 reject
+			for (auto [source, targets] : mapStateWithTargets)
+			{
+				if (targets.size() != 2)
+				{
+					continue;
+				}
+
+				if (targets.find(GetStateIndex(sinkState)) == targets.end())
+				{
+					continue;
+				}
+
+				targets.erase(GetStateIndex(sinkState));
+
+				// Sink state is included, meaning the other state must be non-sink, include in analyzed list
+				analyzedStatesAndTarget.emplace_back(source, *std::begin(targets));
+			}
+
+			std::set<std::pair<std::size_t, std::size_t>> mergablePair;
+			for (auto [source, target] : analyzedStatesAndTarget)
+			{
+				if (mapStateWithTargets.find(target)->second.size() > 2)
+				{
+					// Cannot be equal
+					continue;
+				}
+
+				if (mapStateWithTargets.find(target)->second.find(GetStateIndex(sinkState)) ==
+					mapStateWithTargets.find(target)->second.end())
+				{
+					// Cannot be equal, must have a sink state target
+					continue;
+				}
+
+				if (mapStateWithTargets.find(target)->second.find(target) ==
+					mapStateWithTargets.find(target)->second.end())
+				{
+					// Cannot be equal, the other state must point to itself
+					continue;
+				}
+
+				// Target has the transitions:
+				//	- T -> T
+				//	- T -> Sink
+				//
+				// Source has the transitions:
+				//	- S -> T
+				//	- S -> Sink
+				//
+				//	If All transitions S -> T == T -> T
+				//	 - Then they are equivalent and may be merged by replacing all transitions -> S with -> T
+				//
+
+				if (mapStateWithPositiveContinuations.find(target)->second !=
+					mapStateWithPositiveContinuations.find(source)->second)
+				{
+					// Cannot be equal as there is a mismatch in positive continuations
+					continue;
+				}
+
+				// Equivalent, remember this pair for merge
+				mergablePair.insert({source, target});
+			}
+
+			// Merge all mergable pairs
+			for (auto [source, target] : mergablePair)
+			{
+				for (std::size_t stateI = 0; stateI < totalStates; stateI++)
+				{
+					for (std::size_t alphaI = 0; alphaI < totalAlphabetSize; alphaI++)
+					{
+						const std::size_t targetStateI =
+							transitionTable[stateI * totalAlphabetSize + alphaI];
+						const std::size_t targetStateIndex = targetStateI & stateMask;
+						const std::size_t targetStateAccept = targetStateI & stateTypeMask;
+
+						if (targetStateIndex == source)
+						{
+							transitionTable[stateI * totalAlphabetSize + alphaI] =
+								(targetStateI & ~stateMask) | GetStateIndex(target);
+						}
+					}
+				}
+			}
+
+			// As states are removed, squash it.
+			Squash();
+		}
+
 		void Minimize()
 		{
 			Squash();
 			DeadBranchRemoval();
+			DirectCycle();
 		}
 
 		bool IsEmptyLanguage() const noexcept

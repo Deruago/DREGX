@@ -19,11 +19,47 @@ protected:
 TEST_F(TestRegex, V2_CBRegex_Comment)
 {
 	auto regex = ::deamer::dregx::v2::CBRegex("[/][^\\n\\r]*[\\n\\r]{0,1}", 100);
-	regex.Match("/\n");
-	regex.Match("/ \n");
-	regex.Match("/  \n");
-	regex.Match("/  ***\n");
-	regex.Match("/  **// / *\n");
+	EXPECT_TRUE(regex.Match("/\n"));
+	EXPECT_TRUE(regex.Match("/ \n"));
+	EXPECT_TRUE(regex.Match("/  \n"));
+	EXPECT_TRUE(regex.Match("/  ***\n"));
+	EXPECT_TRUE(regex.Match("/  **// / *\n"));
+}
+
+TEST_F(TestRegex, V2_CBRegex_Varname)
+{
+	auto regex = ::deamer::dregx::v2::CBRegex("[a-zA-Z_][a-zA-Z_0-9]*", 100);
+	EXPECT_TRUE(regex.Match("a"));
+	EXPECT_TRUE(regex.Match("A"));
+	EXPECT_TRUE(regex.Match("b"));
+	EXPECT_TRUE(regex.Match("B"));
+	EXPECT_TRUE(regex.Match("aba"));
+	EXPECT_TRUE(regex.Match("_"));
+	EXPECT_TRUE(regex.Match("_aas0"));
+	EXPECT_TRUE(regex.Match("_0"));
+	EXPECT_TRUE(regex.Match("_A"));
+	EXPECT_TRUE(regex.Match("aA"));
+	EXPECT_TRUE(regex.Match("AA"));
+	EXPECT_TRUE(regex.Match("A9"));
+}
+
+TEST_F(TestRegex, V2_CBRegexMinimized_Varname)
+{
+	auto regex = ::deamer::dregx::v2::CBRegex("[a-zA-Z_][a-zA-Z_0-9]*", 100);
+	regex.Minimize();
+
+	EXPECT_TRUE(regex.Match("a"));
+	EXPECT_TRUE(regex.Match("A"));
+	EXPECT_TRUE(regex.Match("b"));
+	EXPECT_TRUE(regex.Match("B"));
+	EXPECT_TRUE(regex.Match("aba"));
+	EXPECT_TRUE(regex.Match("_"));
+	EXPECT_TRUE(regex.Match("_aas0"));
+	EXPECT_TRUE(regex.Match("_0"));
+	EXPECT_TRUE(regex.Match("_A"));
+	EXPECT_TRUE(regex.Match("aA"));
+	EXPECT_TRUE(regex.Match("AA"));
+	EXPECT_TRUE(regex.Match("A9"));
 }
 
 TEST_F(TestRegex, RegexOperatorOr_OrTwoRegexes)
